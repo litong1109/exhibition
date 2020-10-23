@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author zel
  */
 @Component
-@ConfigurationProperties(prefix = "zel")
+@ConfigurationProperties(prefix = "exhibition")
 public class Global
 {
     /** 项目名称 */
