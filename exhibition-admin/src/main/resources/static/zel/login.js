@@ -6,6 +6,14 @@ $(function() {
 		var url = ctx + "captcha/captchaImage?type=" + captchaType + "&s=" + Math.random();
 		$(".imgcode").attr("src", url);
 	});
+
+    //添加回车事件，用于回车按键登录
+    document.onkeydown = function(e){
+        var ev = document.all ? window.event : e;
+        if(ev.keyCode==13) {
+            login();
+        }
+    }
 });
 
 $.validator.setDefaults({
@@ -93,3 +101,4 @@ function getParam(paramName) {
     if (r != null) return decodeURI(r[2]);
     return null;
 }
+
