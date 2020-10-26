@@ -9,7 +9,7 @@ exhibition:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/zel/uploadPath，Linux配置 /home/zel/uploadPath）
-  profile: E:/zel_exhibition/uploadPath
+  profile: F:/zel_exhibition/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
@@ -19,7 +19,7 @@ server:
   port: 8001
   servlet:
     # 应用的访问路径
-    context-path: /
+    context-path: /exhibition
   tomcat:
     # tomcat的URI编码
     uri-encoding: UTF-8
