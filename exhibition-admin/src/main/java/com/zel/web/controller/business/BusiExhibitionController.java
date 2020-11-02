@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 展会信息
- * 
- * @author zel
+ * @description:展会信息
+ * @auther: litong
+ * @date: 2020/10/26 10:05
  */
 @Controller
 @RequestMapping("/business/exhibition")

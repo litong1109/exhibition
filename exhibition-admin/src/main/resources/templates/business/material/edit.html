@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改物料')" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-material-edit" th:object="${material}">
+			<input id="materialId" name="materialId" type="hidden" th:field="*{materialId}"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">物料名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="materialName" id="materialName">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">物料简称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="nickName" id="nickName">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">物料代码：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="materialCode" id="materialCode">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">规格型号：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="specifications" id="specifications">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">标包数量：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="packageQuantity" id="packageQuantity">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">物料类型：</label>
+				<div class="col-sm-8">
+					<select name="type" class="form-control" th:with="type=${@dict.getType('busi_material_type')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">计量单位：</label>
+				<div class="col-sm-8">
+					<select name="unit" class="form-control" th:with="type=${@dict.getType('busi_material_unit')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<textarea id="remark" name="remark" class="form-control">[[*{remark}]]</textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+	<th:block th:include="include :: footer" />
+	<script type="text/javascript">
+        var prefix = ctx + "business/material";
+
+        $("#form-material-edit").validate({
+            onkeyup: false,
+            rules:{
+                materialName:{
+                    remote: {
+                        url: prefix + "/checkMaterialNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "materialName" : function() {
+                                return $.common.trim($("#materialName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+                materialCode:{
+                    remote: {
+                        url: prefix + "/checkMaterialCodeUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "materialCode" : function() {
+                                return $.common.trim($("#materialCode").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "materialCode": {
+                    remote: "物料代码已经存在"
+                },
+                "materialName": {
+                    remote: "物料名称已经存在"
+                }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-material-edit').serialize());
+            }
+        }
+	</script>
+</body>
+</html>

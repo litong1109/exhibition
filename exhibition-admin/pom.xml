@@ -79,6 +79,14 @@
             <artifactId>exhibition-generator</artifactId>
         </dependency>
 
+        <!-- 代码生成-->
+        <dependency>
+            <groupId>com.exhibition</groupId>
+            <artifactId>exhibition-business</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

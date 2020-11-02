@@ -86,6 +86,17 @@ public class UserConstants
     public final static String CONFIG_KEY_UNIQUE = "0";
     public final static String CONFIG_KEY_NOT_UNIQUE = "1";
 
+    /** 物料名称是否唯一的返回结果码 */
+    public final static String MATERIAL_NAME_UNIQUE = "0";
+    public final static String MATERIAL_NAME_NOT_UNIQUE = "1";
+
+    /** 物料代码是否唯一的返回结果码 */
+    public final static String MATERIAL_CODE_UNIQUE = "0";
+    public final static String MATERIAL_CODE_NOT_UNIQUE = "1";
+
+
+
+
     /**
      * 密码长度限制
      */

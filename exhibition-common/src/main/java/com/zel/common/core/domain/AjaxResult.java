@@ -101,6 +101,11 @@ public class AjaxResult extends HashMap<String, Object>
         return AjaxResult.success("操作成功", data);
     }
 
+
+
+
+
+
     /**
      * 返回成功消息
      * 
@@ -122,6 +127,18 @@ public class AjaxResult extends HashMap<String, Object>
     public static AjaxResult success(String msg, Object data)
     {
         return new AjaxResult(Type.SUCCESS, msg, data);
+    }
+
+    /**
+     * 返回成功消息
+     *
+     * @param msg 返回内容
+     * @param data 数据对象
+     * @return 成功消息
+     */
+    public static AjaxResult success(Type type,String msg, Object data)
+    {
+        return new AjaxResult(type, msg, data);
     }
 
     /**

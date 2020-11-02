@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zel.business.mapper.BusiMaterialMapper">
+    
+    <resultMap  id="BusiMaterialResult"  type="BusiMaterial">
+    	<id     property="materialId"       column="material_id"    />
+        <result property="materialName"     column="material_name"    />
+        <result property="materialCode"     column="material_code"     />
+        <result property="nickName"         column="nick_name"   />
+        <result property="specifications"   column="specifications"   />
+        <result property="type"             column="type"    />
+        <result property="unit"             column="unit"    />
+        <result property="packageQuantity"  column="package_quantity"    />
+        <result property="createBy"         column="create_by"      />
+        <result property="createTime"       column="create_time"    />
+        <result property="updateBy"         column="update_by"      />
+        <result property="updateTime"       column="update_time"    />
+        <result property="del"              column="del"    />
+        <result property="remark"           column="remark"    />
+    </resultMap>
+    <!--
+    查询全部物料信息
+    -->
+    <sql id="selectMaterialVo">
+        select `material_id`, `material_name`, `material_code`, `nick_name`, `specifications`, `type`, `unit`, `package_quantity`, `create_by`, `create_time`, `update_by`, `update_time`, `del`, `remark`
+		from busi_material
+    </sql>
+
+    <!--
+  查询是否存在记录数
+  -->
+    <sql id="selectMaterialCount">
+        SELECT count(0) FROM busi_material
+    </sql>
+
+    <!--
+     * 校验物料名称是否唯一
+     * @param materialName 物料名称
+    -->
+    <select id="checkMaterialNameUnique" parameterType="String" resultType="java.lang.Integer">
+        <include refid="selectMaterialCount"/>
+        where
+            material_name = #{materialName}
+        and del = 1
+    </select>
+
+    <!--
+     * 校验物料代码是否唯一
+     * @param materialCode 物料代码
+    -->
+    <select id="checkMaterialCodeUnique" parameterType="String" resultType="java.lang.Integer">
+        <include refid="selectMaterialCount"/>
+        where
+            material_code = #{materialCode}
+        and del = 1
+    </select>
+
+    <!--
+     * 保存新增物料
+     * @param material 物料信息
+    -->
+    <insert id="insertMaterial" parameterType="BusiMaterial">
+        insert into busi_material (
+			<if test="materialName != null and materialName != '' ">material_name,</if>
+			<if test="materialCode != null and materialCode != '' ">material_code,</if>
+			<if test="nickName != null and nickName != '' ">nick_name,</if>
+			<if test="specifications != null and specifications != '' ">specifications,</if>
+			<if test="type != null  ">type,</if>
+			<if test="unit != null  ">unit,</if>
+			<if test="packageQuantity != null ">package_quantity,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+			<if test="del != null">del,</if>
+ 			create_time
+
+        )values(
+			<if test="materialName != null and materialName != ''">#{materialName},</if>
+			<if test="materialCode != null and materialCode != ''">#{materialCode},</if>
+			<if test="nickName != null and nickName != ''">#{nickName},</if>
+			<if test="specifications != null and specifications != ''">#{specifications},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="unit != null  ">#{unit},</if>
+			<if test="packageQuantity != null">#{packageQuantity},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+			<if test="del != null">#{del},</if>
+ 			sysdate()
+		)
+    </insert>
+
+    <!--
+     * 获取物料列表
+     * @param material 物料信息
+    -->
+    <select id="selectMaterialList" resultMap="BusiMaterialResult">
+        <include refid="selectMaterialVo"/>
+        where
+        del = 1
+        <if test="materialName != null and materialName != ''">
+            AND material_name like concat('%', #{materialName}, '%')
+        </if>
+        <if test="materialCode != null and materialCode != ''">
+            AND material_code like concat('%', #{materialCode}, '%')
+        </if>
+        <if test="nickName != null and nickName != ''">
+            AND nick_name like concat('%', #{nickName}, '%')
+        </if>
+        <if test="specifications != null and specifications != ''">
+            AND specifications like concat('%', #{specifications}, '%')
+        </if>
+        <if test="type != null  ">
+            AND type = #{type}
+        </if>
+        <if test="unit != null ">
+            AND unit = #{unit}
+        </if>
+        <if test="packageQuantity != null ">
+            AND package_quantity = #{packageQuantity}
+        </if>
+    </select>
+
+   <!--
+    * 获取物料信息
+    * @param materialId 物料ID
+    -->
+    <select id="selectMaterialById" resultMap="BusiMaterialResult">
+        <include refid="selectMaterialVo"/>
+        where
+        material_id = #{materialId}
+        and del = 1
+    </select>
+
+   <!--
+    * 根据物料代码获取物料信息
+    * @param materialCode 物料代码
+    -->
+    <select id="selectMaterialByCode" resultMap="BusiMaterialResult">
+        <include refid="selectMaterialVo"/>
+        where
+        material_code = #{materialCode}
+    </select>
+
+  <!--
+    * 保存修改物料
+    * @param material 物料信息
+    -->
+    <update id="updateMaterial" parameterType="BusiMaterial">
+      update busi_material
+      <set>
+          <if test="materialName != null and materialName != ''">
+              material_name = #{materialName},
+          </if>
+          <if test="materialCode != null and materialCode != ''">
+              material_code = #{materialCode},
+          </if>
+          <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName},
+          </if>
+          <if test="specifications != null and specifications != ''">
+               specifications = #{specifications},
+          </if>
+          <if test="type != null  ">
+               type = #{type},
+          </if>
+          <if test="unit != null ">
+               unit = #{unit},
+          </if>
+          <if test="packageQuantity != null ">
+                package_quantity = #{packageQuantity},
+          </if>
+          <if test="updateBy != null and updateBy != ''">
+              update_by = #{updateBy},
+          </if>
+          update_time = sysdate()
+      </set>
+        where
+            del = 1
+        and material_id = #{materialId}
+    </update>
+
+   <!--
+    * 删除物料
+    * @param ids 物料ID
+    -->
+    <update id="deleteMaterialById" parameterType="long">
+        update busi_material
+        set
+           del=2
+        where material_id in
+        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")" >
+            #{id}
+        </foreach>
+    </update>
+
+
+    <!--
+    * 根据物料代码更新物料信息
+    * @param material
+     -->
+    <update id="updateMaterialByCode" parameterType="BusiMaterial">
+        update busi_material
+        <set>
+            <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName},
+            </if>
+            <if test="specifications != null and specifications != ''">
+                specifications = #{specifications},
+            </if>
+            <if test="type != null  ">
+                type = #{type},
+            </if>
+            <if test="unit != null ">
+                unit = #{unit},
+            </if>
+            <if test="packageQuantity != null ">
+                package_quantity = #{packageQuantity},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="del != null ">
+                del = #{del},
+            </if>
+            update_time = sysdate()
+        </set>
+        where
+              material_code = #{materialCode}
+    </update>
+
+</mapper>

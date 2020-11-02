@@ -1,54 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <th:block th:include="include :: header('新增物料')" />
 </head>
 <body>
-<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-    <form class="form-horizontal m" id="form-material-add">
-        <div class="form-group">
-            <label class="col-sm-3 control-label is-required">物料名称：</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" name="materialName" id="materialName" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label is-required">物料简称：</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" name="nickName" id="nickName" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label is-required">物料代码：</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" name="materialCode" id="materialCode" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label is-required">规格型号：</label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" name="materialSpecifications" id="materialSpecifications" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">岗位状态：</label>
-            <div class="col-sm-8">
-                <div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
-                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}">
-                    <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-material-add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">物料名称：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="materialName" id="materialName" required>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">备注：</label>
-            <div class="col-sm-8">
-                <textarea id="remark" name="remark" class="form-control"></textarea>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">物料简称：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="nickName" id="nickName" required>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">物料代码：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="materialCode" id="materialCode" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">规格型号：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="specifications" id="specifications" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">标包数量：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="packageQuantity" id="packageQuantity" required>
+                </div>
+            </div>
 
+            <div class="form-group">
+                <label class="col-sm-3 control-label">物料类型：</label>
+                <div class="col-sm-8">
+                    <select name="type" class="form-control" th:with="type=${@dict.getType('busi_material_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">计量单位：</label>
+                <div class="col-sm-8">
+                    <select name="unit" class="form-control" th:with="type=${@dict.getType('busi_material_unit')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <textarea id="remark" name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "business/material";
+
+        $("#form-material-add").validate({
+            onkeyup: false,
+            rules:{
+                materialName:{
+                    remote: {
+                        url: prefix + "/checkMaterialNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "materialName" : function() {
+                                return $.common.trim($("#materialName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+                materialCode:{
+                    remote: {
+                        url: prefix + "/checkMaterialCodeUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "materialCode" : function() {
+                                return $.common.trim($("#materialCode").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "materialCode": {
+                    remote: "物料代码已经存在"
+                },
+                "materialName": {
+                    remote: "物料名称已经存在"
+                }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-material-add').serialize());
+            }
+        }
+    </script>
 </body>
 </html>
