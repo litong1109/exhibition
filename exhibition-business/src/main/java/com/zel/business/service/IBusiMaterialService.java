@@ -53,7 +53,6 @@ public interface IBusiMaterialService {
      * 导入物料数据
      * @param materialList 物料列表
      */
-/*    String importMaterial(List<BusiMaterial> materialList);*/
     Map<String,Object>  importMaterial(List<BusiMaterial> materialList);
 
 }

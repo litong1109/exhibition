@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zel.business.mapper.BusiExhibitionMapper">
+
+    <resultMap id="BusiExhibitionResult" type="BusiExhibition">
+        <id property="exhibitionId" column="exhibition_id"/>
+        <result property="exhibitionName" column="exhibition_name"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="address" column="address"/>
+        <result property="organizer" column="organizer"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="del" column="del"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectExhibitionVo">
+                select `exhibition_id`, `exhibition_name`, `status`, `start_time`, `end_time`, `address`, `organizer`, `create_by`, `create_time`, `update_by`, `update_time`, `del`, `remark`
+                from  busi_exhibition
+    </sql>
+
+    <!--
+    * 检验展会名称是否唯一
+    * @param exhibitionName 展会名称
+    -->
+    <select id="checkExhibitionNameUnique" resultType="java.lang.Integer">
+                select count(0) from busi_exhibition
+                where
+                    exhibition_name = #{exhibitionName}
+                and del = 1
+    </select>
+
+    <insert id="insertExhibition" parameterType="com.zel.business.domain.BusiExhibition">
+        INSERT INTO busi_exhibition (
+         exhibition_name,
+         status,
+         start_time,
+         end_time,
+         address,
+         organizer,
+         create_by,
+         del,
+         remark,
+         create_time
+        )
+        VALUES
+        (
+         #{exhibitionName},
+         #{status},
+         #{startTime},
+         #{endTime},
+         #{address},
+         #{organizer},
+         #{createBy},
+         1,
+         #{remark},
+         sysdate()
+        )
+    </insert>
+
+
+    <!--
+     * 获取展会列表
+     * @param exhibition 展会信息
+     -->
+    <select id="selectExhibitionList" resultMap="BusiExhibitionResult">
+        <include refid="selectExhibitionVo"></include>
+        where del = 1
+        <if test="exhibitionId !=null ">
+            and exhibition_id =#{exhibitionId}
+        </if>
+        <if test="exhibitionName !=null and exhibitionName!=''">
+            and exhibition_name like concat('%',#{exhibition_name},'%')
+        </if>
+        <if test="status !=null ">
+            and status =#{status}
+        </if>
+        <if test="address !=null and address!=''">
+            and address like concat('%',#{address} '%',)
+        </if>
+        <if test="organizer !=null and organizer!=''">
+            and organizer like concat('%',#{organizer} '%',)
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            and DATE_FORMAT(start_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            and DATE_FORMAT(end_time, '%Y-%m-%d')  <![CDATA[ <= ]]> DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        </if>
+    </select>
+
+    <!--
+    * 根据展会ID查询展会信息
+    * @param exhibitionId 展会ID
+    -->
+    <select id="selectExhibitionById" resultMap="BusiExhibitionResult">
+        <include refid="selectExhibitionVo"></include>
+        where
+        del= 1
+        and exhibition_id = #{exhibitionId}
+    </select>
+
+    <!--
+    * 保存修改展会信息
+     * @param exhibition 展会信息
+     -->
+    <update id="updateExhibition">
+        update busi_exhibition
+        <set>
+            <if test="exhibitionName!=null and exhibitionName!=''">
+                exhibition_name = #{exhibitionName},
+            </if>
+            <if test="status!=null ">
+                status = #{status},
+            </if>
+            <if test="startTime!=null ">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime!=null ">
+                endTime = #{endTime},
+            </if>
+            <if test="address!=null and address!=''">
+                address= #{address},
+            </if>
+            <if test="organizer!=null and organizer!=''">
+                organizer = #{organizer},
+            </if>
+            <if test="updateBy!=null and updateBy!=''">
+                update_by = #{updateBy},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark= #{remark},
+            </if>
+            update_time = sysdate
+        </set>
+        where
+        del = 1
+        and exhibition_id = #{exhibitionId}
+    </update>
+
+    <update id="deleteExhibition">
+        update busi_exhibition
+        set del = 2
+        where
+        exhibition_id in
+        <foreach collection="exhibitionIds" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
