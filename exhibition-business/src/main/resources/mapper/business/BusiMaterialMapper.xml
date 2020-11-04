@@ -37,24 +37,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!--
      * 校验物料名称是否唯一
-     * @param materialName 物料名称
+     * @param material 物料信息
     -->
-    <select id="checkMaterialNameUnique" parameterType="String" resultType="java.lang.Integer">
+    <select id="checkMaterialNameUnique" resultType="java.lang.Integer">
         <include refid="selectMaterialCount"/>
         where
             material_name = #{materialName}
         and del = 1
+        <if test="materialId != null">
+            and material_id != #{materialId}
+        </if>
+
     </select>
 
     <!--
      * 校验物料代码是否唯一
-     * @param materialCode 物料代码
+     * @param material 物料信息
     -->
-    <select id="checkMaterialCodeUnique" parameterType="String" resultType="java.lang.Integer">
+    <select id="checkMaterialCodeUnique" resultType="java.lang.Integer">
         <include refid="selectMaterialCount"/>
         where
             material_code = #{materialCode}
         and del = 1
+        <if test="materialId != null">
+            and material_id != #{materialId}
+        </if>
     </select>
 
     <!--

@@ -30,7 +30,7 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
      */
     @Override
     public String checkMaterialNameUnique(BusiMaterial material) {
-        int count = materialMapper.checkMaterialNameUnique(material.getMaterialName());
+        int count = materialMapper.checkMaterialNameUnique(material);
         if (count>0) {
             return UserConstants.MATERIAL_NAME_NOT_UNIQUE;
         }
@@ -43,7 +43,7 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
      */
     @Override
     public String checkMaterialCodeUnique(BusiMaterial material) {
-        int count = materialMapper.checkMaterialCodeUnique(material.getMaterialCode());
+        int count = materialMapper.checkMaterialCodeUnique(material);
         if (count>0) {
             return UserConstants.MATERIAL_NAME_NOT_UNIQUE;
         }

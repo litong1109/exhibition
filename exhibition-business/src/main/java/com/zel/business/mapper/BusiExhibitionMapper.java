@@ -11,9 +11,9 @@ public interface BusiExhibitionMapper {
 
     /**
      * 检验展会名称是否唯一
-     * @param exhibitionName 展会名称
+     * @param exhibition 展会信息
      */
-    int checkExhibitionNameUnique(@Param(value = "exhibitionName") String exhibitionName);
+    int checkExhibitionNameUnique(BusiExhibition exhibition);
 
     /**
      * 保存新增展会
@@ -44,4 +44,5 @@ public interface BusiExhibitionMapper {
    * @param exhibitionIds 展会ID
    */
     int deleteExhibition(@Param(value = "exhibitionIds") Long[] exhibitionIds);
+
 }

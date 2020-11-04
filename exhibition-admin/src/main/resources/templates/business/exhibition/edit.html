@@ -41,15 +41,16 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">展会状态：</label>
 				<div class="col-sm-8">
-					<select name="type" class="form-control" th:with=" dictionaries=${@dict.getType('busi_exhibition_status')}">
-						<option th:each="dict : ${dictionaries}" th:selected="*{status+''} eq ${dict.dictValue+''}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
+					<select name="status" class="form-control" th:with=" dictionaries=${@dict.getType('busi_exhibition_status')}">
+						<option th:each="dict : ${dictionaries}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"   th:field="*{status}" ></option>
 					</select>
+
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">备注：</label>
 				<div class="col-sm-8">
-					<textarea id="remark" name="remark" class="form-control">[[*{remark}]]</textarea>
+					<textarea id="remark" name="remark" class="form-control">[[*{remark}]] </textarea>
 				</div>
 			</div>
 		</form>
@@ -60,7 +61,7 @@
 	<script type="text/javascript">
         var prefix = ctx + "business/exhibition";
 
-        $("#form-material-edit").validate({
+        $("#form-exhibition-edit").validate({
             onkeyup: false,
             rules:{
                 exhibitionName:{
@@ -69,6 +70,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
+                            "exhibitionId" : $("#exhibitionId").val(),
                             "exhibitionName" : function() {
                                 return $.common.trim($("#exhibitionName").val());
                             }

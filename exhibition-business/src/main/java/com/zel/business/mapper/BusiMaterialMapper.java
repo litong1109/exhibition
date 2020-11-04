@@ -11,15 +11,15 @@ public interface BusiMaterialMapper {
 
     /**
      * 校验物料名称是否唯一
-     * @param materialName 物料名称
+     * @param material 物料信息
      */
-    int checkMaterialNameUnique(@Param(value = "materialName") String materialName);
+    int checkMaterialNameUnique(BusiMaterial material);
 
     /**
      * 校验物料代码是否唯一
-     * @param materialCode 物料代码
+     * @param material 物料信息
      */
-    int checkMaterialCodeUnique(@Param(value = "materialCode") String materialCode);
+    int checkMaterialCodeUnique(BusiMaterial material);
 
     /**
      * 保存新增物料

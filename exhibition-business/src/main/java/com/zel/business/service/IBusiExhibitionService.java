@@ -43,4 +43,5 @@ public interface IBusiExhibitionService {
      * @param exhibitionIds 展会ID
      */
     int deleteExhibition(Long[] exhibitionIds);
+
 }

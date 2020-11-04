@@ -1,5 +1,6 @@
 package com.zel.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zel.common.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 
 /**
  * 展会信息 busi_eshibition
+ *
  * @author andy
  */
 public class BusiExhibition {
@@ -28,16 +30,16 @@ public class BusiExhibition {
 
     /**
      * 展会状态
-     * 1：正常 2：不可用
+     * 1：保存 2：勘展 3：布展 4：撤展
      */
-    @Excel(name = "展会状态",dictType = "busi_exhibition_status")
+    @Excel(name = "展会状态", dictType = "busi_exhibition_status")
     private Integer status;
 
     /**
      * 开始时间
      */
     @Excel(name = "开始时间", dateFormat = "yyyy-MM-dd")
-    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
@@ -58,29 +60,42 @@ public class BusiExhibition {
     @Excel(name = "办展方")
     private String organizer;
 
-    /** 创建人*/
-    @Excel(name = "创建人")
+    /**
+     * 创建人
+     */
+//    @Excel(name = "创建人")
     private String createBy;
 
-    /** 创建时间*/
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+    /**
+     * 创建时间
+     */
+//    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    /** 更新人*/
-    @Excel(name = "更新人")
+    /**
+     * 更新人
+     */
+//    @Excel(name = "更新人")
     private String updateBy;
 
-    /** 更新时间*/
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+    /**
+     * 更新时间
+     */
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    /** 删除标识
-     *  1：正常  2：删除
-     * */
-    @Excel(name = "删除标识", readConverterExp = "1=正常,2=删除")
+    /**
+     * 删除标识
+     * 1：正常  2：删除
+     */
+//    @Excel(name = "删除标识", readConverterExp = "1=正常,2=删除")
     private Integer del;
 
-    /** 备注*/
+    /**
+     * 备注
+     */
     @Excel(name = "备注")
     private String remark;
 
@@ -116,13 +131,17 @@ public class BusiExhibition {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) { this.startTime = startTime ; }
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) { this.endTime = endTime; }
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getAddress() {
         return address;

@@ -17,12 +17,12 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
 
     /**
      * 检验展会名称是否唯一
-     * @param exhibition
+     * @param exhibition 展会信息
      */
     @Override
     public String checkExhibitionNameUnique(BusiExhibition exhibition) {
 
-        int count = exhibitionMapper.checkExhibitionNameUnique(exhibition.getExhibitionName());
+        int count = exhibitionMapper.checkExhibitionNameUnique(exhibition);
 
         if (count> 0) {
             return UserConstants.EXHIBITION_NAME_NOT_UNIQUE;
@@ -76,6 +76,4 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     public int deleteExhibition(Long[] exhibitionIds) {
         return exhibitionMapper.deleteExhibition(exhibitionIds);
     }
-
-
 }

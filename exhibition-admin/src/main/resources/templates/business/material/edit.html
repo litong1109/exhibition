@@ -42,15 +42,15 @@
 				<label class="col-sm-3 control-label">物料类型：</label>
 				<div class="col-sm-8">
 					<select name="type" class="form-control" th:with=" dictionaries=${@dict.getType('busi_material_type')}">
-						<option th:each="dict : ${dictionaries}" th:selected="*{type+''} eq ${dict.dictValue+''}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
+						<option th:each="dict : ${dictionaries}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{type}"  ></option>
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">计量单位：</label>
 				<div class="col-sm-8">
-					<select name="unit" class="form-control" th:with="type=${@dict.getType('busi_material_unit')}">
-						<option th:each="dict : ${type}" th:selected="*{unit+''} eq ${dict.dictValue+''}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					<select name="unit" class="form-control" th:with="unit=${@dict.getType('busi_material_unit')}">
+						<option th:each="dict : ${unit}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{unit}"></option>
 					</select>
 				</div>
 			</div>
@@ -78,6 +78,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
+                            "materialId" : $("#materialId").val(),
                             "materialName" : function() {
                                 return $.common.trim($("#materialName").val());
                             }
@@ -93,6 +94,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
+                            "materialId" : $("#materialId").val(),
                             "materialCode" : function() {
                                 return $.common.trim($("#materialCode").val());
                             }
