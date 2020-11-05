@@ -48,6 +48,9 @@
 		            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:exhibition:export">
 			            <i class="fa fa-download"></i> 导出
 			        </a>
+					<a class="btn btn-warning single disabled" onclick="$.operate.prospect()" shiro:hasPermission="business:exhibition:prospect">
+						<i class="fa fa-prospect"></i> 勘展
+					</a>
 		        </div>
 		        
 		        <div class="col-sm-12 select-table table-striped">
@@ -80,6 +83,7 @@
         function queryExhibitionList() {
             var options = {
                 url: prefix + "/list",
+                prospectUrl: prefix + "/prospect/{id}",
                 createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",

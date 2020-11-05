@@ -126,7 +126,7 @@
                 start_time = #{startTime},
             </if>
             <if test="endTime!=null ">
-                endTime = #{endTime},
+                end_time = #{endTime},
             </if>
             <if test="address!=null and address!=''">
                 address= #{address},
@@ -140,7 +140,7 @@
             <if test="remark!=null and remark!=''">
                 remark= #{remark},
             </if>
-            update_time = sysdate
+            update_time = sysdate()
         </set>
         where
         del = 1

@@ -17,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Generated;
 import java.util.List;
 
 /**
@@ -135,6 +136,30 @@ public class BusiExhibitionController extends BaseController
         List<BusiExhibition> list = exhibitionService.selectExhibitionList(exhibition);
         ExcelUtil<BusiExhibition> util = new ExcelUtil<>(BusiExhibition.class);
         return util.exportExcel(list,"展会数据");
+    }
+
+    /**
+     * 勘展
+     * @param exhibitionId 展会ID
+     */
+    @GetMapping(value = "/prospect/{exhibitionId}")
+    public String prospect(@PathVariable("exhibitionId")Long exhibitionId,ModelMap map){
+        map.put("prospect",exhibitionService.selectExhibitionById(exhibitionId));
+        return prefix + "/prospect";
+    }
+
+    /**
+     * 保存勘展
+     * @param exhibition
+     * @return
+     */
+    @RequiresPermissions("business:exhibition:prospect")
+    @Log(title = "保存勘展",businessType = BusinessType.UPDATE)
+    @PostMapping("/prospect")
+    @ResponseBody
+    public AjaxResult prospectSave(@Validated BusiExhibition exhibition){
+        return null;
+
     }
 
 
