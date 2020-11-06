@@ -101,7 +101,7 @@ public class BusiExhibitionController extends BaseController
      * @param exhibition 展会信息
      */
     @RequiresPermissions("business:exhibition:edit")
-    @Log(title = "保存修改物料",businessType = BusinessType.UPDATE)
+    @Log(title = "保存修改展会",businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated BusiExhibition exhibition){

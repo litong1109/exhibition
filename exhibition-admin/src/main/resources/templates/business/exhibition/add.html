@@ -89,7 +89,7 @@
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/add", $('#form-exhibition-add').serialize());
+                $.operate.save(prefix + "/add", $('#form-exhibition-add').serialize());//serialize序列化传入数据
             }
         }
     </script>

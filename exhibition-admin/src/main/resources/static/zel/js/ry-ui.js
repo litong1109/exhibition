@@ -1061,7 +1061,7 @@ var table = {
                         $.modal.alertWarning("请至少选择一条记录");
                         return;
                     }
-                    var url = table.options.updateUrl.replace("{id}", row[table.options.uniqueId]);
+                    var url = table.options.prospectUrl.replace("{id}", row[table.options.uniqueId]);
                     $.modal.open("勘展" + table.options.modalName, url);
                 } else {
                     $.modal.open("勘展" + table.options.modalName, $.operate.prospectUrl(id));
@@ -1272,8 +1272,9 @@ var table = {
         },
         // 校验封装处理
         validate: {
-        	// 判断返回标识是否唯一 false 不存在 true 存在
+        	// 判断返回标识是否唯一 false存在   true不存在
         	unique: function (value) {
+        		/*alert(value)*/
             	if (value == "0") {
                     return true;
                 }
