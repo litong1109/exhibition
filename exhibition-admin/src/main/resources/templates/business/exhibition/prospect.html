@@ -72,7 +72,7 @@
     function submitHandler() {
 
 		$.ajax({
-			url: prefix + "/saveProspectUrl",
+			url: prefix + "/saveProspectUrl?exhibitionId="+$("#exhibitionId").val(),
 			data: getVfiles(),
 			type: "post",
 			processData: false,

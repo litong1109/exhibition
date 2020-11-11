@@ -165,16 +165,19 @@
     </update>
 
     <!--
-    * 保存勘展图片
-    * @param prospect 勘展信息
+     * 保存勘展图片
+     * @param prospectUrl   勘展图片
+     * @param exhibitionId  展会ID
     -->
     <insert id="insertProspectUrl">
         INSERT INTO busi_prospect
         (
+            exhibition_id,
             prospect_url
         )
         VALUES
         (
+            #{exhibitionId},
             #{prospectUrl}
         )
     </insert>

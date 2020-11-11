@@ -159,38 +159,20 @@ public class BusiExhibitionController extends BaseController
     }
 
     /**
-     * 保存勘展
-     * @param prospect 勘展
-     * @return
-     */
-//    @RequiresPermissions("business:exhibition:prospect")
-//    @Log(title = "保存勘展",businessType = BusinessType.INSERT)
-//    @PostMapping("/prospect")
-//    @ResponseBody
-//    public AjaxResult prospectSave(@Validated BusiProspect prospect){
-//        return toAjax(exhibitionService.insertProspectUrl(prospect));
-//    }
-
-    /**
      * 保存勘展图片
      */
     @Log(title = "勘展图片", businessType = BusinessType.INSERT)
     @PostMapping("/saveProspectUrl")
     @ResponseBody
-    public AjaxResult insertProspectUrl(@RequestParam(value = "files") MultipartFile[] files)
+    public AjaxResult insertProspectUrl(@RequestParam(value = "files") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
         try
         {
             for(MultipartFile file:files)
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
-
-//                if (exhibitionService.insertProspectUrl(prospectUrl) > 0)
-//                {
-//                    return success();
-//                }
+                exhibitionService.insertProspectUrl(prospectUrl,exhibitionId);
             }
-//            return error();
         }
         catch (Exception e)
         {

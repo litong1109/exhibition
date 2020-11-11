@@ -54,8 +54,9 @@ public interface BusiExhibitionMapper {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl 勘展图片
+     * @param prospectUrl   勘展图片
+     * @param exhibitionId  展会ID
      */
-//    int insertProspectUrl(BusiProspect prospect);
-    int insertProspectUrl(@Param(value = "prospectUrl")String prospectUrl);
+    int insertProspectUrl(@Param(value = "prospectUrl")String prospectUrl,
+                          @Param(value = "exhibitionId")Long exhibitionId);
 }

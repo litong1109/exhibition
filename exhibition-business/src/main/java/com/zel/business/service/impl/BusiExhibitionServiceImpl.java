@@ -80,10 +80,11 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl 勘展图片
+     * @param prospectUrl   勘展图片
+     * @param exhibitionId  展会ID
      */
     @Override
-    public int insertProspectUrl(String prospectUrl) {
-        return exhibitionMapper.insertProspectUrl(prospectUrl);
+    public int insertProspectUrl(String prospectUrl,Long exhibitionId) {
+        return exhibitionMapper.insertProspectUrl(prospectUrl,exhibitionId);
     }
 }
