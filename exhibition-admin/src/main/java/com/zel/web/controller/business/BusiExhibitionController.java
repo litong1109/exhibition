@@ -177,7 +177,7 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "勘展图片", businessType = BusinessType.INSERT)
     @PostMapping("/saveProspectUrl")
     @ResponseBody
-    public AjaxResult insertProspectUrl(@RequestParam(value = "prospectUrlFile") MultipartFile[] files)
+    public AjaxResult insertProspectUrl(@RequestParam(value = "files") MultipartFile[] files)
     {
         try
         {
@@ -185,18 +185,19 @@ public class BusiExhibitionController extends BaseController
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
 
-                if (exhibitionService.insertProspectUrl(prospectUrl) > 0)
-                {
-                    return success();
-                }
+//                if (exhibitionService.insertProspectUrl(prospectUrl) > 0)
+//                {
+//                    return success();
+//                }
             }
-            return error();
+//            return error();
         }
         catch (Exception e)
         {
             log.error("保存勘展图片失败！", e);
             return error(e.getMessage());
         }
+        return success();
     }
 
 

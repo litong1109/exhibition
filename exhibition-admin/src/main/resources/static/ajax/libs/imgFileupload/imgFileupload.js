@@ -1,9 +1,7 @@
-var k;
-var prospectFiles;
+var formdata ; //声明全局变量
 (function(win){
-    k = 0;
-    prospectFiles = [];
-	var htmls = '<input type="file" name="" id="" class="imgFiles" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" multiple>'+
+	formdata = new FormData(); //初始化formData()
+	var htmls = '<input type="file" name="" id="imgFiles" class="imgFiles" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" multiple>'+
 				'<div class="header">'+
 				'    <span class="imgTitle">'+
 				'        勘展图片'+
@@ -84,8 +82,6 @@ var prospectFiles;
 			};
 
 			for(var i=0,file;file=files[i++];){
-
-				
 				var reader = new FileReader();
 				reader.onload = (function(file){
 					return function(ev){
@@ -101,25 +97,10 @@ var prospectFiles;
 								height : height,
 								width : width
 							});
-					    }; image.src= ev.target.result;
-                        var formdata = new FormData();
-                        formdata.append("prospectUrlFile", file);
-                        $.ajax({
-                            url: prefix + "/saveProspectUrl",
-                            data: formdata,
-                            type: "post",
-                             // dataType:"json",
-                            processData: false,
-                            contentType: false,
-                            success: function(result) {
-                                // $.operate.saveSuccess(result);
-                            }
-                        })
-
-// alert(ev.target.result)
-//                         prospectFiles[k] =  image.src;
-//                         k++;
-//                         console.log("files=="+prospectFiles);
+					    };
+						image.src= ev.target.result;
+						//把单个文件或图片添加到formData里
+						formdata.append("files",file);
 					};
 				})(file);
 				reader.readAsDataURL(file);
@@ -213,7 +194,7 @@ var prospectFiles;
 
 	win.ImgUploadeFiles = ImgUploadeFiles;
 })(window);
-
-function getProspectFiles(){
-    return prospectFiles;
+//获取formData方法
+function getVfiles() {
+	return formdata;
 }

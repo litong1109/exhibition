@@ -71,18 +71,10 @@
 
     function submitHandler() {
 
-		var formdata = new FormData();
-		formdata.append("prospectUrlFile",  $("#imgFileUploade").find('.imgAll ul li'));
-        //jquery方法
-        // $("#imgFileUploade").find('.imgAll ul li').each(function () {
-        //     console.log($(this).attr("data-delname"));
-        //     alert($(this).attr("data-delname"));
-        // });
 		$.ajax({
 			url: prefix + "/saveProspectUrl",
-			data: formdata,
+			data: getVfiles(),
 			type: "post",
-			dataType:"json",
 			processData: false,
 			contentType: false,
 			success: function(result) {
@@ -103,6 +95,8 @@
             }
         });
     });
+
+
 </script>
 </body>
 </html>
