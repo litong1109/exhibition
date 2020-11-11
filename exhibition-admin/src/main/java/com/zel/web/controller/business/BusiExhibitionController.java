@@ -1,21 +1,28 @@
 package com.zel.web.controller.business;
 
 import com.zel.business.domain.BusiExhibition;
+import com.zel.business.domain.BusiProspect;
 import com.zel.business.service.IBusiExhibitionService;
 import com.zel.common.annotation.Log;
+import com.zel.common.config.Global;
 import com.zel.common.constant.UserConstants;
 import com.zel.common.core.controller.BaseController;
 import com.zel.common.core.domain.AjaxResult;
 import com.zel.common.core.page.TableDataInfo;
 import com.zel.common.enums.BusinessType;
+import com.zel.common.utils.file.FileUploadUtils;
 import com.zel.common.utils.poi.ExcelUtil;
 import com.zel.framework.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Generated;
 import java.util.List;
@@ -29,6 +36,8 @@ import java.util.List;
 @RequestMapping("/business/exhibition")
 public class BusiExhibitionController extends BaseController
 {
+    private static final Logger log = LoggerFactory.getLogger(BusiExhibitionController.class);
+
     private String prefix = "business/exhibition";
 
     @Autowired
@@ -108,7 +117,8 @@ public class BusiExhibitionController extends BaseController
         if (UserConstants.EXHIBITION_NAME_NOT_UNIQUE.equals(exhibitionService.checkExhibitionNameUnique(exhibition))) {
             return error("新增展会"+exhibition.getExhibitionName()+"失败，展会名称已存在");
         }
-        exhibition.setUpdateBy(ShiroUtils.getLoginName());
+        /*exhibition.setUpdateBy(ShiroUtils.getLoginName());*/
+        exhibition.setUpdateBy(ShiroUtils.getUserId().toString());
         return toAjax(exhibitionService.updateExhibition(exhibition));
     }
 
@@ -150,17 +160,46 @@ public class BusiExhibitionController extends BaseController
 
     /**
      * 保存勘展
-     * @param exhibition
+     * @param prospect 勘展
      * @return
      */
-    @RequiresPermissions("business:exhibition:prospect")
-    @Log(title = "保存勘展",businessType = BusinessType.UPDATE)
-    @PostMapping("/prospect")
-    @ResponseBody
-    public AjaxResult prospectSave(@Validated BusiExhibition exhibition){
-        return null;
+//    @RequiresPermissions("business:exhibition:prospect")
+//    @Log(title = "保存勘展",businessType = BusinessType.INSERT)
+//    @PostMapping("/prospect")
+//    @ResponseBody
+//    public AjaxResult prospectSave(@Validated BusiProspect prospect){
+//        return toAjax(exhibitionService.insertProspectUrl(prospect));
+//    }
 
+    /**
+     * 保存勘展图片
+     */
+    @Log(title = "勘展图片", businessType = BusinessType.INSERT)
+    @PostMapping("/saveProspectUrl")
+    @ResponseBody
+    public AjaxResult insertProspectUrl(@RequestParam(value = "prospectUrlFile") MultipartFile[] files)
+    {
+        try
+        {
+            for(MultipartFile file:files)
+            {
+                String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
+
+                if (exhibitionService.insertProspectUrl(prospectUrl) > 0)
+                {
+                    return success();
+                }
+            }
+            return error();
+        }
+        catch (Exception e)
+        {
+            log.error("保存勘展图片失败！", e);
+            return error(e.getMessage());
+        }
     }
+
+
 
 
 

@@ -5,19 +5,19 @@
 <mapper namespace="com.zel.business.mapper.BusiExhibitionMapper">
 
     <resultMap id="BusiExhibitionResult" type="BusiExhibition">
-        <id property="exhibitionId"         column="exhibition_id"/>
-        <result property="exhibitionName"   column="exhibition_name"/>
-        <result property="status"           column="status"/>
-        <result property="startTime"        column="start_time"/>
-        <result property="endTime"          column="end_time"/>
-        <result property="address"          column="address"/>
-        <result property="organizer"        column="organizer"/>
-        <result property="createBy"         column="create_by"/>
-        <result property="createTime"       column="create_time"/>
-        <result property="updateBy"         column="update_by"/>
-        <result property="updateTime"       column="update_time"/>
-        <result property="del"              column="del"/>
-        <result property="remark"           column="remark"/>
+        <id property="exhibitionId" column="exhibition_id"/>
+        <result property="exhibitionName" column="exhibition_name"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="address" column="address"/>
+        <result property="organizer" column="organizer"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="del" column="del"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="selectExhibitionVo">
@@ -30,15 +30,19 @@
     * @param exhibition 展会信息
     -->
     <select id="checkExhibitionNameUnique" resultType="java.lang.Integer">
-                select count(0) from busi_exhibition
-                where
-                    exhibition_name = #{exhibitionName}
-                and del = 1
-                <if test="exhibitionId != null">
-                   and exhibition_id != #{exhibitionId}
-                </if>
+        select count(0) from busi_exhibition
+        where
+        exhibition_name = #{exhibitionName}
+        and del = 1
+        <if test="exhibitionId != null">
+            and exhibition_id != #{exhibitionId}
+        </if>
     </select>
 
+    <!--
+    * 保存新增展会
+    * @param exhibition 展会信息
+    -->
     <insert id="insertExhibition" parameterType="com.zel.business.domain.BusiExhibition">
         INSERT INTO busi_exhibition (
          exhibition_name,
@@ -66,7 +70,6 @@
          sysdate()
         )
     </insert>
-
 
     <!--
      * 获取展会列表
@@ -147,6 +150,10 @@
         and exhibition_id = #{exhibitionId}
     </update>
 
+    <!--
+    * 删除展会
+    * @param exhibitionIds 展会ID
+    -->
     <update id="deleteExhibition">
         update busi_exhibition
         set del = 2
@@ -156,5 +163,20 @@
             #{id}
         </foreach>
     </update>
+
+    <!--
+    * 保存勘展图片
+    * @param prospect 勘展信息
+    -->
+    <insert id="insertProspectUrl">
+        INSERT INTO busi_prospect
+        (
+            prospect_url
+        )
+        VALUES
+        (
+            #{prospectUrl}
+        )
+    </insert>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.zel.business.service.impl;
 
 import com.zel.business.domain.BusiExhibition;
 import com.zel.business.domain.BusiMaterial;
+import com.zel.business.domain.BusiProspect;
 import com.zel.business.mapper.BusiExhibitionMapper;
 import com.zel.business.service.IBusiExhibitionService;
 import com.zel.common.constant.UserConstants;
@@ -75,5 +76,14 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     @Override
     public int deleteExhibition(Long[] exhibitionIds) {
         return exhibitionMapper.deleteExhibition(exhibitionIds);
+    }
+
+    /**
+     * 保存勘展图片
+     * @param prospectUrl 勘展图片
+     */
+    @Override
+    public int insertProspectUrl(String prospectUrl) {
+        return exhibitionMapper.insertProspectUrl(prospectUrl);
     }
 }

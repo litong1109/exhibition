@@ -1,4 +1,8 @@
+var k;
+var prospectFiles;
 (function(win){
+    k = 0;
+    prospectFiles = [];
 	var htmls = '<input type="file" name="" id="" class="imgFiles" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" multiple>'+
 				'<div class="header">'+
 				'    <span class="imgTitle">'+
@@ -36,6 +40,7 @@
 			var _self = this;
 			this.dom = document.createElement('div');
 			this.dom.className = 'imgFileUploade';
+            this.dom.id = 'imgFileUploade';
 			this.dom.innerHTML = htmls;
 			this.bom.appendChild(this.dom);
 			this.files = this.bom.querySelector('.imgFiles');
@@ -53,14 +58,17 @@
 				$(f).off().on('change',function(){
 					var _this = this;
 					_private.startUploadImg(_imgAll,_this.files,_self.MAX,_self.callback,_self.MW,_self.MH);
+                    alert("开始上传");
+
 				});
 			});
 		}
+
 	};
 	var _dataArr = [];
 	var _private = {
 		startUploadImg : function(o,files,MAX,callback,W,H){
-			alert(o+"/"+files+"/"+MAX+"/"+callback+"/"+W+"/"+H);
+			// alert(o+"/"+files+"/"+MAX+"/"+callback+"/"+W+"/"+H);
 			_dataArr.length = 0;
 			var _this = this;
 			var fileImgArr = [];
@@ -93,10 +101,25 @@
 								height : height,
 								width : width
 							});
-					    };  
-					     image.src= ev.target.result; 
+					    }; image.src= ev.target.result;
+                        var formdata = new FormData();
+                        formdata.append("prospectUrlFile", file);
+                        $.ajax({
+                            url: prefix + "/saveProspectUrl",
+                            data: formdata,
+                            type: "post",
+                             // dataType:"json",
+                            processData: false,
+                            contentType: false,
+                            success: function(result) {
+                                // $.operate.saveSuccess(result);
+                            }
+                        })
 
-						
+// alert(ev.target.result)
+//                         prospectFiles[k] =  image.src;
+//                         k++;
+//                         console.log("files=="+prospectFiles);
 					};
 				})(file);
 				reader.readAsDataURL(file);
@@ -128,7 +151,7 @@
                         return clearInterval(t);
                     }
                     start();
-                },200)
+                },1500)
             }
         }
 	};
@@ -140,6 +163,7 @@
 		this.imgSrc = imgSrc;
 		this.callback = callback;
 	};
+
 	var _delId = 1; //删除id用于判断删除个数
 	ImgFileupload.prototype.init =function() {
 		_delId++;
@@ -189,3 +213,7 @@
 
 	win.ImgUploadeFiles = ImgUploadeFiles;
 })(window);
+
+function getProspectFiles(){
+    return prospectFiles;
+}

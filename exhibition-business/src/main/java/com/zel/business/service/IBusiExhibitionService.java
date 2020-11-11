@@ -1,6 +1,7 @@
 package com.zel.business.service;
 
 import com.zel.business.domain.BusiExhibition;
+import com.zel.business.domain.BusiProspect;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -44,4 +45,9 @@ public interface IBusiExhibitionService {
      */
     int deleteExhibition(Long[] exhibitionIds);
 
+    /**
+     * 保存勘展图片
+     * @param prospectUrl 勘展图片
+     */
+    int insertProspectUrl(String prospectUrl);
 }

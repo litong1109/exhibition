@@ -69,40 +69,28 @@
 <script type="text/javascript">
     var prefix = ctx + "business/exhibition";
 
-    $("#form-exhibition-edit").validate({
-        onkeyup: false,
-        rules:{
-            exhibitionName:{
-                remote: {
-                    url: prefix + "/checkExhibitionNameUnique",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        "exhibitionId" : $("#exhibitionId").val(),
-                        "exhibitionName" : function() {
-                            return $.common.trim($("#exhibitionName").val());
-                        }
-                    },
-                    dataFilter: function(data, type) {
-                        return $.validate.unique(data);
-                    }
-                }
-            }
-
-        },
-        messages: {
-
-            "exhibitionName": {
-                remote: "展会名称已经存在"
-            }
-        },
-        focusCleanup: true
-    });
-
     function submitHandler() {
-        if ($.validate.form()) {
-            $.operate.save(prefix + "/edit", $('#form-exhibition-edit').serialize());
-        }
+
+		var formdata = new FormData();
+		formdata.append("prospectUrlFile",  $("#imgFileUploade").find('.imgAll ul li'));
+        //jquery方法
+        // $("#imgFileUploade").find('.imgAll ul li').each(function () {
+        //     console.log($(this).attr("data-delname"));
+        //     alert($(this).attr("data-delname"));
+        // });
+		$.ajax({
+			url: prefix + "/saveProspectUrl",
+			data: formdata,
+			type: "post",
+			dataType:"json",
+			processData: false,
+			contentType: false,
+			success: function(result) {
+				$.operate.saveSuccess(result);
+			}
+		})
+
+
     }
 
     var imgFile = new ImgUploadeFiles('.box',function(e){

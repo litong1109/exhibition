@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+
 /**
  * Entity基类
  * 
@@ -56,6 +57,7 @@ public class BaseEntity implements Serializable
     public void setCreateBy(String createBy)
     {
         this.createBy = createBy;
+//        this.createBy = ShiroUtils.getUserId().toString();
     }
 
     public Date getCreateTime()
