@@ -34,6 +34,12 @@ public interface IBusiExhibitionService {
     BusiExhibition selectExhibitionById(Long exhibitionId);
 
     /**
+     * 查询勘展信息
+     * @param exhibitionId 展会ID
+     */
+    BusiExhibition selectProspect(Long exhibitionId);
+
+    /**
      * 保存修改展会信息
      * @param exhibition 展会信息
      */
@@ -47,7 +53,14 @@ public interface IBusiExhibitionService {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl 勘展图片
+     * @param prospectUrl   勘展图片
+     * @param exhibitionId  展会ID
      */
-    int insertProspectUrl(String prospectUrl);
+    int insertProspectUrl(String prospectUrl,Long exhibitionId);
+
+    /**
+     * 删除原图片
+     * @param exhibitionId
+     */
+    void deldetUrl(Long exhibitionId);
 }

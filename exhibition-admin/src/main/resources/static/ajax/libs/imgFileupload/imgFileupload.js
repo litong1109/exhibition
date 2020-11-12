@@ -57,7 +57,6 @@ var formdata ; //声明全局变量
 					var _this = this;
 					_private.startUploadImg(_imgAll,_this.files,_self.MAX,_self.callback,_self.MW,_self.MH);
                     alert("开始上传");
-
 				});
 			});
 		}
@@ -92,8 +91,8 @@ var formdata ; //声明全局变量
 					            
 					        fileImgArr.push({
 								fileSrc : ev.target.result,
-								fileName : file.name,
-								fileSize : file.size,
+								fileName : file.name || 'aaa',
+								fileSize : file.size || 2,
 								height : height,
 								width : width
 							});
@@ -139,8 +138,8 @@ var formdata ; //声明全局变量
 
 	var ImgFileupload = function(b,imgName,imgSrc,imgSize,callback){
 		this.b = b;
-		this.imgName = imgName;
-		this.imgSize = imgSize;
+		this.imgName = imgName || 'aaa';
+		this.imgSize = imgSize || 2;
 		this.imgSrc = imgSrc;
 		this.callback = callback;
 	};

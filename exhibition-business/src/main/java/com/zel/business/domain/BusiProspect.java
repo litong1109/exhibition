@@ -26,7 +26,7 @@ public class BusiProspect {
     /**
      * 勘展图片
      */
-    private String[] prospectUrl;
+    private String prospectUrl;
 
     public Long getUrlId() {
         return urlId;
@@ -44,11 +44,11 @@ public class BusiProspect {
         this.exhibitionId = exhibitionId;
     }
 
-    public String[] getProspectUrl() {
+    public String getProspectUrl() {
         return prospectUrl;
     }
 
-    public void setProspectUrl(String[] prospectUrl) {
+    public void setProspectUrl(String prospectUrl) {
         this.prospectUrl = prospectUrl;
     }
 }

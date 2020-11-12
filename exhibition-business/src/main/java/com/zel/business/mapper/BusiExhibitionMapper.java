@@ -39,6 +39,12 @@ public interface BusiExhibitionMapper {
     BusiExhibition selectExhibitionById(@Param(value = "exhibitionId") Long exhibitionId);
 
     /**
+     * 查询勘展信息
+     * @param exhibitionId 展会ID
+     */
+    BusiExhibition selectProspect(Long exhibitionId);
+
+    /**
      * 保存修改展会信息
      *
      * @param exhibition 展会信息
@@ -59,4 +65,7 @@ public interface BusiExhibitionMapper {
      */
     int insertProspectUrl(@Param(value = "prospectUrl")String prospectUrl,
                           @Param(value = "exhibitionId")Long exhibitionId);
+
+
+    void deldetUrl(Long exhibitionId);
 }

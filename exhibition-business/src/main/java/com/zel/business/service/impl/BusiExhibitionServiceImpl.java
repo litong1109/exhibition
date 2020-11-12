@@ -61,6 +61,15 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     }
 
     /**
+     * 查询勘展信息
+     * @param exhibitionId 展会ID
+     */
+    @Override
+    public BusiExhibition selectProspect(Long exhibitionId) {
+        return exhibitionMapper.selectProspect(exhibitionId);
+    }
+
+    /**
      * 保存修改展会信息
      * @param exhibition 展会信息
      */
@@ -86,5 +95,10 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     @Override
     public int insertProspectUrl(String prospectUrl,Long exhibitionId) {
         return exhibitionMapper.insertProspectUrl(prospectUrl,exhibitionId);
+    }
+
+    @Override
+    public void deldetUrl(Long exhibitionId) {
+        exhibitionMapper.deldetUrl(exhibitionId);
     }
 }

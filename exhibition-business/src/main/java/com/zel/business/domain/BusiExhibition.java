@@ -5,6 +5,7 @@ import com.zel.common.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 展会信息 busi_eshibition
@@ -98,6 +99,19 @@ public class BusiExhibition {
      */
     @Excel(name = "备注")
     private String remark;
+
+    /**
+     * 勘展图片
+     */
+    private List<BusiProspect> prospectUrlList;
+
+    public List<BusiProspect> getProspectUrlList() {
+        return prospectUrlList;
+    }
+
+    public void setProspectUrlList(List<BusiProspect> prospectUrlList) {
+        this.prospectUrlList = prospectUrlList;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

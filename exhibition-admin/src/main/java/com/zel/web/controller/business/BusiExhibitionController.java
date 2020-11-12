@@ -154,7 +154,8 @@ public class BusiExhibitionController extends BaseController
      */
     @GetMapping(value = "/prospect/{exhibitionId}")
     public String prospect(@PathVariable("exhibitionId")Long exhibitionId,ModelMap map){
-        map.put("prospect",exhibitionService.selectExhibitionById(exhibitionId));
+        map.put("prospect",exhibitionService.selectProspect(exhibitionId));
+//        map.put("prospectUrlList",exhibitionService.selectProspect(exhibitionId).getProspectUrlList());
         return prefix + "/prospect";
     }
 
@@ -164,8 +165,9 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "勘展图片", businessType = BusinessType.INSERT)
     @PostMapping("/saveProspectUrl")
     @ResponseBody
-    public AjaxResult insertProspectUrl(@RequestParam(value = "files") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
+    public AjaxResult saveProspectUrl(@RequestParam(value = "files") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
+        exhibitionService.deldetUrl(exhibitionId);
         try
         {
             for(MultipartFile file:files)
