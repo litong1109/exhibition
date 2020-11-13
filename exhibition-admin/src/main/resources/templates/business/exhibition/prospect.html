@@ -1,30 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
 	<th:block th:include="include :: header('勘展')" />
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1" />
-	<meta name="renderer" content="webkit" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<!--优先使用 IE 最新版本和 Chrome-->
-	<meta name="keywords" content="" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<title></title>
-
-	<!--全局公用样式-->
-	<link rel="stylesheet" type="text/css" href="../../../ajax/libs/imgFileupload/css/globle.css" />
-
-	<!--<script src="../../../ajax/libs/imgFileupload/js/jquery-1.11.0.min.js"></script>-->
-	<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+	<th:block th:include="include :: bootstrap-fileinput-css" />
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
 	<!--th:object="${prospect}" 接收后端返回的ModelMap 根据Key "prospect" 获取相关数据-->
 	<form class="form-horizontal" id="form-exhibition-prospect" th:object="${prospect}">
 		<input id="exhibitionId" name="exhibitionId" type="hidden" th:field="*{exhibitionId}"/>
-		<input id="urls" name="urls" type="hidden" th:field="*{prospectUrlList}"/>
 		<div class="form-group">
 			<label class="col-sm-3 control-label is-required">展会名称：</label>
 			<div class="col-sm-8">
@@ -71,106 +55,66 @@
 				<textarea id="remark" name="remark" disabled="disabled" class="form-control">[[*{remark}]] </textarea>
 			</div>
 		</div>
+		<!--上传控件-->
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
 
-		<div class="box">
+							<div class="form-group">
+								<label class="font-noraml">多文件上传</label>
+								<div class="file-loading">
+									<input id="fileinput-demo-1" type="file" multiple>
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<div style="padding: 100px;">
-			<ul class="upload-ul clearfix">
-				<li class="upload-pick">
-					<div class="webuploader-container clearfix" id="goodsUpload"></div>
-				</li>
-			</ul>
-
-			<p><a class="upload-btn" href="javascript:;">提交</a></p>
-
-		</div>
-
 	</form>
 </div>
 
 
 <th:block th:include="include :: footer" />
+<th:block th:include="include :: bootstrap-fileinput-js" />
+<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function () {
 
-<script type="text/javascript" src="../../../ajax/libs/imgFileupload/js/diyUpload.js"></script>
-<script src="../../../ajax/libs/imgFileupload/js/webuploader.min.js"></script>
-<script>
-    $(function(){
+		var obj = [[${prospectUrlList}]];
+		var arrayObj = new Array();　//创建一个数组
+		for (let i = 0; i < obj.length; i++) {
+			arrayObj. push("/exhibition"+obj[i]);
+		}
+		$("#fileinput-demo-1").fileinput({
+			'theme': 'explorer-fas',
+			'uploadUrl': '/exhibition/business/exhibition/saveProspectUrl',
+			overwriteInitial: false,
+			initialPreviewAsData: true,
+			uploadExtraData:{"exhibitionId":$("#exhibitionId").val()},
+			initialPreview: arrayObj
+		});
 
-        //上传图片
-        var $tgaUpload = $('#goodsUpload').diyUpload({
-            url:'/uploadFilePath',
-            success:function( data ) { },
-            error:function( err ) { },
-            buttonText : '',
-            accept: {
-                title: "Images",
-                extensions: 'gif,jpg,jpeg,bmp,png'
-            },
-            thumb:{
-                width:120,
-                height:90,
-                quality:100,
-                allowMagnify:true,
-                crop:true,
-                type:"image/jpeg"
-            }
-        });
+		$("#fileinput-demo-1").on("fileuploaded", function(event, data, proviewId, index) {
+			alert(window.webkitURL);
+			console.info(event);
+			console.info(data);
+			console.info(proviewId);
+			console.info(index);
+		});
+
+	});
+
+	var prefix = ctx + "business/exhibition";
+
+	function submitHandler() {
 
 
-    });
+
+	}
 </script>
-
-<script type="text/javascript">
-    var prefix = ctx + "business/exhibition";
-
-    function submitHandler() {
-
-		$.ajax({
-			url: prefix + "/saveProspectUrl?exhibitionId="+$("#exhibitionId").val(),
-			data: getVfiles(),
-			type: "post",
-			processData: false,
-			contentType: false,
-			success: function(result) {
-				$.operate.saveSuccess(result);
-			}
-		})
-
-
-    }
-
-//     var imgFile = new ImgUploadeFiles('.box',function(e){
-//         this.init({
-//             MAX : 9, //限制个数
-//             MH : 5800, //像素限制高度
-//             MW : 5900, //像素限制宽度
-//             callback : function(arr){
-//                 console.log(arr)
-//             }
-//         });
-//     });
-//
-//     $(function(){
-// //调用图片类
-//
-//          // ImgUploadeFiles.prototype.fileBtn(ImgUploadeFiles.prototype.fileClick,$("#urls").val());
-// 		console.log($("#urls").val());
-//         var li = document.createElement('li');
-//        li.innerHTML =
-//             '    <img src="profile/prospectUrl/2020/11/11/9b648a83-15b9-4729-b6e5-ffae31e76ad5.jpg" class="imsg">'+
-//             '    <i class="delImg">'+
-//             '        X'+
-//             '    </i>';
-//         $(li).attr({'data-delId':11,'data-delName':222});
-//         $('.imgAll ul').append(li);
-// 	})
-
-
-
-</script>
-
-
 </body>
 </html>
 

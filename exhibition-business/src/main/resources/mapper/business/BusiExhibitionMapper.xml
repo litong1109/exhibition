@@ -35,7 +35,7 @@
         <result property="del"              column="del"/>
         <result property="remark"           column="remark"/>
         <collection property="prospectUrlList" select="selectProspectUrl" column="{exhibitionId = exhibition_id}"
-                    ofType="com.zel.business.domain.BusiProspect">
+                    ofType="java.util.List">
         </collection>
     </resultMap>
 
@@ -216,7 +216,7 @@
     * 查询勘展图片
     * @param exhibitionId 展会ID
     -->
-    <select id="selectProspectUrl" resultType="com.zel.business.domain.BusiProspect">
+    <select id="selectProspectUrl" resultType="java.lang.String">
         select prospect_url as prospectUrl
           from
               busi_prospect

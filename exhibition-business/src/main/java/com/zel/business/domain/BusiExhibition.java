@@ -103,13 +103,13 @@ public class BusiExhibition {
     /**
      * 勘展图片
      */
-    private List<BusiProspect> prospectUrlList;
+    private List<String> prospectUrlList;
 
-    public List<BusiProspect> getProspectUrlList() {
+    public List<String> getProspectUrlList() {
         return prospectUrlList;
     }
 
-    public void setProspectUrlList(List<BusiProspect> prospectUrlList) {
+    public void setProspectUrlList(List<String> prospectUrlList) {
         this.prospectUrlList = prospectUrlList;
     }
 
