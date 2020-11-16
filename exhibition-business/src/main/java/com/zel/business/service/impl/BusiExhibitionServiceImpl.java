@@ -93,12 +93,22 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
      * @param exhibitionId  展会ID
      */
     @Override
-    public int insertProspectUrl(String prospectUrl,Long exhibitionId) {
-        return exhibitionMapper.insertProspectUrl(prospectUrl,exhibitionId);
+    public int insertProspectUrl(String prospectUrl,Long exhibitionId,String fileName) {
+        return exhibitionMapper.insertProspectUrl(prospectUrl,exhibitionId,fileName);
     }
 
     @Override
     public void deldetUrl(Long exhibitionId) {
         exhibitionMapper.deldetUrl(exhibitionId);
+    }
+
+    /**
+     * 删除勘展图片
+     * 根据 urlId
+     * @param urlId
+     */
+    @Override
+    public void deleteProspectUrl(Long urlId) {
+        exhibitionMapper.deleteProspectUrl(urlId);
     }
 }

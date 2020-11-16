@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 展会信息 busi_eshibition
@@ -103,13 +104,13 @@ public class BusiExhibition {
     /**
      * 勘展图片
      */
-    private List<String> prospectUrlList;
+    private List<Map> prospectUrlList;
 
-    public List<String> getProspectUrlList() {
+    public List<Map> getProspectUrlList() {
         return prospectUrlList;
     }
 
-    public void setProspectUrlList(List<String> prospectUrlList) {
+    public void setProspectUrlList(List<Map> prospectUrlList) {
         this.prospectUrlList = prospectUrlList;
     }
 

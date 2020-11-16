@@ -192,12 +192,14 @@
         INSERT INTO busi_prospect
         (
             exhibition_id,
-            prospect_url
+            prospect_url,
+            file_name
         )
         VALUES
         (
             #{exhibitionId},
-            #{prospectUrl}
+            #{prospectUrl},
+            #{fileName}
         )
     </insert>
 
@@ -216,8 +218,10 @@
     * 查询勘展图片
     * @param exhibitionId 展会ID
     -->
-    <select id="selectProspectUrl" resultType="java.lang.String">
-        select prospect_url as prospectUrl
+    <select id="selectProspectUrl" resultType="java.util.Map">
+        select prospect_url as prospectUrl,
+        file_name as fileName,
+        url_id as urlId
           from
               busi_prospect
           where
@@ -230,6 +234,19 @@
             busi_prospect
         WHERE
             exhibition_id = #{exhibitionId}
+    </delete>
+
+    <!--
+     * 删除勘展图片
+     * 根据 urlId
+     * @param urlId
+    -->
+    <delete id="deleteProspectUrl" parameterType="java.lang.Long">
+         DELETE
+        FROM
+            busi_prospect
+        WHERE
+            url_id = #{urlId}
     </delete>
 
 </mapper>

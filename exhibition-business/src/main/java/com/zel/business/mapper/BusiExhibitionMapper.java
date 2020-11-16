@@ -64,8 +64,16 @@ public interface BusiExhibitionMapper {
      * @param exhibitionId  展会ID
      */
     int insertProspectUrl(@Param(value = "prospectUrl")String prospectUrl,
-                          @Param(value = "exhibitionId")Long exhibitionId);
+                          @Param(value = "exhibitionId")Long exhibitionId,
+                          @Param(value = "fileName")String fileName);
 
 
     void deldetUrl(Long exhibitionId);
+
+    /**
+     * 删除勘展图片
+     * 根据 urlId
+     * @param urlId
+     */
+    int deleteProspectUrl(Long urlId);
 }

@@ -56,11 +56,18 @@ public interface IBusiExhibitionService {
      * @param prospectUrl   勘展图片
      * @param exhibitionId  展会ID
      */
-    int insertProspectUrl(String prospectUrl,Long exhibitionId);
+    int insertProspectUrl(String prospectUrl,Long exhibitionId,String fileName);
 
     /**
      * 删除原图片
      * @param exhibitionId
      */
     void deldetUrl(Long exhibitionId);
+
+    /**
+     * 删除勘展图片
+     * 根据 urlId
+     * @param urlId
+     */
+    void deleteProspectUrl(Long urlId);
 }

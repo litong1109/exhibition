@@ -165,15 +165,15 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "勘展图片", businessType = BusinessType.INSERT)
     @PostMapping("/saveProspectUrl")
     @ResponseBody
-    public AjaxResult saveProspectUrl(@RequestParam(value = "files") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
+    public AjaxResult saveProspectUrl(@RequestParam(value = "file_data") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
-        exhibitionService.deldetUrl(exhibitionId);
+//        exhibitionService.deldetUrl(exhibitionId);
         try
         {
             for(MultipartFile file:files)
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
-                exhibitionService.insertProspectUrl(prospectUrl,exhibitionId);
+                exhibitionService.insertProspectUrl(prospectUrl,exhibitionId,file.getOriginalFilename());
             }
         }
         catch (Exception e)
@@ -185,6 +185,34 @@ public class BusiExhibitionController extends BaseController
     }
 
 
+    /**
+     * 删除勘展图片
+     */
+    @Log(title = "删除勘展图片", businessType = BusinessType.DELETE)
+    @PostMapping("/deleteProspectUrl")
+    @ResponseBody
+    public AjaxResult saveProspectUrl(@RequestParam(value = "urlId") Long urlId,@RequestParam(value = "prospectUrl") String prospectUrl)
+    {
+        boolean result = false;
+        exhibitionService.deleteProspectUrl(urlId);
+        try
+        {
+            if(!"".equals(prospectUrl) && prospectUrl != null)
+            {
+                result = FileUploadUtils.deleteFile(prospectUrl.replace("/profile/prospectUrl",Global.getProspectUrlPath()));
+            }
+
+            if(!result){
+                new RuntimeException("删除文件失败");
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("删除勘展图片失败！", e);
+            return error(e.getMessage());
+        }
+        return success();
+    }
 
 
 

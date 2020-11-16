@@ -14,47 +14,13 @@
 			<div class="col-sm-8">
 				<input class="form-control" type="text" name="exhibitionName" disabled="disabled" id="exhibitionName" th:field="*{exhibitionName}" required>
 			</div>
-		</div>
-		<div class="form-group">
+
 			<label class="col-sm-3 control-label is-required">办展方：</label>
 			<div class="col-sm-8">
 				<input class="form-control" type="text" name="organizer" disabled="disabled" id="organizer" th:field="*{organizer}" required>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">展会地址：</label>
-			<div class="col-sm-8">
-				<input class="form-control" type="text" name="address" disabled="disabled" id="address" th:field="*{address}" required>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">开始时间：</label>
-			<div class="col-sm-8">
-				<input class="form-control" type="date" name="startTime" disabled="disabled" id="startTime" th:value="${#dates.format(prospect.startTime, 'yyyy-MM-dd')}" required>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">结束时间：</label>
-			<div class="col-sm-8">
-				<input class="form-control" type="date"  name="endTime" id="endTime" disabled="disabled" th:value="${#dates.format(prospect.endTime, 'yyyy-MM-dd')}" required>
-			</div>
-		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">展会状态：</label>
-			<div class="col-sm-8">
-				<select name="status" class="form-control" disabled="disabled" th:with=" dictionaries=${@dict.getType('busi_exhibition_status')}">
-					<option th:each="dict : ${dictionaries}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"   th:field="*{status}" ></option>
-				</select>
-
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">备注：</label>
-			<div class="col-sm-8">
-				<textarea id="remark" name="remark" disabled="disabled" class="form-control">[[*{remark}]] </textarea>
-			</div>
-		</div>
 		<!--上传控件-->
 		<div class="wrapper wrapper-content animated fadeInRight">
 			<div class="row">
@@ -63,7 +29,7 @@
 						<div class="ibox-content">
 
 							<div class="form-group">
-								<label class="font-noraml">多文件上传</label>
+								<label class="font-noraml">勘展图片上传</label>
 								<div class="file-loading">
 									<input id="fileinput-demo-1" type="file" multiple>
 								</div>
@@ -81,21 +47,58 @@
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: bootstrap-fileinput-js" />
 <script type="text/javascript" th:inline="javascript">
+	var prefix = ctx + "business/exhibition";
+
 	$(document).ready(function () {
 
-		var obj = [[${prospectUrlList}]];
+		var obj = [[${prospect.prospectUrlList}]];
 		var arrayObj = new Array();　//创建一个数组
+		var arrayDetail = new Array();
 		for (let i = 0; i < obj.length; i++) {
-			arrayObj. push("/exhibition"+obj[i]);
+			var map = obj[i];
+			arrayObj. push("/exhibition"+map['prospectUrl']);
+			var detail = {
+				caption: map['fileName'], // 文件名
+				url: prefix + '/deleteProspectUrl', // 删除url
+				key: i, // 删除是Ajax向后台传递的参数post请求
+				extra: function() { //删除时向后台传递参数，可以是json对象
+					return {
+							 "urlId":map['urlId'],
+							 "prospectUrl": map['prospectUrl']
+							};
+				}
+			}
+			arrayDetail.push(detail);
 		}
+
 		$("#fileinput-demo-1").fileinput({
-			'theme': 'explorer-fas',
-			'uploadUrl': '/exhibition/business/exhibition/saveProspectUrl',
+			language: 'zh',
+			uploadUrl: prefix + '/saveProspectUrl', //上传的地址
+			uploadExtraData:{"exhibitionId":$("#exhibitionId").val()},
+			showPreview: true,              //展前预览
+			showUpload: true,              //显示上传按钮
+			showCaption: true,             //显示文字表述
+			uploadAsync:false,
+			removeFromPreviewOnError:true,
+			maxFileCount: 5,
+			maxFileSize: 1024*10,           //单位为kb，如果为0表示不限制文件大小
+			allowedFileExtensions: ["jpg", "jpeg", "gif", "png","bmp"],
+			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
 			overwriteInitial: false,
 			initialPreviewAsData: true,
-			uploadExtraData:{"exhibitionId":$("#exhibitionId").val()},
-			initialPreview: arrayObj
+			initialPreview: arrayObj,
+			initialPreviewConfig:arrayDetail,
+			enctype: 'multipart/form-data',
+			msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+		}).on("fileuploaded", function (event, data, previewId, index) {
+			alert("执行上传方法，对于未上传的文件上传");
+		}).on('filesuccessremove', function (event, previewId) {
+			alert("点击删除预览框中的删除按钮前触发( 已上传成功的文件 )");
+			// delete(($('#' + previewId).attr('fileid')));
+		}).on('filepreremove', function (event, previewId,index) {
+			alert("点击删除预览框中的删除按钮前触发( initialPreview中的文件除外,只针对于还未上传的文件 )");
 		});
+
 
 		$("#fileinput-demo-1").on("fileuploaded", function(event, data, proviewId, index) {
 			alert(window.webkitURL);
@@ -107,13 +110,6 @@
 
 	});
 
-	var prefix = ctx + "business/exhibition";
-
-	function submitHandler() {
-
-
-
-	}
 </script>
 </body>
 </html>

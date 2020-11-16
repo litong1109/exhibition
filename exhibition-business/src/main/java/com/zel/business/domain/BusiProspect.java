@@ -24,6 +24,11 @@ public class BusiProspect {
     private Long exhibitionId;
 
     /**
+     * 图片名称
+     */
+    private String fileName;
+
+    /**
      * 勘展图片
      */
     private String prospectUrl;
@@ -42,6 +47,14 @@ public class BusiProspect {
 
     public void setExhibitionId(Long exhibitionId) {
         this.exhibitionId = exhibitionId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getProspectUrl() {
