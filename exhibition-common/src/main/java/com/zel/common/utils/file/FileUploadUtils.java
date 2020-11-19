@@ -233,4 +233,29 @@ public class FileUploadUtils
         }
         return extension;
     }
+
+    /**
+     * 删除文件
+     * @param pathname
+     * @return
+     * @throws IOException
+     */
+
+    public static boolean deleteFile(String pathname){
+
+        boolean result = false;
+
+        File file = new File(pathname);
+
+        if (file.exists()) {
+
+            file.delete();
+
+            result = true;
+
+        }
+
+        return result;
+
+    }
 }

@@ -49,7 +49,7 @@
 			            <i class="fa fa-download"></i> 导出
 			        </a>
 					<a class="btn btn-primary single disabled" onclick="$.operate.prospect()" shiro:hasPermission="business:exhibition:prospect">
-						<i class="fa fa-prospect"></i> 勘展
+						<i class="fa fa-upload"></i> 勘展
 					</a>
 		        </div>
 		        
@@ -88,6 +88,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+				statusUrl: prefix + "/updateStatus",
                 sortName: "createTime",
                 sortOrder: "desc",
                 modalName: "展会",

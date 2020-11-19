@@ -10,6 +10,7 @@ import com.zel.common.core.controller.BaseController;
 import com.zel.common.core.domain.AjaxResult;
 import com.zel.common.core.page.TableDataInfo;
 import com.zel.common.enums.BusinessType;
+import com.zel.common.enums.ExhibitionStatus;
 import com.zel.common.utils.file.FileUploadUtils;
 import com.zel.common.utils.poi.ExcelUtil;
 import com.zel.framework.util.ShiroUtils;
@@ -70,6 +71,7 @@ public class BusiExhibitionController extends BaseController
             return error("新增展会"+ exhibition.getExhibitionName() +"失败，展会名称已存在");
         }
         exhibition.setCreateBy(ShiroUtils.getLoginName());
+        exhibition.setStatus(ExhibitionStatus.SAVE.getCode());
         return toAjax(exhibitionService.insertExhibition(exhibition));
     }
 
@@ -167,13 +169,15 @@ public class BusiExhibitionController extends BaseController
     @ResponseBody
     public AjaxResult saveProspectUrl(@RequestParam(value = "file_data") MultipartFile[] files,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
-//        exhibitionService.deldetUrl(exhibitionId);
+        BusiProspect prospect = new BusiProspect();
         try
         {
             for(MultipartFile file:files)
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
-                exhibitionService.insertProspectUrl(prospectUrl,exhibitionId,file.getOriginalFilename());
+                BusiProspect busiProspect = new BusiProspect(exhibitionId,file.getOriginalFilename(),prospectUrl);
+                exhibitionService.insertProspectUrl(busiProspect);
+                prospect = exhibitionService.findProspectUrl(busiProspect.getUrlId(),exhibitionId) ;
             }
         }
         catch (Exception e)
@@ -181,7 +185,7 @@ public class BusiExhibitionController extends BaseController
             log.error("保存勘展图片失败！", e);
             return error(e.getMessage());
         }
-        return success();
+        return new AjaxResult(  AjaxResult.Type.SUCCESS,"保存勘展图片成功",prospect);
     }
 
 
@@ -191,27 +195,42 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "删除勘展图片", businessType = BusinessType.DELETE)
     @PostMapping("/deleteProspectUrl")
     @ResponseBody
-    public AjaxResult saveProspectUrl(@RequestParam(value = "urlId") Long urlId,@RequestParam(value = "prospectUrl") String prospectUrl)
+    public AjaxResult saveProspectUrl(@RequestParam(value = "key") Long urlId,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
         boolean result = false;
-        exhibitionService.deleteProspectUrl(urlId);
-        try
-        {
-            if(!"".equals(prospectUrl) && prospectUrl != null)
-            {
-                result = FileUploadUtils.deleteFile(prospectUrl.replace("/profile/prospectUrl",Global.getProspectUrlPath()));
-            }
+        try{
+            BusiProspect busiProspect = exhibitionService.findProspectUrl(urlId,exhibitionId);
+            if(busiProspect != null){
 
-            if(!result){
-                new RuntimeException("删除文件失败");
+                if(!"".equals(busiProspect.getProspectUrl()) && busiProspect.getProspectUrl() != null)
+                {
+                    result = FileUploadUtils.deleteFile(busiProspect.getProspectUrl().replace("/profile/prospectUrl",Global.getProspectUrlPath()));
+                }
+
+                if(!result){
+                    new RuntimeException("删除图片失败");
+                }else{
+                    exhibitionService.deleteProspectUrl(busiProspect.getUrlId());
+                }
             }
         }
         catch (Exception e)
         {
-            log.error("删除勘展图片失败！", e);
+            log.error("删除图片失败！", e);
             return error(e.getMessage());
         }
         return success();
+    }
+
+    /**
+     * 更新展会状态
+     * @param exhibitionId 展会ID
+     */
+    @Log(title = "更新展会状态",businessType = BusinessType.UPDATE)
+    @PostMapping("/updateStatus")
+    @ResponseBody
+    public AjaxResult updateStatus(@RequestParam (value = "exhibitionId") Long exhibitionId){
+       return toAjax(exhibitionService.updateStatus(exhibitionId));
     }
 
 

@@ -188,7 +188,8 @@
      * @param prospectUrl   勘展图片
      * @param exhibitionId  展会ID
     -->
-    <insert id="insertProspectUrl">
+    <insert id="insertProspectUrl" parameterType="BusiProspect" useGeneratedKeys="true" keyProperty="urlId" keyColumn="url_id">
+
         INSERT INTO busi_prospect
         (
             exhibition_id,
@@ -227,14 +228,6 @@
           where
               exhibition_id = #{exhibitionId}
     </select>
-    
-    <delete id="deldetUrl">
-        DELETE
-        FROM
-            busi_prospect
-        WHERE
-            exhibition_id = #{exhibitionId}
-    </delete>
 
     <!--
      * 删除勘展图片
@@ -248,5 +241,39 @@
         WHERE
             url_id = #{urlId}
     </delete>
+
+   <!--
+   * 更新展会状态
+    * @param exhibitionId 展会ID
+    -->
+    <update id="updateStatus">
+          update busi_exhibition
+          set
+              status = #{status}
+          where
+              exhibition_id = #{exhibitionId}
+    </update>
+
+    <!--
+ /**
+     * 查询勘展图片
+     * @param urlId
+     * @param exhibitionId
+     * @return
+     */
+    BusiProspect (@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
+    -->
+    <select id="findProspectUrl" parameterType="long" resultType="BusiProspect">
+      select
+          url_id as urlId,
+          exhibition_id as exhibitionId,
+          file_name as fileName,
+          prospect_url as prospectUrl
+        FROM
+            busi_prospect
+        WHERE
+            url_id = #{urlId}
+            and exhibition_id = #{exhibitionId}
+    </select>
 
 </mapper>

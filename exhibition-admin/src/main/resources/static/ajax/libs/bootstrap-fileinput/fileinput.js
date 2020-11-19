@@ -898,6 +898,7 @@
         _init: function (options, refreshMode) {
             var self = this, f, $el = self.$element, $cont, t, tmp;
             self.options = options;
+            console.log("options="+options);
             self.canOrientImage = $h.canOrientImage($el);
             $.each(options, function (key, value) {
                 switch (key) {
@@ -949,6 +950,7 @@
             self.$form = $el.closest('form');
             self._initTemplateDefaults();
             self.uploadFileAttr = !$h.isEmpty($el.attr('name')) ? $el.attr('name') : 'file_data';
+            alert(self.uploadFileAttr);
             t = self._getLayoutTemplate('progress');
             self.progressTemplate = t.replace('{class}', self.progressClass);
             self.progressInfoTemplate = t.replace('{class}', self.progressInfoClass);
@@ -989,8 +991,10 @@
             self.$btnUpload = $cont.find('.fileinput-upload');
             self.$captionContainer = $h.getElement(options, 'elCaptionContainer', $cont.find('.file-caption'));
             self.$caption = $h.getElement(options, 'elCaptionText', $cont.find('.file-caption-name'));
+            alert(11187+"/"+self.$caption);
             if (!$h.isEmpty(self.msgPlaceholder)) {
                 f = $el.attr('multiple') ? self.filePlural : self.fileSingle;
+                alert(111+"/"+f);
                 self.$caption.attr('placeholder', self.msgPlaceholder.replace('{files}', f));
             }
             self.$captionIcon = self.$captionContainer.find('.file-caption-icon');
@@ -1974,6 +1978,7 @@
                     var content = self.initialPreview;
                     if (content.length > 0 && !$h.isArray(content)) {
                         content = content.split(self.initialPreviewDelimiter);
+                        alert("content="+JSON.stringify(content))
                     }
                     self.previewCache.data = {
                         content: content,
@@ -2062,6 +2067,7 @@
                 },
                 set: function (content, config, tags, append) {
                     var data = self.previewCache.data, i, chk;
+                    alert("data="+JSON.stringify(data));
                     if (!content || !content.length) {
                         return;
                     }
@@ -2656,6 +2662,7 @@
             return self._isFileSelectionValid() && !self._abort({});
         },
         _clearPreview: function () {
+            alert(ffff)
             var self = this,
                 $thumbs = self.showUploadedThumbs ? self.getFrames(':not(.file-preview-success)') : self.getFrames();
             $thumbs.each(function () {
@@ -3326,6 +3333,7 @@
             if (!self._raise('filepreajax', [formdata, fileId, index])) {
                 return;
             }
+            alert(JSON.stringify(self.initialPreviewConfig))
             formdata.append('initialPreview', JSON.stringify(self.initialPreview));
             formdata.append('initialPreviewConfig', JSON.stringify(self.initialPreviewConfig));
             formdata.append('initialPreviewThumbTags', JSON.stringify(self.initialPreviewThumbTags));
@@ -3453,6 +3461,7 @@
                 self._handler($remove, 'click', function () {
                     var id = $thumb.attr('id'),
                         out = self._raise('filesuccessremove', [id, $thumb.attr('data-fileindex')]);
+                    alert("id="+id);
                     $h.cleanMemory($thumb);
                     if (out === false) {
                         return;

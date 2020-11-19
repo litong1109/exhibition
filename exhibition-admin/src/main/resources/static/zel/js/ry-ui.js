@@ -1047,6 +1047,16 @@ var table = {
         			$.operate.submit(url, "post", "json", data);
         		});
             },
+
+			//确认保存勘展信息
+            conf: function() {
+                table.set();
+                $.modal.confirm("勘展图片保存后不可修改，是否确定保存？", function(){
+                    var url = table.options.statusUrl;
+                    $.operate.submit(url, "post", "json", {"exhibitionId" : $("#exhibitionId").val()});
+					});
+            },
+
             // 清空信息
             clean: function() {
             	table.set();
@@ -1104,9 +1114,9 @@ var table = {
                         return;
                     }
                     var url = table.options.prospectUrl.replace("{id}", row[table.options.uniqueId]);
-                    $.modal.openNoBtn("勘展" + table.options.modalName, url);
+                    $.modal.open("勘展" + table.options.modalName, url);
                 } else {
-                    $.modal.openNoBtn("勘展" + table.options.modalName, $.operate.prospectUrl(id));
+                    $.modal.open("勘展" + table.options.modalName, $.operate.prospectUrl(id));
                 }
             },
 

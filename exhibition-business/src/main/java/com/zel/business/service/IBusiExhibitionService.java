@@ -2,6 +2,8 @@ package com.zel.business.service;
 
 import com.zel.business.domain.BusiExhibition;
 import com.zel.business.domain.BusiProspect;
+import com.zel.common.annotation.Log;
+import com.zel.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -53,16 +55,11 @@ public interface IBusiExhibitionService {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl   勘展图片
-     * @param exhibitionId  展会ID
-     */
-    int insertProspectUrl(String prospectUrl,Long exhibitionId,String fileName);
 
-    /**
-     * 删除原图片
-     * @param exhibitionId
      */
-    void deldetUrl(Long exhibitionId);
+    int insertProspectUrl(BusiProspect busiProspect);
+
+
 
     /**
      * 删除勘展图片
@@ -70,4 +67,18 @@ public interface IBusiExhibitionService {
      * @param urlId
      */
     void deleteProspectUrl(Long urlId);
+
+    /**
+     * 更新展会状态
+     * @param exhibitionId 展会ID
+     */
+    int updateStatus(Long exhibitionId);
+
+    /**
+     * 查询勘展图片
+     * @param urlId
+     * @param exhibitionId
+     * @return
+     */
+    BusiProspect findProspectUrl(Long urlId, Long exhibitionId);
 }

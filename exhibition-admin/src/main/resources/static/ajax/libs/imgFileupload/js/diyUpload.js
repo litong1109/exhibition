@@ -2,7 +2,11 @@
  *	jQuery文件上传插件,封装UI,上传处理操作采用Baidu WebUploader;
  *	@Author 黑爪爪;
  */
-(function( $ ) {
+// var formdata ; //声明全局变量
+// (function(win){
+//     formdata = new FormData(); //初始化formData()
+(function( $ )
+{
 
     $.fn.extend({
         /*
@@ -10,6 +14,7 @@
          *	serverCallBack回调函数 每个文件上传至服务端后,服务端返回参数,无论成功失败都会调用 参数为服务器返回信息;
          */
         diyUpload:function( opt, serverCallBack ) {
+            alert("aaa"+opt.url)
             if ( typeof opt != "object" ) {
                 alert('参数错误!');
                 return;
@@ -24,7 +29,7 @@
                 delete opt.url;
             }
 
-            if( opt.success ) {
+            if( opt.success ) {alert()
                 var successCallBack = opt.success;
                 delete opt.success;
             }
@@ -72,7 +77,7 @@
                 $fileInput.next('.parentFileBox').children('.diyButton').remove();
             });
             //绑定发送至服务端返回后触发事件;
-            webUploader.on('uploadAccept', function( object ,data ){
+            webUploader.on('uploadAccept', function( object ,data ){alert("开始上传")
                 if ( serverCallBack ) serverCallBack( data );
             });
 
@@ -158,7 +163,7 @@
             //文件上传方式
             method:"POST",
             //服务器地址;
-            server:"",
+            server:"http://localhost:8001",
             //是否已二进制的流的方式发送文件，这样整个上传内容php://input都为文件内容
             sendAsBinary:false,
             // 开起分片上传。 thinkphp的上传类测试分片无效,图片丢失;
@@ -278,3 +283,6 @@
     }
 
 })( jQuery );
+//获取formData方法
+//     function getVfiles() {
+//         return formdata;

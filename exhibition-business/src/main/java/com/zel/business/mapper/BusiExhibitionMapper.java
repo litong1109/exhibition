@@ -2,6 +2,7 @@ package com.zel.business.mapper;
 
 import com.zel.business.domain.BusiExhibition;
 import com.zel.business.domain.BusiProspect;
+import com.zel.common.annotation.Log;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -60,15 +61,9 @@ public interface BusiExhibitionMapper {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl   勘展图片
-     * @param exhibitionId  展会ID
+
      */
-    int insertProspectUrl(@Param(value = "prospectUrl")String prospectUrl,
-                          @Param(value = "exhibitionId")Long exhibitionId,
-                          @Param(value = "fileName")String fileName);
-
-
-    void deldetUrl(Long exhibitionId);
+    int insertProspectUrl(BusiProspect busiProspect);
 
     /**
      * 删除勘展图片
@@ -76,4 +71,19 @@ public interface BusiExhibitionMapper {
      * @param urlId
      */
     int deleteProspectUrl(Long urlId);
+
+    /**
+     * 更新展会状态
+     * @param exhibitionId 展会ID
+     */
+    int updateStatus(@Param(value = "exhibitionId") Long exhibitionId,
+                     @Param(value = "status") int status);
+
+    /**
+     * 查询勘展图片
+     * @param urlId
+     * @param exhibitionId
+     * @return
+     */
+    BusiProspect findProspectUrl(@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
 }

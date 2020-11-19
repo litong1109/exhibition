@@ -5,7 +5,10 @@ import com.zel.business.domain.BusiMaterial;
 import com.zel.business.domain.BusiProspect;
 import com.zel.business.mapper.BusiExhibitionMapper;
 import com.zel.business.service.IBusiExhibitionService;
+import com.zel.common.annotation.Log;
 import com.zel.common.constant.UserConstants;
+import com.zel.common.core.domain.AjaxResult;
+import com.zel.common.enums.ExhibitionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -89,17 +92,11 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
 
     /**
      * 保存勘展图片
-     * @param prospectUrl   勘展图片
-     * @param exhibitionId  展会ID
+
      */
     @Override
-    public int insertProspectUrl(String prospectUrl,Long exhibitionId,String fileName) {
-        return exhibitionMapper.insertProspectUrl(prospectUrl,exhibitionId,fileName);
-    }
-
-    @Override
-    public void deldetUrl(Long exhibitionId) {
-        exhibitionMapper.deldetUrl(exhibitionId);
+    public int insertProspectUrl(BusiProspect busiProspect) {
+        return exhibitionMapper.insertProspectUrl(busiProspect);
     }
 
     /**
@@ -110,5 +107,26 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     @Override
     public void deleteProspectUrl(Long urlId) {
         exhibitionMapper.deleteProspectUrl(urlId);
+    }
+
+    /**
+     * 更新展会状态
+     * @param exhibitionId 展会ID
+     */
+    @Override
+    public int updateStatus(Long exhibitionId) {
+        int status = ExhibitionStatus.PROSPECT.getCode();
+        return exhibitionMapper.updateStatus(exhibitionId,status);
+    }
+
+    /**
+     * 查询勘展图片
+     * @param urlId
+     * @param exhibitionId
+     * @return
+     */
+    @Override
+    public BusiProspect findProspectUrl(Long urlId, Long exhibitionId) {
+        return exhibitionMapper.findProspectUrl(urlId,exhibitionId);
     }
 }

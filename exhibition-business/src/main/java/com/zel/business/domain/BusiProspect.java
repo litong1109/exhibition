@@ -64,4 +64,24 @@ public class BusiProspect {
     public void setProspectUrl(String prospectUrl) {
         this.prospectUrl = prospectUrl;
     }
+
+    public BusiProspect() {
+       super();
+    }
+
+    public BusiProspect(Long exhibitionId, String fileName, String prospectUrl) {
+        this.exhibitionId = exhibitionId;
+        this.fileName = fileName;
+        this.prospectUrl = prospectUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "BusiProspect{" +
+                "urlId=" + urlId +
+                ", exhibitionId=" + exhibitionId +
+                ", fileName='" + fileName + '\'' +
+                ", prospectUrl='" + prospectUrl + '\'' +
+                '}';
+    }
 }

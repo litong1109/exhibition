@@ -51,64 +51,122 @@
 
 	$(document).ready(function () {
 
-		var obj = [[${prospect.prospectUrlList}]];
+        var obj = [[${prospect.prospectUrlList}]];
 		var arrayObj = new Array();　//创建一个数组
 		var arrayDetail = new Array();
 		for (let i = 0; i < obj.length; i++) {
+
 			var map = obj[i];
+            console.log(i+"//urlId="+map['urlId']+
+                "&&prospectUrl="+map['prospectUrl']);
 			arrayObj. push("/exhibition"+map['prospectUrl']);
 			var detail = {
 				caption: map['fileName'], // 文件名
 				url: prefix + '/deleteProspectUrl', // 删除url
-				key: i, // 删除是Ajax向后台传递的参数post请求
+				key: map['urlId'], // 删除是Ajax向后台传递的参数post请求
+                // previewAsData: true,
 				extra: function() { //删除时向后台传递参数，可以是json对象
 					return {
-							 "urlId":map['urlId'],
-							 "prospectUrl": map['prospectUrl']
-							};
+                        "exhibitionId":$("#exhibitionId").val()
+                    };
 				}
 			}
 			arrayDetail.push(detail);
 		}
 
-		$("#fileinput-demo-1").fileinput({
-			language: 'zh',
-			uploadUrl: prefix + '/saveProspectUrl', //上传的地址
-			uploadExtraData:{"exhibitionId":$("#exhibitionId").val()},
-			showPreview: true,              //展前预览
-			showUpload: true,              //显示上传按钮
-			showCaption: true,             //显示文字表述
-			uploadAsync:false,
-			removeFromPreviewOnError:true,
-			maxFileCount: 5,
-			maxFileSize: 1024*10,           //单位为kb，如果为0表示不限制文件大小
-			allowedFileExtensions: ["jpg", "jpeg", "gif", "png","bmp"],
-			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-			overwriteInitial: false,
-			initialPreviewAsData: true,
-			initialPreview: arrayObj,
-			initialPreviewConfig:arrayDetail,
-			enctype: 'multipart/form-data',
-			msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-		}).on("fileuploaded", function (event, data, previewId, index) {
-			alert("执行上传方法，对于未上传的文件上传");
-		}).on('filesuccessremove', function (event, previewId) {
-			alert("点击删除预览框中的删除按钮前触发( 已上传成功的文件 )");
-			// delete(($('#' + previewId).attr('fileid')));
-		}).on('filepreremove', function (event, previewId,index) {
-			alert("点击删除预览框中的删除按钮前触发( initialPreview中的文件除外,只针对于还未上传的文件 )");
-		});
+        $("#fileinput-demo-1").fileinput({
+            language: 'zh',
+            uploadUrl: prefix + '/saveProspectUrl', //上传的地址
+            uploadExtraData:{"exhibitionId":$("#exhibitionId").val()},
+            showPreview: true,              //展前预览
+            showUpload: true,              //显示上传按钮
+            showCaption: true,             //显示文字表述
+			showRemove: false,				//显示删除按钮
+            uploadAsync:false,
+
+            removeFromPreviewOnError:true,
+            maxFileCount: 5,
+            maxFileSize: 1024*10,           //单位为kb，如果为0表示不限制文件大小
+            allowedFileExtensions: ["jpg", "jpeg", "gif", "png","bmp"],
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            // dropZoneEnabled:false,
+            initialPreview: arrayObj,
+            initialPreviewConfig:arrayDetail,
+            enctype: 'multipart/form-data',
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        }).on("fileuploaded", function (event, data, previewId, index) {
+            alert("执行上传方法，对于未上传的文件上传=");
+            $('#fileinput-demo-1').fileinput('addToStack', data); // `fileObj`是文件blob对象实例
+            $.table.refresh();
 
 
-		$("#fileinput-demo-1").on("fileuploaded", function(event, data, proviewId, index) {
-			alert(window.webkitURL);
-			console.info(event);
-			console.info(data);
-			console.info(proviewId);
-			console.info(index);
-		});
+        }).on('filesuccessremove', function (event, previewId) {
+            alert("点击删除预览框中的删除按钮前触发( 已上传成功的文件 )");
+            // delete(($('#' + previewId).attr('fileid')));
+        }).on('filepreremove', function (event, previewId,index) {
+            alert("点击删除预览框中的删除按钮前触发( initialPreview中的文件除外,只针对于还未上传的文件 )");
+        }).on("filedeleted", function (event, key,data) {
+            var result = data.responseJSON;
+            console.log(result);
+        });
+        // $('#fileinput-demo-1').fileinput('refresh');
+
+
+        $("#fileinput-demo-1").on("fileuploaded", function(event, data, proviewId, index) {
+            console.info(event);
+            console.info(data);
+            console.info(proviewId);
+            console.info(index);
+
+
+            console.log( "////"+data.response.data['prospectUrl']);
+            //
+            // var detail = {
+            //     caption: data.response.data['fileName'], // 文件名
+            //     url: prefix + '/deleteProspectUrl', // 删除url
+            //     key: result['urlId'], // 删除是Ajax向后台传递的参数post请求
+            //     // previewAsData: true,
+            //     extra: function() { //删除时向后台传递参数，可以是json对象
+            //         return {
+            //             "exhibitionId":$("#exhibitionId").val()
+            //         };
+            //     }
+            // }
+            // event.initialPreviewConfig = detail;
+            // console.log(event.initialPreviewConfig);
+            // $("#fileinput-demo-1").fileinput('refresh', {
+            //     initialPreview: arrayObj,
+            //     initialPreviewConfig: arrayDetail
+            // });
+
+        });
 
 	});
+
+    function submitHandler() {
+        var filesCount = $('#fileinput-demo-1').fileinput('getFilesCount'); //返回文件数（待上传）
+		console.info("未上传文件数"+filesCount)
+
+        var totalFilesCount = $('#fileinput-demo-1').fileinput('getFilesCount',true); //返回文件数（待上传的文件以及已经上传并通过初始预览设置的文件）
+        alert(totalFilesCount)
+
+        if (totalFilesCount > 0 && filesCount == 0) {
+            $.modal.confirm("勘展图片保存后不可修改，是否确定保存？", function(){
+                $.operate.save(prefix + "/updateStatus",{"exhibitionId":$("#exhibitionId").val()});//serialize序列化表单传入数据
+            })
+        }
+        else if ( filesCount > 0) {
+                $.modal.confirm("有 "+filesCount+" 张图片未上传，是否确定保存？", function(){
+                    $.operate.save(prefix + "/updateStatus",{"exhibitionId":$("#exhibitionId").val()});//serialize序列化表单传入数据
+                })
+            }
+        else if ( totalFilesCount == 0) {
+            $.modal.confirm("您尚未上传图片")
+
+        }
+    }
 
 </script>
 </body>
