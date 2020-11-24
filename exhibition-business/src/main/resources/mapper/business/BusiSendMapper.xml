@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zel.business.mapper.BusiSendMapper">
+
+    <resultMap id="SendResultMap" type="com.zel.business.domain.BusiSend">
+        <id column="id" property="id"/>
+        <result column="exhibition_id" property="exhibitionId"/>
+        <result column="logistics_name" property="logisticsName"/>
+        <result column="logistics_number" property="logisticsNumber"/>
+        <result column="status" property="status"/>
+        <result column="send_by" property="sendBy"/>
+        <result column="send_time" property="sendTime"/>
+
+    </resultMap>
+
+    <sql id="selectSendListAll">
+        SELECT
+             id ,
+             exhibition_id ,
+             logistics_name ,
+             logistics_number ,
+             status ,
+             send_by ,
+             send_time
+        FROM busi_send
+    </sql>
+
+    <!--
+    * 获取发货列表
+    * @param send 发货信息
+    -->
+    <select id="selectSendList" resultMap="SendResultMap">
+        <include refid="selectSendListAll"></include>
+        where 1=1
+
+        <if test="id != null and id !=''">
+            and  id like concat ('%', #{id} ,'%')
+        </if>
+
+        <if test="exhibitionId!= null ">
+            and exhibition_id = #{exhibitionId}
+        </if>
+        <if test="logisticsName != null and logisticsName !=''">
+            and logistics_name like concat ('%', #{logisticsName} ,'%')
+        </if>
+        <if test="logisticsNumber != null and logisticsNumber !=''">
+            and logistics_number like concat ('%', #{logisticsNumber} ,'%')
+        </if>
+        <if test="status !=null">
+            and status = #{status}
+        </if>
+        <if test="sendBy != null and sendBy !=''">
+            and send_by like concat ('%', #{sendBy} ,'%')
+        </if>
+        <if test="sendTime !=null">
+            and send_time = #{sendTime}
+        </if>
+    </select>
+
+    <!--
+    *查询发货物料明细
+    * @param asnOrderId
+    -->
+    <select id="selectSendMaterialDetail" resultType="com.zel.business.domain.BusiSendMaterialDetial">
+        SELECT
+            `asn_order_id` as asnOrderId,
+            `material_id`as materialId,
+            `send_quantity` as sendQuantity,
+            `remark` as remark,
+            `creat_by` as creatBy,
+            `creat_time` as creatTime
+         FROM
+            `busi_send_material_detail`
+         WHERE
+            asn_order_id = #{id}
+    </select>
+</mapper>

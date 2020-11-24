@@ -1070,6 +1070,40 @@ var table = {
             	table.set();
             	$.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
             },
+            // 添加发货物料  andy
+            addMaterial: function(id) {
+                table.set();
+                alert("fsadfas");
+
+                var data = { "ids": [1,2] };
+                console.log(data);
+                var url = table.options.addMaterialUrl;
+                $.operate.submit("/exhibition/business/send/addMaterial", "post", "json", data);
+
+               /* $.modal.open("添加" + table.options.modalName, function () {
+                    var allTableData = datagrid.bootstrapTable('getData');
+                    var ids =[1,2];
+                    $.each(allTableData,function(index,evevt){
+                    	//物料的id
+                        ids.push(event.id)
+                    })
+
+                });*/
+
+                //获取表格的所有内容行
+                // var allTableData = datagrid.bootstrapTable('getData');
+                // $.each(allTableData,function(i,e){
+                //     alert(e.a_barcode)//a_barcode是table下columns的field
+                // })
+            },
+
+            // 查询发货物料明细 andy
+            selectSendMaterialDetail: function(id) {
+        		alert(id)
+                table.set();
+                $.modal.open("查询" + table.options.modalName,  table.options.selectSendMaterialDetailUrl.replace("{id}", id));
+            },
+
             // 添加信息，以tab页展现
             addTab: function (id) {
             	table.set();
@@ -1107,6 +1141,11 @@ var table = {
 			//  勘展
             prospect: function(id) {
                 table.set();
+                // var status = $.table.selectColumns("status");
+                // if (status == 2 ){
+                 //    $.modal.alertWarning("当前展会已勘展");
+                 //    return;
+				// }
                 if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
                     var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
                     if ($.common.isEmpty(row)) {

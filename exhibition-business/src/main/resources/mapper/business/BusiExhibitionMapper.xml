@@ -263,7 +263,7 @@
      */
     BusiProspect (@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
     -->
-    <select id="findProspectUrl" parameterType="long" resultType="BusiProspect">
+    <select id="findProspectUrl" parameterType="long" resultType="com.zel.business.domain.BusiProspect">
       select
           url_id as urlId,
           exhibition_id as exhibitionId,
@@ -274,6 +274,21 @@
         WHERE
             url_id = #{urlId}
             and exhibition_id = #{exhibitionId}
+    </select>
+    
+    <select id="selectExhibitionIdList" resultMap="BusiExhibitionResult">
+      SELECT
+        exhibition_id
+      FROM
+        busi_exhibition
+      WHERE
+        exhibition_id NOT IN
+           (SELECT
+                bs.exhibition_id
+            FROM
+                busi_send as bs
+            WHERE
+                1 = 1)
     </select>
 
 </mapper>

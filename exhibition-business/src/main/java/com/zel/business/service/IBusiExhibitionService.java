@@ -81,4 +81,10 @@ public interface IBusiExhibitionService {
      * @return
      */
     BusiProspect findProspectUrl(Long urlId, Long exhibitionId);
+
+    /**
+     * 查询展会名称集合
+     * @param
+     */
+    List<BusiExhibition> selectExhibitionIdList();
 }

@@ -86,4 +86,11 @@ public interface BusiExhibitionMapper {
      * @return
      */
     BusiProspect findProspectUrl(@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
+
+
+    /**
+     * 查询展会名称集合
+     * @param
+     */
+    List<BusiExhibition> selectExhibitionIdList();
 }

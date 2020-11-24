@@ -9,6 +9,7 @@
 	<!--th:object="${prospect}" 接收后端返回的ModelMap 根据Key "prospect" 获取相关数据-->
 	<form class="form-horizontal" id="form-exhibition-prospect" th:object="${prospect}">
 		<input id="exhibitionId" name="exhibitionId" type="hidden" th:field="*{exhibitionId}"/>
+		<!--<input id="status" name="status" type="hidden" th:field="*{status}" value="*{status}"/>-->
 		<div class="form-group">
 			<label class="col-sm-3 control-label is-required">展会名称：</label>
 			<div class="col-sm-8">
@@ -97,10 +98,19 @@
             enctype: 'multipart/form-data',
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
         }).on("fileuploaded", function (event, data, previewId, index) {
+
+            //1、数组下标 有问题  ： 上传1个图片 ；但是提示信息为 未上传文件数 ： 2
+			//2、table.refresh 未生效 ; 手动编写JS使新增加的 图片的信息得到维护
             alert("执行上传方法，对于未上传的文件上传=");
             $('#fileinput-demo-1').fileinput('addToStack', data); // `fileObj`是文件blob对象实例
             $.table.refresh();
 
+
+            var filesCount = $('#fileinput-demo-1').fileinput('getFilesCount'); //返回文件数（待上传）
+            console.info("执行上传方法  ---> 未上传文件数"+filesCount)
+
+            var totalFilesCount = $('#fileinput-demo-1').fileinput('getFilesCount',true); //返回文件数（待上传的文件以及已经上传并通过初始预览设置的文件）
+            console.info("执行上传方法  --->  上传的文件总数"+totalFilesCount)
 
         }).on('filesuccessremove', function (event, previewId) {
             alert("点击删除预览框中的删除按钮前触发( 已上传成功的文件 )");
@@ -115,6 +125,8 @@
 
 
         $("#fileinput-demo-1").on("fileuploaded", function(event, data, proviewId, index) {
+            //1、数组下标 有问题  ： 上传1个图片 ；但是提示信息为 未上传文件数 ： 2
+            //2、table.refresh 未生效 ; 手动编写JS使新增加的 图片的信息得到维护
             console.info(event);
             console.info(data);
             console.info(proviewId);
@@ -122,6 +134,14 @@
 
 
             console.log( "////"+data.response.data['prospectUrl']);
+
+            var filesCount = $('#fileinput-demo-1').fileinput('getFilesCount'); //返回文件数（待上传）
+            console.info("fileuploaded  ---> 未上传文件数"+filesCount)
+
+            var totalFilesCount = $('#fileinput-demo-1').fileinput('getFilesCount',true); //返回文件数（待上传的文件以及已经上传并通过初始预览设置的文件）
+            console.info("fileuploaded  --->  上传的文件总数"+totalFilesCount)
+
+
             //
             // var detail = {
             //     caption: data.response.data['fileName'], // 文件名
@@ -147,7 +167,7 @@
 
     function submitHandler() {
         var filesCount = $('#fileinput-demo-1').fileinput('getFilesCount'); //返回文件数（待上传）
-		console.info("未上传文件数"+filesCount)
+		alert("未上传文件数"+filesCount)
 
         var totalFilesCount = $('#fileinput-demo-1').fileinput('getFilesCount',true); //返回文件数（待上传的文件以及已经上传并通过初始预览设置的文件）
         alert(totalFilesCount)
@@ -163,7 +183,8 @@
                 })
             }
         else if ( totalFilesCount == 0) {
-            $.modal.confirm("您尚未上传图片")
+            $.modal.alertWarning("您尚未上传图片")
+
 
         }
     }

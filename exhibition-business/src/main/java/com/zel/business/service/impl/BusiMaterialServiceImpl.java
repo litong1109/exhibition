@@ -173,4 +173,13 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
         return map;
     }
 
+    /**
+     * 查询可选发货物料
+     * @param ids
+     */
+    @Override
+    public List<BusiMaterial> selectMaterial(String[] ids) {
+        return materialMapper.selectMaterial(ids);
+    }
+
 }

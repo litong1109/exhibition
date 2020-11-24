@@ -62,4 +62,10 @@ public interface BusiMaterialMapper {
      * @param material
      */
     void updateMaterialByCode(BusiMaterial material);
+
+    /**
+     * 查询可选发货物料
+     * @param ids
+     */
+    List<BusiMaterial> selectMaterial(String[] ids);
 }

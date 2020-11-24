@@ -236,4 +236,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
               material_code = #{materialCode}
     </update>
 
+    <!--
+    * 查询可选发货物料
+    * @param ids
+    -->
+    <select id="selectMaterial" resultMap="BusiMaterialResult">
+        <include refid="selectMaterialVo"/>
+        where
+            material_id not in
+                <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+    </select>
+
 </mapper>

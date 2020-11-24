@@ -129,4 +129,14 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     public BusiProspect findProspectUrl(Long urlId, Long exhibitionId) {
         return exhibitionMapper.findProspectUrl(urlId,exhibitionId);
     }
+
+    /**
+     * 查询展会名称集合
+     * @param
+     */
+    @Override
+    public List<BusiExhibition> selectExhibitionIdList() {
+
+        return exhibitionMapper.selectExhibitionIdList();
+    }
 }
