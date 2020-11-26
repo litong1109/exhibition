@@ -255,13 +255,9 @@
     </update>
 
     <!--
- /**
      * 查询勘展图片
      * @param urlId
      * @param exhibitionId
-     * @return
-     */
-    BusiProspect (@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
     -->
     <select id="findProspectUrl" parameterType="long" resultType="com.zel.business.domain.BusiProspect">
       select
@@ -276,9 +272,10 @@
             and exhibition_id = #{exhibitionId}
     </select>
     
-    <select id="selectExhibitionIdList" resultMap="BusiExhibitionResult">
+    <select id="selectExhibitionInfo" resultMap="BusiExhibitionResult">
       SELECT
-        exhibition_id
+        exhibition_id,
+        exhibition_name
       FROM
         busi_exhibition
       WHERE
@@ -289,6 +286,14 @@
                 busi_send as bs
             WHERE
                 1 = 1)
+    </select>
+
+    <select id="selectExportExhibitionList" resultMap="BusiExhibitionResult">
+        <include refid="selectExhibitionVo"/>
+        where exhibition_id IN
+              <foreach collection="colums" item="id" index="index" open="(" separator="," close=")">
+                  #{id}
+              </foreach>
     </select>
 
 </mapper>

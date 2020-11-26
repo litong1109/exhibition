@@ -161,7 +161,6 @@ public class BusiMaterialController extends BaseController {
 
     /**
      * 导入物料数据
-     *
      * @param file 物料数据
      */
     @Log(title = "物料管理", businessType = BusinessType.IMPORT)
@@ -172,7 +171,6 @@ public class BusiMaterialController extends BaseController {
         ExcelUtil<BusiMaterial> util = new ExcelUtil<BusiMaterial>(BusiMaterial.class);
         List<BusiMaterial> materialList = util.importExcel(file.getInputStream());
 
-        /*String s = materialService.importMaterial(materialList);*/
         Map<String, Object> map = materialService.importMaterial(materialList);
 
         boolean flg = true;
@@ -186,6 +184,18 @@ public class BusiMaterialController extends BaseController {
         }else {
             return AjaxResult.error(msg,flg);
         }
+    }
+
+    /**
+     * 下载模板
+     */
+    @RequiresPermissions("business:material:importTemplate")
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<BusiMaterial> util = new ExcelUtil<BusiMaterial>(BusiMaterial.class);
+        return util.importTemplateExcel("用户数据");
     }
 
 }

@@ -5,25 +5,49 @@
 <mapper namespace="com.zel.business.mapper.BusiSendMapper">
 
     <resultMap id="SendResultMap" type="com.zel.business.domain.BusiSend">
-        <id column="id" property="id"/>
+        <id column="send_id" property="sendId"/>
+        <result column="send_number" property="sendNumber"/>
         <result column="exhibition_id" property="exhibitionId"/>
         <result column="logistics_name" property="logisticsName"/>
         <result column="logistics_number" property="logisticsNumber"/>
         <result column="status" property="status"/>
         <result column="send_by" property="sendBy"/>
         <result column="send_time" property="sendTime"/>
+        <result column="receive_by" property="receiveBy"/>
+        <result column="receive_address" property="receiveAddress"/>
+        <result column="receive_company" property="receiveCompany"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="del" column="del"/>
+        <result property="remark" column="remark"/>
+
+        <result property="busiExhibitions.exhibitionName" column="exhibition_name"/>
+        <result property="busiExhibitions.organizer" column="organizer"/>
+        <result property="busiExhibitions.address" column="address"/>
 
     </resultMap>
 
     <sql id="selectSendListAll">
         SELECT
-             id ,
+             send_id ,
+             send_number ,
              exhibition_id ,
              logistics_name ,
              logistics_number ,
              status ,
              send_by ,
-             send_time
+             send_time ,
+             receive_by ,
+             receive_address ,
+             receive_company ,
+             create_by ,
+             create_time ,
+             update_by ,
+             update_time ,
+             del ,
+             remark
         FROM busi_send
     </sql>
 
@@ -31,17 +55,48 @@
     * 获取发货列表
     * @param send 发货信息
     -->
-    <select id="selectSendList" resultMap="SendResultMap">
-        <include refid="selectSendListAll"></include>
-        where 1=1
-
-        <if test="id != null and id !=''">
-            and  id like concat ('%', #{id} ,'%')
+    <select id="selectSendList"  resultMap="SendResultMap">
+        SELECT
+            bs.send_id ,
+            bs.send_number ,
+            bs.exhibition_id ,
+            bs.logistics_name ,
+            bs.logistics_number ,
+            bs.status ,
+            bs.send_by ,
+            bs.send_time ,
+            bs.receive_by ,
+            bs.receive_address ,
+            bs.receive_company ,
+            bs.create_by ,
+            bs.create_time ,
+            bs.remark,
+            be.exhibition_name,
+            be.address,
+            be.organizer
+        FROM busi_send as bs
+        left join busi_exhibition as be on bs.exhibition_id = be.exhibition_id
+        where
+            1=1
+        <if test="sendNumber != null and sendNumber !=''">
+            and  send_number like concat ('%', #{sendNumber} ,'%')
         </if>
-
         <if test="exhibitionId!= null ">
             and exhibition_id = #{exhibitionId}
         </if>
+
+        <if test="busiExhibitions.exhibitionName != null and busiExhibitions.exhibitionName !=''">
+            and  exhibition_name like concat ('%', #{busiExhibitions.exhibitionName} ,'%')
+        </if>
+
+        <if test="busiExhibitions.organizer != null and busiExhibitions.organizer !=''">
+            and  organizer like concat ('%', #{busiExhibitions.organizer} ,'%')
+        </if>
+
+        <if test="busiExhibitions.address != null and busiExhibitions.address !=''">
+            and  address like concat ('%', #{busiExhibitions.address} ,'%')
+        </if>
+
         <if test="logisticsName != null and logisticsName !=''">
             and logistics_name like concat ('%', #{logisticsName} ,'%')
         </if>
@@ -57,23 +112,61 @@
         <if test="sendTime !=null">
             and send_time = #{sendTime}
         </if>
+        <if test="receiveBy != null and receiveBy !=''">
+            and receive_by like concat ('%', #{receiveBy} ,'%')
+        </if>
+        <if test="receiveAddress != null and receiveAddress !=''">
+            and receive_address like concat ('%', #{receiveAddress} ,'%')
+        </if>
+        <if test="receiveCompany != null and receiveCompany !=''">
+            and receive_company like concat ('%', #{receiveCompany} ,'%')
+        </if>
+        <if test="createBy != null and createBy !=''">
+            and create_by like concat ('%', #{createBy} ,'%')
+        </if>
+        <if test="createTime !=null">
+            and create_time = #{createTime}
+        </if>
+        <if test="updateBy != null and updateBy !=''">
+            and update_by like concat ('%', #{updateBy} ,'%')
+        </if>
+        <if test="updateTime !=null">
+            and update_time = #{updateTime}
+        </if>
+        <if test="remark != null and remark !=''">
+            and remark like concat ('%', #{remark} ,'%')
+        </if>
     </select>
 
     <!--
     *查询发货物料明细
     * @param asnOrderId
     -->
-    <select id="selectSendMaterialDetail" resultType="com.zel.business.domain.BusiSendMaterialDetial">
+    <select id="selectSendMaterialDetail" resultType="com.zel.business.domain.BusiMaterial">
         SELECT
-            `asn_order_id` as asnOrderId,
-            `material_id`as materialId,
-            `send_quantity` as sendQuantity,
-            `remark` as remark,
-            `creat_by` as creatBy,
-            `creat_time` as creatTime
-         FROM
-            `busi_send_material_detail`
+             material_id as materialId,
+             material_name as materialName,
+             material_code as materialCode,
+             nick_name as nickName,
+             specifications as specifications,
+             type as type,
+             unit as unit,
+             package_quantity as packageQuantity ,
+             create_by as createBy,
+             create_time as createTime,
+             update_by as updateBy,
+             update_time as updateTime,
+             remark as remark
+        FROM
+            busi_material
          WHERE
-            asn_order_id = #{id}
+            material_id in
+                  ( select
+                        bsmd.material_id
+                    from
+                        busi_send_material_detail as bsmd
+                    where
+                        bsmd.send_id = #{id}
+                  )
     </select>
 </mapper>

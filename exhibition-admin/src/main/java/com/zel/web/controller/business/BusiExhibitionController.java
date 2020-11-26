@@ -144,8 +144,8 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "导出展会信息",businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult exportExhibition(@Validated BusiExhibition exhibition){
-        List<BusiExhibition> list = exhibitionService.selectExhibitionList(exhibition);
+    public AjaxResult exportExhibition(@Validated Long[] colums){
+        List<BusiExhibition> list = exhibitionService.selectExportExhibitionList(colums);
         ExcelUtil<BusiExhibition> util = new ExcelUtil<>(BusiExhibition.class);
         return util.exportExcel(list,"展会数据");
     }

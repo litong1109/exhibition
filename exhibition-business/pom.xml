@@ -28,6 +28,11 @@
             <artifactId>exhibition-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.exhibition</groupId>
+            <artifactId>exhibition-framework</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

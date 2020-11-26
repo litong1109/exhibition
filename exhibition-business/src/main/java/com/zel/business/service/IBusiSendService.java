@@ -1,5 +1,6 @@
 package com.zel.business.service;
 
+import com.zel.business.domain.BusiMaterial;
 import com.zel.business.domain.BusiSend;
 import com.zel.business.domain.BusiSendMaterialDetial;
 
@@ -17,5 +18,5 @@ public interface IBusiSendService {
      *查询发货物料明细
      * @param id
      */
-    BusiSendMaterialDetial selectSendMaterialDetail(String id);
+    List<BusiMaterial> selectSendMaterialDetail(Long id);
 }

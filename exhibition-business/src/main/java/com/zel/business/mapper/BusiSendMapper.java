@@ -1,5 +1,6 @@
 package com.zel.business.mapper;
 
+import com.zel.business.domain.BusiMaterial;
 import com.zel.business.domain.BusiSend;
 import com.zel.business.domain.BusiSendMaterialDetial;
 import org.apache.ibatis.annotations.Param;
@@ -21,5 +22,5 @@ public interface BusiSendMapper {
      *查询发货物料明细
      * @param id
      */
-    BusiSendMaterialDetial selectSendMaterialDetail(@Param(value = "id") String id);
+    List<BusiMaterial> selectSendMaterialDetail(@Param(value = "id") Long id);
 }

@@ -350,25 +350,42 @@ var table = {
     		// 导出数据
     		exportExcel: function(formId) {
     			table.set();
-    			$.modal.confirm("确定导出所有" + table.options.modalName + "吗？", function() {
-	    			var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
-	    			var params = $("#" + table.options.id).bootstrapTable('getOptions');
-	    			var dataParam = $("#" + currentId).serializeArray();
-	    			dataParam.push({ "name": "orderByColumn", "value": params.sortName });
-	    			dataParam.push({ "name": "isAsc", "value": params.sortOrder });
-	    			$.modal.loading("正在导出数据，请稍后...");
-	    			$.post(table.options.exportUrl, dataParam, function(result) {
-	    				if (result.code == web_status.SUCCESS) {
-	    			        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
-	    				} else if (result.code == web_status.WARNING) {
-	                        $.modal.alertWarning(result.msg)
-	                    } else {
-	    					$.modal.alertError(result.msg);
-	    				}
-	    				$.modal.closeLoading();
-	    			});
-    			});
-    		},
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                $.modal.confirm("确认要导出选中的" + rows.length + "条数据吗?", function() {
+                    var data = { "colums": rows.join() };
+                    $.modal.loading("正在导出数据，请稍后...");
+                    $.post(table.options.exportUrl, data, function(result) {
+                        if (result.code == web_status.SUCCESS) {
+                            window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                        } else if (result.code == web_status.WARNING) {
+                            $.modal.alertWarning(result.msg)
+                        } else {
+                            $.modal.alertError(result.msg);
+                        }
+                        $.modal.closeLoading();
+                    });
+
+                });
+            },
+    			// $.modal.confirm("确定导出所有" + table.options.modalName + "吗？", function() {
+	    		// 	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+	    		// 	var params = $("#" + table.options.id).bootstrapTable('getOptions');
+	    		// 	var dataParam = $("#" + currentId).serializeArray();
+	    		// 	dataParam.push({ "name": "orderByColumn", "value": params.sortName });
+	    		// 	dataParam.push({ "name": "isAsc", "value": params.sortOrder });
+	    		// 	$.modal.loading("正在导出数据，请稍后...");
+	    		// 	$.post(table.options.exportUrl, dataParam, function(result) {
+	    		// 		if (result.code == web_status.SUCCESS) {
+	    		// 	        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+	    		// 		} else if (result.code == web_status.WARNING) {
+	             //            $.modal.alertWarning(result.msg)
+	             //        } else {
+	    		// 			$.modal.alertError(result.msg);
+	    		// 		}
+	    		// 		$.modal.closeLoading();
+	    		// 	});
+    			// });
+
     		// 下载模板
     		importTemplate: function() {
     			table.set();
@@ -1068,27 +1085,30 @@ var table = {
             // 添加信息
             add: function(id) {
             	table.set();
-            	$.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
+            	$.modal.openFull("添加" + table.options.modalName, $.operate.addUrl(id));
             },
             // 添加发货物料  andy
             addMaterial: function(id) {
-                table.set();
+                table.set("bootstrap-table1");
                 alert("fsadfas");
 
                 var data = { "ids": [1,2] };
-                console.log(data);
+                console.log("asdf="+data);
                 var url = table.options.addMaterialUrl;
-                $.operate.submit("/exhibition/business/send/addMaterial", "post", "json", data);
+                console.log(url)
+                // $.operate.submit(url, "post", "json",data);
 
-               /* $.modal.open("添加" + table.options.modalName, function () {
-                    var allTableData = datagrid.bootstrapTable('getData');
-                    var ids =[1,2];
-                    $.each(allTableData,function(index,evevt){
-                    	//物料的id
-                        ids.push(event.id)
-                    })
-
-                });*/
+                // "/exhibition/business/send/addMaterial"
+                var allTableData = $("#bootstrap-table1").bootstrapTable('getData');
+                var ids = [];
+                $.each(allTableData,function(index,evevt){
+                    //物料的id
+                    alert(event.id)
+                    ids.push(event.id)
+                })
+				alert(ids)
+				// ids = [1,2];
+                $.modal.open("添加" + table.options.modalName, table.options.addMaterialUrl.replace("{ids}", ids));
 
                 //获取表格的所有内容行
                 // var allTableData = datagrid.bootstrapTable('getData');
@@ -1100,8 +1120,8 @@ var table = {
             // 查询发货物料明细 andy
             selectSendMaterialDetail: function(id) {
         		alert(id)
-                table.set();
-                $.modal.open("查询" + table.options.modalName,  table.options.selectSendMaterialDetailUrl.replace("{id}", id));
+                table.set("bootstrap-table2");
+                $.modal.open("查看" + table.options.modalName,  table.options.selectSendMaterialDetailUrl.replace("{id}", id));
             },
 
             // 添加信息，以tab页展现

@@ -4,6 +4,7 @@
 	<th:block th:include="include :: header('发货列表')" />
 	<th:block th:include="include :: layout-latest-css" />
 	<th:block th:include="include :: ztree-css" />
+	<th:block th:include="include :: select2-css" />
 </head>
 <body class="gray-bg">
 
@@ -11,26 +12,23 @@
 		<div class="container-div">
 			<!--<div class="row">-->
 				<div class="col-sm-12 search-collapse">
-					<form class="form-horizontal" id="form-send-add" th:object="${exhibitionIds}">
-						<input type="hidden" id="exhibitionId" name="exhibitionId">
+					<form class="form-horizontal" id="form-send-add" th:object="${exhibitionInfo}">
+						<input type="hidden" id="exhibitionName" name="exhibitionName">
 		                <input type="hidden" id="parentId" name="parentId">
 						<div class="select-list">
 
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">展会ID：</label>
-								<div class="col-sm-8">
-									<select id="exhibitionIdsSelect" th:with="ids=${exhibitionIds}" style="width :100px " class="form-control m-b">
-										<option value="">---请选择---</option>
-										<option th:each="entity : ${ids}" th:text="${entity.exhibitionId}" th:value="${entity.exhibitionId}"></option>
-									</select>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label class="col-xs-2 control-label">展会信息：</label>
+										<div class="col-xs-4">
+											<select id="exhibition" class="form-control " >
+												<option th:each="name:${exhibitionInfo}" th:value="${name.exhibitionId}" th:text="${name.exhibitionName}"></option>
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
-
-
-
-
-
 
 							<ul>
 								<li>
@@ -57,7 +55,7 @@
 		        </div>
 		        
 		        <div class="col-sm-12 select-table table-striped">
-				    <table id="bootstrap-table"></table>
+				    <table id="bootstrap-table1"></table>
 				</div>
 			</div>
 		</div>
@@ -66,6 +64,7 @@
 	<th:block th:include="include :: footer" />
 	<th:block th:include="include :: layout-latest-js" />
 	<th:block th:include="include :: ztree-js" />
+	<th:block th:include="include :: select2-js" />
 	<script th:inline="javascript">
 
         var prefix = ctx + "business/send";
@@ -82,15 +81,15 @@
 
         function querysendList() {
             var options = {
-                url: prefix + "/list",
-                prospectUrl: prefix + "/prospect/{id}",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
-                exportUrl: prefix + "/export",
-				statusUrl: prefix + "/updateStatus",
-                selectSendMaterialDetailUrl: prefix + "/selectSendMaterialDetail/{asnOrderId}",
-                sortName: "sendTime",
+                // url: prefix + "/list",
+                // prospectUrl: prefix + "/prospect/{id}",
+                // createUrl: prefix + "/add",
+                // updateUrl: prefix + "/edit/{id}",
+                // removeUrl: prefix + "/remove",
+                // exportUrl: prefix + "/export",
+				// statusUrl: prefix + "/updateStatus",
+                addMaterialUrl: prefix + "/addMaterial/{ids}",
+                sortName: "creatTime",
                 sortOrder: "desc",
                 modalName: "发货信息",
                 columns: [{
@@ -149,6 +148,13 @@
             };
             $.table.init(options);
         }
+
+        $(function() {
+            $('#exhibition').select2({
+                placeholder: "请选择展会信息",
+                allowClear: true
+            });
+        })
 	</script>
 </body>
 </html>

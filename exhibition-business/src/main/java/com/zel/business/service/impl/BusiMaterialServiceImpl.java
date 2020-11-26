@@ -6,6 +6,7 @@ import com.zel.business.service.IBusiMaterialService;
 import com.zel.common.constant.UserConstants;
 import com.zel.common.exception.BusinessException;
 import com.zel.common.utils.StringUtils;
+import com.zel.framework.util.ShiroUtils;
 import com.zel.system.service.impl.SysUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,17 +103,11 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
      * @param materialList 物料列表
      */
     @Override
-  /*  public String importMaterial(List<BusiMaterial> materialList) */
     public Map<String,Object>importMaterial(List<BusiMaterial> materialList)
-
     {
-
         Map<String,Object> map = new HashMap<>();
-
         boolean flg = true;
-
         String result = new String();
-
         if (StringUtils.isNull(materialList) || materialList.size() == 0)
         {
             throw new BusinessException("导入物料数据不能为空！");
@@ -122,7 +117,7 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
         StringBuilder successData = new StringBuilder();
         StringBuilder failureData = new StringBuilder();
         for(BusiMaterial material:materialList){
-
+            material.setCreateBy(ShiroUtils.getSysUser().getLoginName());
             try {
                 if (StringUtils.isEmpty(material.getMaterialCode())) {
                     throw new BusinessException("物料代码格式不正确！");
@@ -134,8 +129,6 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
                     throw new BusinessException("规格型号格式不正确！");
                 }else if(material.getPackageQuantity() == null){
                     throw new BusinessException("标包数量格式不正确！");
-                } else if(material.getDel() == null){
-                    throw new BusinessException("删除标识格式不正确！");
                 }
                 BusiMaterial m = materialMapper.selectMaterialByCode(material.getMaterialCode());
                 if (StringUtils.isNull(m)) {
@@ -157,19 +150,14 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
         }
         if (successNum > 0)
         {
-           /* map.put(flg,"成功导入数据共 " + successNum + " 条" + successData + "<br/>"+"未导入数据共 "+ failureNum + " 条"+failureData);*/
             result ="成功导入数据共 " + successNum + " 条" + successData + "<br/>"+"未导入数据共 "+ failureNum + " 条"+failureData;
         }
         else {
-
-            /*map.put(flg,"很抱歉，导入失败！"+ "共" + failureNum + " 条数据格式不正确，错误如下："+failureData);*/
             flg = false;
             result = "很抱歉，导入失败！"+ "共" + failureNum + " 条数据格式不正确，错误如下："+failureData;
         }
-
         map.put("flg",flg);
         map.put("msg",result);
-
         return map;
     }
 
@@ -178,7 +166,7 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
      * @param ids
      */
     @Override
-    public List<BusiMaterial> selectMaterial(String[] ids) {
+    public List<BusiMaterial> selectMaterial(Long[] ids) {
         return materialMapper.selectMaterial(ids);
     }
 

@@ -242,11 +242,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     -->
     <select id="selectMaterial" resultMap="BusiMaterialResult">
         <include refid="selectMaterialVo"/>
-        where
-            material_id not in
-                <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-                    #{id}
-                </foreach>
+        where 1=1
+        <if test="ids != null">
+            and  material_id not in
+            <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        and del = 1
     </select>
 
 </mapper>

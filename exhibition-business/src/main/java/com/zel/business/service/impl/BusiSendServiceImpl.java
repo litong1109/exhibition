@@ -1,5 +1,6 @@
 package com.zel.business.service.impl;
 
+import com.zel.business.domain.BusiMaterial;
 import com.zel.business.domain.BusiSend;
 import com.zel.business.domain.BusiSendMaterialDetial;
 import com.zel.business.mapper.BusiSendMapper;
@@ -29,8 +30,8 @@ public class BusiSendServiceImpl implements IBusiSendService {
      * @param id
      */
     @Override
-    public BusiSendMaterialDetial selectSendMaterialDetail(String id) {
-        BusiSendMaterialDetial detial = sendMapper.selectSendMaterialDetail(id);
+    public List<BusiMaterial> selectSendMaterialDetail(Long id) {
+        List<BusiMaterial> detial = sendMapper.selectSendMaterialDetail(id);
         return detial;
     }
 }

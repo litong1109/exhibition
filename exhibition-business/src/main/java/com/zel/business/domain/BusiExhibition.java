@@ -41,13 +41,14 @@ public class BusiExhibition {
      * 开始时间
      */
     @Excel(name = "开始时间", dateFormat = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
     /**
      * 结束时间
      */
     @Excel(name = "结束时间", dateFormat = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
     private Date endTime;
 
     /**
@@ -65,26 +66,22 @@ public class BusiExhibition {
     /**
      * 创建人
      */
-//    @Excel(name = "创建人")
     private String createBy;
 
     /**
      * 创建时间
      */
-//    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新人
      */
-//    @Excel(name = "更新人")
     private String updateBy;
 
     /**
      * 更新时间
      */
-//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
@@ -92,7 +89,6 @@ public class BusiExhibition {
      * 删除标识
      * 1：正常  2：删除
      */
-//    @Excel(name = "删除标识", readConverterExp = "1=正常,2=删除")
     private Integer del;
 
     /**

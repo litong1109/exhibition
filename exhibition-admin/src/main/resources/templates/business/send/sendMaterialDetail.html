@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-	<th:block th:include="include :: header('修改展会')" />
+	<th:block th:include="include :: header('发货物料明细')" />
 </head>
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal" id="form-send-materialDetial" th:object="${SendMaterialDetail}">
-			<input id="asnOrderId" name="asnOrderId" type="hidden" th:field="*{asnOrderId}"/>
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">发货单号：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="asnOrderId" id="asnOrderId" th:field="*{asnOrderId}" required>
-				</div>
-			</div>
+			<!--<input id="asnOrderId" name="asnOrderId" type="hidden" th:field="*{asnOrderId}"/>-->
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label is-required">发货单号：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="asnOrderId" id="asnOrderId" th:field="*{asnOrderId}" required>-->
+				<!--</div>-->
+			<!--</div>-->
 
 			<div class="col-sm-12 select-table table-striped">
-				<table id="bootstrap-table"></table>
+				<table id="bootstrap-table2"></table>
 			</div>
 
 		</form>
@@ -47,13 +47,13 @@
                 importTemplateUrl: prefix + "/importTemplate",
                 sortName: "createTime",
                 sortOrder: "desc",
-                modalName: "物料",
+                modalName: "物料明细",
                 columns: [{
                     checkbox: true
                 },
                     {
                         field: 'materialId',
-                        title: 'ID'
+                        title: '物料ID'
                     },
                     {
                         field: 'materialName',

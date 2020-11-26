@@ -12,12 +12,12 @@ public class BusiSendMaterialDetial {
     /**
      * 单据ID
      */
-    private String asnOrderId;
+    private String sendMaterialDetailId;
 
     /**
-     * 物料ID
+     * 发货ID
      */
-    private Long materialId;
+    private Long sendId;
 
     /**
      * 发货数量
@@ -25,11 +25,14 @@ public class BusiSendMaterialDetial {
     private Integer sendQuantity;
 
     /**
+     * 物料ID
+     */
+    private Long materialId;
+
+    /**
      * 备注
      */
     private String remark;
-
-
 
     /**
      * 创建人
@@ -41,51 +44,16 @@ public class BusiSendMaterialDetial {
      */
     private Date creatTime;
 
-    public String getAsnOrderId() {
-        return asnOrderId;
-    }
+    /**
+     * 更新人
+     */
+    private String updateBy;
 
-    public void setAsnOrderId(String asnOrderId) {
-        this.asnOrderId = asnOrderId;
-    }
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
-    public Long getMaterialId() {
-        return materialId;
-    }
 
-    public void setMaterialId(Long materialId) {
-        this.materialId = materialId;
-    }
 
-    public Integer getSendQuantity() {
-        return sendQuantity;
-    }
-
-    public void setSendQuantity(Integer sendQuantity) {
-        this.sendQuantity = sendQuantity;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getCreatBy() {
-        return creatBy;
-    }
-
-    public void setCreatBy(String creatBy) {
-        this.creatBy = creatBy;
-    }
-
-    public Date getCreatTime() {
-        return creatTime;
-    }
-
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
-    }
 }

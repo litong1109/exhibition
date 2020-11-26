@@ -62,7 +62,7 @@ public class BusiSendController extends BaseController {
      */
     @GetMapping(value = "/add")
     public String add(ModelMap mmap){
-        mmap.put("exhibitionIds", exhibitionService.selectExhibitionIdList());
+        mmap.put("exhibitionInfo", exhibitionService.selectExhibitionInfo());
         return prefix + "/add";
     }
 
@@ -72,16 +72,23 @@ public class BusiSendController extends BaseController {
      * @param id
      */
      @GetMapping("/selectSendMaterialDetail/{id}")
-    public String edit(@PathVariable("id") String id, ModelMap mmap) {
+    public String edit(@PathVariable("id") Long id, ModelMap mmap) {
         mmap.put("SendMaterialDetail", sendService.selectSendMaterialDetail(id));
         return prefix + "/sendMaterialDetail";
     }
 
+    /**
+     * 查询可添加物料列表
+     * @param ids 已添加物料ID
+     */
+    @GetMapping({"/addMaterial/{ids}","/addMaterial"})
+    public String addMaterial(@PathVariable(value = "ids",required = false) Long[] ids, ModelMap map){
+        try {
+            map.put("material",materialService.selectMaterial(ids));
+        }catch (Exception e){
+            e.getMessage();
+        }
 
-    @PostMapping("/addMaterial")
-    public String addMaterial(@RequestParam(value="ids",required=false)String[] ids){
-//         map.put("material",materialService.selectMaterial(ids));
-        System.out.println(ids);
          return prefix + "/addMaterial";
     }
 

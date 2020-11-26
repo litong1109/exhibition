@@ -1,6 +1,7 @@
 package com.zel.business.domain;
 
 import com.zel.common.annotation.Excel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,52 +33,43 @@ public class BusiMaterial {
     @Excel(name = "物料简称")
     private String nickName;
 
-    /** 规格参数*/
     @Excel(name = "规格参数")
     private String specifications;
 
-
-    /** 类型*/
-    @Excel(name = "类型", dictType = "busi_material_type")
+    @Excel(name = "类型", dictType = "busi_material_type",readConverterExp = "1=塑料,2=金属,3=其他")
     private Integer type;
 
-    /** 计量单位*/
-    @Excel(name = "计量单位", dictType = "busi_material_unit")
+    @Excel(name = "计量单位", dictType = "busi_material_unit",readConverterExp = "1=件,2=公斤,3=吨")
     private Integer unit;
 
-    /** 标包数量*/
     @Excel(name = "标包数量")
     private BigDecimal packageQuantity;
 
-
-    /** 创建人*/
-    @Excel(name = "创建人")
+    /**
+     * 创建人
+     */
     private String createBy;
 
+    /**
+     * 创建时间
+     */
+//    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss",type =Excel.Type.EXPORT)
 
-    /** 创建时间*/
-    /*@Excel(name = "创建时间")*/
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     private Date createTime;
 
-    /** 更新人*/
-    @Excel(name = "更新人")
+    /**
+     * 更新人
+     */
     private String updateBy;
 
-
-    /** 更新时间*/
-    /*@Excel(name = "更新时间")*/
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss",type = Excel.Type.EXPORT)
     private Date updateTime;
-
 
     /** 删除标识
      *  1：正常  2：删除
      * */
-    @Excel(name = "删除标识", readConverterExp = "1=正常,2=删除")
     private Integer del;
 
-    /** 备注*/
     @Excel(name = "备注")
     private String remark;
 

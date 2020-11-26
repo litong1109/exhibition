@@ -86,5 +86,12 @@ public interface IBusiExhibitionService {
      * 查询展会名称集合
      * @param
      */
-    List<BusiExhibition> selectExhibitionIdList();
+    List<BusiExhibition> selectExhibitionInfo();
+
+    /**
+     * 查询导出展会列表
+     * @param colums
+     * @return
+     */
+    List<BusiExhibition> selectExportExhibitionList(Long[] colums);
 }

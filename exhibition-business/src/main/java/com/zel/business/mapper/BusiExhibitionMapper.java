@@ -92,5 +92,11 @@ public interface BusiExhibitionMapper {
      * 查询展会名称集合
      * @param
      */
-    List<BusiExhibition> selectExhibitionIdList();
+    List<BusiExhibition> selectExhibitionInfo();
+
+    /**
+     * 查询导出展会列表
+     * @param colums
+     */
+    List<BusiExhibition> selectExportExhibitionList(@Param(value = "colums") Long[] colums);
 }
