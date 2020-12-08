@@ -4,129 +4,152 @@
     <th:block th:include="include :: header('物料列表')" />
     <th:block th:include="include :: layout-latest-css" />
 </head>
-<body class="gray-bg">
 
-<div class="ui-layout-center">
-    <div class="container-div">
-        <div class="row">
-            <div class="col-sm-12 search-collapse">
-                <form id="material-form">
-                    <input type="hidden" id="materialId" name="materialId">
-                    <input type="hidden" id="parentId" name="parentId">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                物料名称：<input type="text" name="materialName"/>
-                            </li>
-                            <li>
-                                物料代码：<input type="text" name="materialCode"/>
-                            </li>
-                            <li>
-                                规格型号：<input type="text" name="specifications"/>
-                            </li>
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                            </li>
-                        </ul>
+
+    <body class="gray-bg">
+
+        <div class="ui-layout-center">
+            <div class="container-div">
+                <div class="row">
+                    <div class="col-sm-12 search-collapse">
+                        <form id="material-form">
+                            <input type="hidden" id="materialId" name="materialId">
+                            <input type="hidden" id="parentId" name="parentId">
+                            <div class="select-list">
+                                <ul>
+                                    <li>
+                                        物料名称：<input type="text" id="materialName" name="materialName"/>
+                                    </li>
+                                    <li>
+                                        物料代码：<input type="text" id = "materialCode" name="materialCode"/>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
 
 
 
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<th:block th:include="include :: footer" />
-<th:block th:include="include :: layout-latest-js" />
-<th:block th:include="include :: ztree-js" />
-<script th:inline="javascript">
-    var prefix = ctx + "business/send";
-    var dataType = [[${@dict.getType('busi_material_type')}]];
-    var dataUnit = [[${@dict.getType('busi_material_unit')}]];
+        <th:block th:include="include :: footer" />
+        <th:block th:include="include :: layout-latest-js" />
+        <th:block th:include="include :: ztree-js" />
+        <script th:inline="javascript">
+            var prefix = ctx + "business/send";
+            var dataType = [[${@dict.getType('busi_material_type')}]];
+            var dataUnit = [[${@dict.getType('busi_material_unit')}]];
 
-    $(function() {
-        var panehHidden = false;
-        if ($(this).width() < 769) {
-            panehHidden = true;
-        }
-        $('body').layout({ initClosed: panehHidden, west__size: 185 });
-        queryMaterialList();
+            $(function() {
 
-    });
+                queryMaterialList();
+
+            });
 
 
-    function queryMaterialList() {
-        var options = {
-            url: ctx + "business/material/list",
-            createUrl: prefix + "/add",
-            sortName: "createTime",
-            sortOrder: "desc",
-            modalName: "物料",
-            columns: [{
-                checkbox: true
-            },
-                {
-                    field: 'materialId',
-                    title: 'ID'
-                },
-                {
-                    field: 'materialName',
-                    title: '物料名称'
-                },
-                {
-                    field: 'materialCode',
-                    title: '物料代码'
-                    // sortable: true
-                },
-                {
-                    field: 'nickName',
-                    title: '物料简称'
-                },  {
-                    field: 'specifications',
-                    title: '规格型号'
-                },
+            function queryMaterialList() {
+                var options = {
+                    url: ctx + "business/send/addMaterialList",
+                    queryParams: queryParams,
+                    // createUrl: prefix + "/add",
+                    // sortName: "createTime",
+                    // sortOrder: "desc",
+                    modalName: "物料",
+                    // data: [[${material}]],//接收后端查询返回数据
+                    columns: [{
+                        checkbox: true
+                    },
+                        {
+                            field: 'materialId',
+                            title: '物料ID'
+                        },
+                        {
+                            field: 'materialName',
+                            title: '物料名称'
+                        },
+                        {
+                            field: 'materialCode',
+                            title: '物料代码'
+                        },
+                        {
+                            field: 'nickName',
+                            title: '物料简称'
+                        },  {
+                            field: 'specifications',
+                            title: '规格型号'
+                        },
 
-                {
-                    field: 'type',
-                    title: '类型',
-                    formatter: function(value, row, index) {
+                        {
+                            field: 'type',
+                            title: '类型',
+                            formatter: function(value, row, index) {
 
-                        return $.table.selectDictLabel(dataType, row.type);
-                    }
-                },{
-                    field: 'unit',
-                    title: '计量单位',
-                    formatter: function(value, row, index) {
+                                return $.table.selectDictLabel(dataType, row.type);
+                            }
+                        },{
+                            field: 'unit',
+                            title: '计量单位',
+                            formatter: function(value, row, index) {
 
-                        return $.table.selectDictLabel(dataUnit, row.unit);
-                    }
-                },
-                {
-                    field: 'packageQuantity',
-                    title: '标包数量'
-                    // visible: false
-                },
-                {
-                    field: 'createBy',
-                    title: '创建人'
-                },
-                {
-                    field: 'createTime',
-                    title: '创建时间'
-                    // sortable: true
-                } ]
-        };
-        $.table.init(options);
-    }
+                                return $.table.selectDictLabel(dataUnit, row.unit);
+                            }
+                        },
+                        {
+                            field: 'packageQuantity',
+                            title: '标包数量'
+                            // visible: false
+                        },
+                        {
+                            field: 'createBy',
+                            title: '创建人'
+                        },
+                        {
+                            field: 'createTime',
+                            title: '创建时间'
+                            // sortable: true
+                        }]
+                };
+                $.table.init(options);
+            }
 
 
-</script>
-</body>
+            function queryParams(params) {
+                // alert("fasdfasd");
+                var search = $.table.queryParams(params);
+                var array = new Array();
+                var ids = $.common.isEmpty([[${ids}]]) ? null : [[${ids}]];
+                if(ids != null){
+                    $.each(ids,function(index,event){
+                        // alert(ids[index]);
+                        array.push(ids[index]);
+                    });
+                }
+                search.ids =  array;
+                // alert(search.ids);
+                return search;
+            }
+
+            function submitHandler(){
+                var tableLeft = $('#bootstrap-table').bootstrapTable();
+                var tableRight = $('#bootstrap-table1').bootstrapTable();
+                var selectedContent =  tableLeft.bootstrapTable('getSelections');
+                console.log(JSON.stringify(selectedContent));
+                $.modal.close();
+                var parent = window.parent;
+                parent.$.table.appendTable("bootstrap-table1", selectedContent);
+                parent.$.table.tableUncheckAll("bootstrap-table1");
+
+            }
+        </script>
+    </body>
 
 </html>

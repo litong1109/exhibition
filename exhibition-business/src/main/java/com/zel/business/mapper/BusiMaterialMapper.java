@@ -67,5 +67,7 @@ public interface BusiMaterialMapper {
      * 查询可选发货物料
      * @param ids
      */
-    List<BusiMaterial> selectMaterial(@Param(value = "ids") Long[] ids);
+    List<BusiMaterial> selectMaterial(@Param(value = "ids") Long[] ids,
+                                      @Param(value = "materialName") String materialName,
+                                      @Param(value = "materialCode")String materialCode);
 }

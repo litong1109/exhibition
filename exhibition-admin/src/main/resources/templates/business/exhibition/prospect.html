@@ -58,13 +58,13 @@
 		for (let i = 0; i < obj.length; i++) {
 
 			var map = obj[i];
-            console.log(i+"//urlId="+map['urlId']+
+            console.log(i+"//prospectId="+map['prospectId']+
                 "&&prospectUrl="+map['prospectUrl']);
 			arrayObj. push("/exhibition"+map['prospectUrl']);
 			var detail = {
 				caption: map['fileName'], // 文件名
 				url: prefix + '/deleteProspectUrl', // 删除url
-				key: map['urlId'], // 删除是Ajax向后台传递的参数post请求
+				key: map['prospectId'], // 删除是Ajax向后台传递的参数post请求
                 // previewAsData: true,
 				extra: function() { //删除时向后台传递参数，可以是json对象
 					return {

@@ -60,5 +60,5 @@ public interface IBusiMaterialService {
   * @param ids
   * @return
   */
-    List<BusiMaterial> selectMaterial(Long[] ids);
+    List<BusiMaterial> selectMaterial(Long[] ids,String materialName,String materialCode);
 }

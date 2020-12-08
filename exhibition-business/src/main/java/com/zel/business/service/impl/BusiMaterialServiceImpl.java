@@ -166,8 +166,8 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
      * @param ids
      */
     @Override
-    public List<BusiMaterial> selectMaterial(Long[] ids) {
-        return materialMapper.selectMaterial(ids);
+    public List<BusiMaterial> selectMaterial(Long[] ids,String materialName,String materialCode) {
+        return materialMapper.selectMaterial(ids,materialName,materialCode);
     }
 
 }

@@ -1,20 +1,11 @@
-package com.zel.business.domain;
+package com.zel.business.domain.dto;
 
 import com.zel.common.annotation.Excel;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * 物料表 busi_material
- *
- * @author andy
- */
-public class BusiMaterial {
-
-    private static final long serialVersionUID = 1L;
-
+public class BusiSendMaterialDto {
     /**
      * 物料序号
      */
@@ -62,7 +53,7 @@ public class BusiMaterial {
      */
     private String updateBy;
 
-//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss",type = Excel.Type.EXPORT)
+    //    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss",type = Excel.Type.EXPORT)
     private Date updateTime;
 
     /** 删除标识
@@ -73,20 +64,8 @@ public class BusiMaterial {
     @Excel(name = "备注")
     private String remark;
 
-   /* 发货数量*/
+    /* 发货数量*/
     private Integer sendQuantity;
-
-    public Integer getSendQuantity() {
-        return sendQuantity;
-    }
-
-    public void setSendQuantity(Integer sendQuantity) {
-        this.sendQuantity = sendQuantity;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Long getMaterialId() {
         return materialId;
@@ -198,5 +177,13 @@ public class BusiMaterial {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getSendQuantity() {
+        return sendQuantity;
+    }
+
+    public void setSendQuantity(Integer sendQuantity) {
+        this.sendQuantity = sendQuantity;
     }
 }

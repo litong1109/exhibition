@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-sm-12 search-collapse">
 					<form id="exhibition-form">
-						<input type="hidden" id="exhibitionId" name="exhibitionId">
+						<input type="show" id="exhibitionId" name="exhibitionId">
 		                <input type="hidden" id="parentId" name="parentId">
 						<div class="select-list">
 							<ul>
@@ -52,6 +52,11 @@
 						<i class="fa fa-upload"></i> 勘展
 					</a>
 		        </div>
+
+
+
+
+
 		        
 		        <div class="col-sm-12 select-table table-striped">
 				    <table id="bootstrap-table"></table>
@@ -90,6 +95,7 @@
                 exportUrl: prefix + "/export",
 				statusUrl: prefix + "/updateStatus",
                 sortName: "createTime",
+                uniqueId: "exhibitionId",
                 sortOrder: "desc",
                 modalName: "展会",
                 columns: [{
@@ -173,6 +179,22 @@
                 var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
                 return date.getFullYear() + "-" + month + "-" + currentDate;
             }
+        }
+
+
+        /* 删除指定表格行 */
+        function removeRow(){
+            var ids = $.table.selectColumns("exhibitionId");
+            alert(ids)
+            if (ids.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            alert(table.options.id)
+            $("#" + table.options.id).bootstrapTable('remove', {
+                field: 'exhibitionId',
+                values: ids
+            })
         }
 
 	</script>

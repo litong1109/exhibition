@@ -2,6 +2,7 @@ package com.zel.business.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 发货信息 busi_send
@@ -12,7 +13,7 @@ public class BusiSend {
     /**
      * 发货ID
      */
-    private Integer sendId;
+    private Long sendId;
 
     /**
      *发货单号
@@ -68,7 +69,7 @@ public class BusiSend {
     /**
      * 创建人
      */
-    private String createBy;
+    private Long createBy;
 
     /**
      * 创建时间
@@ -101,13 +102,31 @@ public class BusiSend {
      */
     private BusiExhibition busiExhibitions;
 
+    private List<Map> listMap;
 
+    private Integer sendQuantity;
 
-    public Integer getSendId() {
+    public Integer getSendQuantity() {
+        return sendQuantity;
+    }
+
+    public void setSendQuantity(Integer sendQuantity) {
+        this.sendQuantity = sendQuantity;
+    }
+
+    public List<Map> getListMap() {
+        return listMap;
+    }
+
+    public void setListMap(List<Map> listMap) {
+        this.listMap = listMap;
+    }
+
+    public Long getSendId() {
         return sendId;
     }
 
-    public void setSendId(Integer sendId) {
+    public void setSendId(Long sendId) {
         this.sendId = sendId;
     }
 
@@ -191,11 +210,11 @@ public class BusiSend {
         this.receiveCompany = receiveCompany;
     }
 
-    public String getCreateBy() {
+    public Long getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public void setCreateBy(Long createBy) {
         this.createBy = createBy;
     }
 

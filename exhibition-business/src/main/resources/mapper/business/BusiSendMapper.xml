@@ -26,9 +26,19 @@
         <result property="busiExhibitions.exhibitionName" column="exhibition_name"/>
         <result property="busiExhibitions.organizer" column="organizer"/>
         <result property="busiExhibitions.address" column="address"/>
-
     </resultMap>
 
+    <resultMap id="UserTreeResultMap" type="com.zel.business.domain.dto.BusiUserTreeOutDto">
+        <result property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <!--
+    查询全部发货信息
+    -->
     <sql id="selectSendListAll">
         SELECT
              send_id ,
@@ -85,15 +95,15 @@
             and exhibition_id = #{exhibitionId}
         </if>
 
-        <if test="busiExhibitions.exhibitionName != null and busiExhibitions.exhibitionName !=''">
+        <if test="busiExhibitions != null and busiExhibitions.exhibitionName != null and busiExhibitions.exhibitionName !=''">
             and  exhibition_name like concat ('%', #{busiExhibitions.exhibitionName} ,'%')
         </if>
 
-        <if test="busiExhibitions.organizer != null and busiExhibitions.organizer !=''">
+        <if test="busiExhibitions != null and busiExhibitions.organizer != null and busiExhibitions.organizer !=''">
             and  organizer like concat ('%', #{busiExhibitions.organizer} ,'%')
         </if>
 
-        <if test="busiExhibitions.address != null and busiExhibitions.address !=''">
+        <if test="busiExhibitions != null  and busiExhibitions.address != null and busiExhibitions.address !=''">
             and  address like concat ('%', #{busiExhibitions.address} ,'%')
         </if>
 
@@ -121,7 +131,7 @@
         <if test="receiveCompany != null and receiveCompany !=''">
             and receive_company like concat ('%', #{receiveCompany} ,'%')
         </if>
-        <if test="createBy != null and createBy !=''">
+        <if test="createBy != null">
             and create_by like concat ('%', #{createBy} ,'%')
         </if>
         <if test="createTime !=null">
@@ -142,31 +152,164 @@
     *查询发货物料明细
     * @param asnOrderId
     -->
-    <select id="selectSendMaterialDetail" resultType="com.zel.business.domain.BusiMaterial">
+    <select id="selectSendMaterialDetail" resultType="com.zel.business.domain.dto.BusiSendMaterialDto">
         SELECT
-             material_id as materialId,
-             material_name as materialName,
-             material_code as materialCode,
-             nick_name as nickName,
-             specifications as specifications,
-             type as type,
-             unit as unit,
-             package_quantity as packageQuantity ,
-             create_by as createBy,
-             create_time as createTime,
-             update_by as updateBy,
-             update_time as updateTime,
-             remark as remark
+            bm.material_id AS   materialId,
+            bm.material_name AS  materialName,
+            bm.material_code AS  materialCode,
+            bm.nick_name AS  nickName,
+            bm.specifications AS  specifications,
+            bm.type AS  type,
+            bm.unit AS  unit,
+            bm.package_quantity AS  packageQuantity,
+            bm.create_by AS  createBy,
+            bm.create_time AS  createTime,
+            bm.update_by AS  updateBy,
+            bm.update_time AS  updateTime,
+            bm.remark AS  remark,
+            bsmd.send_quantity AS sendQuantity
         FROM
-            busi_material
-         WHERE
-            material_id in
-                  ( select
-                        bsmd.material_id
-                    from
-                        busi_send_material_detail as bsmd
-                    where
-                        bsmd.send_id = #{id}
-                  )
+            busi_send_material_detail AS bsmd
+        LEFT JOIN
+            busi_material as bm ON bm.material_id = bsmd.material_id
+        WHERE
+            bsmd.send_id = #{id}
+        <if test="materialName != null and materialName != ''">
+            AND bm.material_name like concat('%', #{materialName}, '%')
+        </if>
+        <if test="materialCode != null and materialCode != ''">
+            AND bm.material_code like concat('%', #{materialCode}, '%')
+        </if>
+        and bm.del = 1
+    </select>
+
+    <!--
+    * 保存发货明细
+    * @param busiSend
+    -->
+    <insert id="insertSendMaterialDetail">
+
+        INSERT INTO  busi_send_material_detail
+            (
+            send_id ,
+            material_id ,
+            send_quantity,
+            create_by ,
+            create_time
+            )
+            VALUES
+        <foreach collection="listMap" index="index" item="detail" open="" separator="," close="">
+            (
+            #{sendId},
+            #{detail.materialId},
+            #{detail.sendQuantity},
+            #{createBy},
+            now()
+            )
+        </foreach>
+    </insert>
+
+    <!--
+    * 保存发货信息
+    -->
+    <insert id="insertSend" parameterType="com.zel.business.domain.BusiSend" useGeneratedKeys="true" keyProperty="sendId">
+        INSERT INTO busi_send
+        (
+         send_number,
+         exhibition_id,
+         logistics_name,
+         logistics_number,
+        <if test="sendBy != null and sendBy !=''">send_by,</if>
+        <if test="sendTime != null ">send_time,</if>
+        <if test="receiveBy != null and receiveBy != '' ">receive_by,</if>
+        <if test="receiveAddress != null and receiveAddress != '' ">receive_address,</if>
+        <if test="receiveCompany != null and receiveCompany != '' ">receive_company,</if>
+        <if test="createBy != null ">create_by,</if>
+        <if test="remark != null and remark != '' ">remark,</if>
+        create_time,
+        status
+        )
+        VALUES
+        (
+         #{sendNumber},
+         #{exhibitionId},
+         #{logisticsName},
+         #{logisticsNumber},
+        <if test="sendBy != null and sendBy !=''">#{sendBy},</if>
+        <if test="sendTime != null ">#{sendTime},</if>
+        <if test="receiveBy != null and receiveBy != '' ">#{receiveBy},</if>
+        <if test="receiveAddress != null and receiveAddress != '' ">#{receiveAddress},</if>
+        <if test="receiveCompany != null and receiveCompany != '' ">#{receiveCompany},</if>
+        <if test="createBy != null"> #{createBy},</if>
+        <if test="remark != null and remark != '' ">#{remark},</if>
+        now(),
+        1
+        )
+    </insert>
+
+
+    <!--
+    * 查询流水号信息
+    -->
+    <select id="selectserialNumberInfo" resultType="com.zel.business.domain.BusiSerialNumberInfo">
+        SELECT
+          prefix as prefix,
+          ver as ver,
+          serial_number as serialNumber
+        FROM
+          busi_serial_number_info
+        order by create_time DESC
+        limit 1
+    </select>
+
+    <!--
+    * 更新流水号信息
+    -->
+    <update id="updateSerialNumber">
+        UPDATE
+            busi_serial_number_info
+        SET
+            serial_number = #{serialNumber}
+    </update>
+
+   <!--
+   * 查询人员Tree
+    * @param deptId
+    -->
+    <select id="selectUserTree" resultType="com.zel.business.domain.dto.BusiUserTreeOutDto">
+         SELECT
+             dept_id as deptId,
+             parent_id  as parentId ,
+             dept_name  as deptName
+         FROM
+             sys_dept
+         where
+             parent_id = 0
+    </select>
+
+    <!--
+        发货单选择收货人员 组织树查询
+        根据parentId 父级id 关联子集
+    -->
+    <select id="sendZTree" resultType="com.zel.common.core.domain.Ztree">
+        SELECT
+            sd.dept_id as id,
+            sd.parent_id as pId,
+            sd.dept_name as name,
+            sd.dept_name as title
+        FROM
+            sys_dept AS sd
+
+        UNION
+
+        SELECT
+            su.user_id as id,
+            su.dept_id as pId,
+            su.user_name as name,
+            su.user_name as title
+        FROM
+            sys_user AS su
+        where
+            su.status = 0
     </select>
 </mapper>

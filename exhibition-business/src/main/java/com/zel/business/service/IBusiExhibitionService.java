@@ -63,10 +63,10 @@ public interface IBusiExhibitionService {
 
     /**
      * 删除勘展图片
-     * 根据 urlId
-     * @param urlId
+     * 根据 prospectId
+     * @param prospectId
      */
-    void deleteProspectUrl(Long urlId);
+    void deleteProspectUrl(Long prospectId);
 
     /**
      * 更新展会状态
@@ -76,11 +76,11 @@ public interface IBusiExhibitionService {
 
     /**
      * 查询勘展图片
-     * @param urlId
+     * @param prospectId
      * @param exhibitionId
      * @return
      */
-    BusiProspect findProspectUrl(Long urlId, Long exhibitionId);
+    BusiProspect findProspectUrl(Long prospectId, Long exhibitionId);
 
     /**
      * 查询展会名称集合

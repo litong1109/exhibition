@@ -18,7 +18,7 @@ public class BusiProspect {
     /**
      * 勘展ID
      */
-    private Long urlId;
+    private Long prospectId;
 
     /**
      * 展会ID
@@ -55,12 +55,12 @@ public class BusiProspect {
      */
     private Date updateTime;
 
-    public Long getUrlId() {
-        return urlId;
+    public Long getProspectId() {
+        return prospectId;
     }
 
-    public void setUrlId(Long urlId) {
-        this.urlId = urlId;
+    public void setProspectId(Long prospectId) {
+        this.prospectId = prospectId;
     }
 
     public Long getExhibitionId() {
@@ -132,7 +132,7 @@ public class BusiProspect {
     @Override
     public String toString() {
         return "BusiProspect{" +
-                "urlId=" + urlId +
+                "prospectId=" + prospectId +
                 ", exhibitionId=" + exhibitionId +
                 ", fileName='" + fileName + '\'' +
                 ", prospectUrl='" + prospectUrl + '\'' +

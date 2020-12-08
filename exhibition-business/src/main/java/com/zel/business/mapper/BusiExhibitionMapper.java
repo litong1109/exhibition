@@ -67,10 +67,10 @@ public interface BusiExhibitionMapper {
 
     /**
      * 删除勘展图片
-     * 根据 urlId
-     * @param urlId
+     * 根据 prospectId
+     * @param prospectId
      */
-    int deleteProspectUrl(Long urlId);
+    int deleteProspectUrl(Long prospectId);
 
     /**
      * 更新展会状态
@@ -81,11 +81,11 @@ public interface BusiExhibitionMapper {
 
     /**
      * 查询勘展图片
-     * @param urlId
+     * @param prospectId
      * @param exhibitionId
      * @return
      */
-    BusiProspect findProspectUrl(@Param(value = "urlId")Long urlId, @Param(value = "exhibitionId") Long exhibitionId);
+    BusiProspect findProspectUrl(@Param(value = "prospectId")Long prospectId, @Param(value = "exhibitionId") Long exhibitionId);
 
 
     /**

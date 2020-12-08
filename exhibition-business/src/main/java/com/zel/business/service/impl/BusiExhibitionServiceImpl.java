@@ -105,8 +105,8 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
      * @param urlId
      */
     @Override
-    public void deleteProspectUrl(Long urlId) {
-        exhibitionMapper.deleteProspectUrl(urlId);
+    public void deleteProspectUrl(Long prospectId) {
+        exhibitionMapper.deleteProspectUrl(prospectId);
     }
 
     /**
@@ -121,14 +121,14 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
 
     /**
      * 查询勘展图片
-     * @param urlId
+     * @param prospectId
      * @param exhibitionId
      * @return
      */
     @Override
-    public BusiProspect findProspectUrl(Long urlId, Long exhibitionId) {
-        return exhibitionMapper.findProspectUrl(urlId,exhibitionId);
-    }
+    public BusiProspect findProspectUrl(Long prospectId, Long exhibitionId) {
+        return exhibitionMapper.findProspectUrl(prospectId,exhibitionId);
+}
 
     /**
      * 查询展会名称集合

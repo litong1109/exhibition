@@ -138,7 +138,7 @@ public class BusiExhibitionController extends BaseController
 
     /**
      * 导出展会信息
-     * @param exhibition
+     * @param colums
      */
     @RequiresPermissions("business:exhibition:export")
     @Log(title = "导出展会信息",businessType = BusinessType.EXPORT)
@@ -176,8 +176,9 @@ public class BusiExhibitionController extends BaseController
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
                 BusiProspect busiProspect = new BusiProspect(exhibitionId,file.getOriginalFilename(),prospectUrl);
+                busiProspect.setCreateBy(ShiroUtils.getSysUser().getLoginName());
                 exhibitionService.insertProspectUrl(busiProspect);
-                prospect = exhibitionService.findProspectUrl(busiProspect.getUrlId(),exhibitionId) ;
+                prospect = exhibitionService.findProspectUrl(busiProspect.getProspectId(),exhibitionId) ;
             }
         }
         catch (Exception e)
@@ -195,11 +196,11 @@ public class BusiExhibitionController extends BaseController
     @Log(title = "删除勘展图片", businessType = BusinessType.DELETE)
     @PostMapping("/deleteProspectUrl")
     @ResponseBody
-    public AjaxResult saveProspectUrl(@RequestParam(value = "key") Long urlId,@RequestParam(value = "exhibitionId") Long exhibitionId)
+    public AjaxResult saveProspectUrl(@RequestParam(value = "key") Long prospectId,@RequestParam(value = "exhibitionId") Long exhibitionId)
     {
         boolean result = false;
         try{
-            BusiProspect busiProspect = exhibitionService.findProspectUrl(urlId,exhibitionId);
+            BusiProspect busiProspect = exhibitionService.findProspectUrl(prospectId,exhibitionId);
             if(busiProspect != null){
 
                 if(!"".equals(busiProspect.getProspectUrl()) && busiProspect.getProspectUrl() != null)
@@ -210,7 +211,7 @@ public class BusiExhibitionController extends BaseController
                 if(!result){
                     new RuntimeException("删除图片失败");
                 }else{
-                    exhibitionService.deleteProspectUrl(busiProspect.getUrlId());
+                    exhibitionService.deleteProspectUrl(busiProspect.getProspectId());
                 }
             }
         }

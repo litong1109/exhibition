@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zel.business.mapper.BusiExhibitionMapper">
 
-    <resultMap id="BusiExhibitionResult" type="BusiExhibition">
+    <resultMap id="BusiExhibitionResult" type="com.zel.business.domain.BusiExhibition">
         <id property="exhibitionId" column="exhibition_id"/>
         <result property="exhibitionName" column="exhibition_name"/>
         <result property="status" column="status"/>
@@ -188,19 +188,23 @@
      * @param prospectUrl   勘展图片
      * @param exhibitionId  展会ID
     -->
-    <insert id="insertProspectUrl" parameterType="BusiProspect" useGeneratedKeys="true" keyProperty="urlId" keyColumn="url_id">
+    <insert id="insertProspectUrl" parameterType="com.zel.business.domain.BusiProspect" useGeneratedKeys="true" keyProperty="prospectId" keyColumn="prospect_id">
 
         INSERT INTO busi_prospect
         (
             exhibition_id,
             prospect_url,
-            file_name
+            file_name,
+            create_by,
+            create_time
         )
         VALUES
         (
             #{exhibitionId},
             #{prospectUrl},
-            #{fileName}
+            #{fileName},
+            #{createBy},
+            now()
         )
     </insert>
 
@@ -220,9 +224,10 @@
     * @param exhibitionId 展会ID
     -->
     <select id="selectProspectUrl" resultType="java.util.Map">
-        select prospect_url as prospectUrl,
-        file_name as fileName,
-        url_id as urlId
+        select
+            prospect_url as prospectUrl,
+            file_name as fileName,
+            prospect_id as prospectId
           from
               busi_prospect
           where
@@ -239,7 +244,7 @@
         FROM
             busi_prospect
         WHERE
-            url_id = #{urlId}
+            prospect_id = #{prospectId}
     </delete>
 
    <!--
@@ -261,14 +266,14 @@
     -->
     <select id="findProspectUrl" parameterType="long" resultType="com.zel.business.domain.BusiProspect">
       select
-          url_id as urlId,
+          prospect_id as prospectId,
           exhibition_id as exhibitionId,
           file_name as fileName,
           prospect_url as prospectUrl
         FROM
             busi_prospect
         WHERE
-            url_id = #{urlId}
+            prospect_id = #{prospectId}
             and exhibition_id = #{exhibitionId}
     </select>
     

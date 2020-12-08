@@ -432,7 +432,9 @@ var sub = {
     delColumn: function(column) {
     	sub.editColumn();
     	var subColumn = $.common.isEmpty(column) ? "index" : column;
+    	alert(subColumn)
     	var ids = $.table.selectColumns(subColumn);
+    	alert(ids)
         if (ids.length == 0) {
             $.modal.alertWarning("请至少选择一条记录");
             return;

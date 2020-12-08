@@ -91,7 +91,7 @@ var table = {
                     pagination: options.pagination,                     // 是否显示分页（*）
                     paginationLoop: options.paginationLoop,             // 是否启用分页条无限循环的功能
                     pageNumber: 1,                                      // 初始化加载第一页，默认第一页
-                    pageSize: options.pageSize,                         // 每页的记录行数（*） 
+                    pageSize: options.pageSize,                         // 每页的记录行数（*）
                     pageList: options.pageList,                         // 可供选择的每页的行数（*）
                     firstLoad: options.firstLoad,                       // 是否首次请求加载数据，对于数据较大可以配置false
                     escape: options.escape,                             // 转义HTML字符串
@@ -143,7 +143,7 @@ var table = {
             // 获取实例ID，如存在多个返回#id1,#id2 delimeter分隔符
             getOptionsIds: function(separator) {
             	var _separator = $.common.isEmpty(separator) ? "," : separator;
-            	var optionsIds = "";  
+            	var optionsIds = "";
             	$.each(table.config, function(key, value){
             		optionsIds += "#" + key + _separator;
             	});
@@ -160,7 +160,7 @@ var table = {
                         isAsc:          params.order
             		};
             	var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
-            	return $.extend(curParams, $.common.formToJSON(currentId)); 
+            	return $.extend(curParams, $.common.formToJSON(currentId));
             },
             // 请求获取数据后处理回调函数
             responseHandler: function(res) {
@@ -457,6 +457,11 @@ var table = {
                     silent: true
                 });
             },
+            // 刷新表格
+            appendTable: function(tableId,tableList) {
+                var appendList = $.common.isEmpty(tableList) ? null : tableList;
+                $("#" + tableId).bootstrapTable('append',appendList);
+            },
             // 查询表格指定列值
             selectColumns: function(column) {
             	var rows = $.map($("#" + table.options.id).bootstrapTable('getSelections'), function (row) {
@@ -546,6 +551,18 @@ var table = {
             hideAllColumns: function(tableId) {
             	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
             	$("#" + currentId).bootstrapTable('hideAllColumns');
+            },
+			// 取消列表所有选中行check
+            tableUncheckAll: function(tableId) {
+                var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
+                $("#" + currentId).bootstrapTable('uncheckAll');
+                var data = $("#" + currentId).bootstrapTable('getData');
+                $.each(data,function (index,event) {
+
+                    $(this).removeClass("active");
+
+                })
+                $("#" + currentId).bootstrapTable('uncheckAll');
             }
         },
         // 表格树封装处理
@@ -849,9 +866,9 @@ var table = {
 			},
             // 弹出层指定参数选项
             openOptions: function (options) {
-            	var _url = $.common.isEmpty(options.url) ? "/404.html" : options.url; 
-            	var _title = $.common.isEmpty(options.title) ? "系统窗口" : options.title; 
-                var _width = $.common.isEmpty(options.width) ? "800" : options.width; 
+            	var _url = $.common.isEmpty(options.url) ? "/404.html" : options.url;
+            	var _title = $.common.isEmpty(options.title) ? "系统窗口" : options.title;
+                var _width = $.common.isEmpty(options.width) ? "800" : options.width;
                 var _height = $.common.isEmpty(options.height) ? ($(window).height() - 50) : options.height;
                 var _btn = ['<i class="fa fa-check"></i> 确认', '<i class="fa fa-close"></i> 关闭'];
                 if ($.common.isEmpty(options.yes)) {
@@ -1001,7 +1018,7 @@ var table = {
             detail: function(id, width, height) {
             	table.set();
             	var _url = $.operate.detailUrl(id);
-            	var _width = $.common.isEmpty(width) ? "800" : width; 
+            	var _width = $.common.isEmpty(width) ? "800" : width;
                 var _height = $.common.isEmpty(height) ? ($(window).height() - 50) : height;
             	//如果是移动端，就使用自适应大小弹窗
             	if ($.common.isMobile()) {
@@ -1013,7 +1030,7 @@ var table = {
        				width: _width,
        				height: _height,
        				url: _url,
-       				skin: 'layui-layer-gray', 
+       				skin: 'layui-layer-gray',
        				btn: ['关闭'],
        				yes: function (index, layero) {
        	                layer.close(index);
@@ -1048,7 +1065,7 @@ var table = {
 	            	    $.operate.submit(url, "post", "json", data);
 	                }
             	});
-            	
+
             },
             // 批量删除信息
             removeAll: function() {
@@ -1064,6 +1081,22 @@ var table = {
         			$.operate.submit(url, "post", "json", data);
         		});
             },
+            // 批量移除信息
+            deleteAll: function() {
+                table.set();
+                // var subColumn = $.common.isEmpty(column) ? "index" : column;
+                // var rows = $.table.selectColumns(subColumn);
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                $.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
+                     $("#" + table.options.id).bootstrapTable('remove', { field: 'materialId', values: rows });
+                });
+            },
+
 
 			//确认保存勘展信息
             conf: function() {
@@ -1090,37 +1123,27 @@ var table = {
             // 添加发货物料  andy
             addMaterial: function(id) {
                 table.set("bootstrap-table1");
-                alert("fsadfas");
-
-                var data = { "ids": [1,2] };
-                console.log("asdf="+data);
                 var url = table.options.addMaterialUrl;
-                console.log(url)
-                // $.operate.submit(url, "post", "json",data);
-
-                // "/exhibition/business/send/addMaterial"
+                console.log(url);
                 var allTableData = $("#bootstrap-table1").bootstrapTable('getData');
+                console.log(JSON.stringify(allTableData));
                 var ids = [];
                 $.each(allTableData,function(index,evevt){
-                    //物料的id
-                    alert(event.id)
-                    ids.push(event.id)
-                })
-				alert(ids)
-				// ids = [1,2];
+                	//控制台打印获取的物料ID
+                    console.log(JSON.stringify(allTableData[index].materialId));
+                    ids.push(allTableData[index].materialId)
+                });
                 $.modal.open("添加" + table.options.modalName, table.options.addMaterialUrl.replace("{ids}", ids));
 
                 //获取表格的所有内容行
                 // var allTableData = datagrid.bootstrapTable('getData');
                 // $.each(allTableData,function(i,e){
-                //     alert(e.a_barcode)//a_barcode是table下columns的field
-                // })
+                 // })
             },
 
             // 查询发货物料明细 andy
             selectSendMaterialDetail: function(id) {
-        		alert(id)
-                table.set("bootstrap-table2");
+                 table.set("bootstrap-table2");
                 $.modal.open("查看" + table.options.modalName,  table.options.selectSendMaterialDetailUrl.replace("{id}", id));
             },
 
@@ -1385,7 +1408,7 @@ var table = {
         validate: {
         	// 判断返回标识是否唯一 false存在   true不存在
         	unique: function (value) {
-        		/*alert(value)*/
+
             	if (value == "0") {
                     return true;
                 }

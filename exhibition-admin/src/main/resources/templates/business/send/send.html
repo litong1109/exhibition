@@ -3,7 +3,7 @@
 <head>
 	<th:block th:include="include :: header('发货列表')" />
 	<th:block th:include="include :: layout-latest-css" />
-	<th:block th:include="include :: ztree-css" />
+	<!--<th:block th:include="include :: ztree-css" />-->
 </head>
 	<body class="gray-bg">
 		<div class="ui-layout-center">
@@ -34,9 +34,8 @@
 						</form>
 					</div>
 
-					<div class="row">
-						<div class="btn-group-sm" id="toolbar" role="group">
-						<a class="btn btn-success" onclick="$.operate.addTab()" shiro:hasPermission="business:exhibition:add">
+					<div class="btn-group-sm" id="toolbar" role="group">
+						<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="business:exhibition:add">
 							<i class="fa fa-plus"></i> 新增
 						</a>
 						 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:exhibition:edit">
@@ -48,11 +47,9 @@
 						<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:exhibition:export">
 							<i class="fa fa-download"></i> 导出
 						</a>
-						</div>
-
-						<div class="col-sm-12 select-table table-striped">
-							<table id="bootstrap-table"></table>
-						</div>
+					</div>
+					<div class="col-sm-12 select-table table-striped">
+						<table id="bootstrap-table"></table>
 					</div>
 				</div>
 			</div>
@@ -60,12 +57,12 @@
 
 		<th:block th:include="include :: footer" />
 		<th:block th:include="include :: layout-latest-js" />
-		<th:block th:include="include :: ztree-js" />
+		<!--<th:block th:include="include :: ztree-js" />-->
 		<script th:inline="javascript">
 			var editFlag = [[${@permission.hasPermi('business:exhibition:edit')}]];
 			var selectSendMaterialDetailFlag = [[${@permission.hasPermi('business:exhibition:selectSendMaterialDetail')}]];
 			var prefix = ctx + "business/send";
-			var dataStatus = [[${@dict.getType('busi_exhibition_status')}]];
+			var dataStatus = [[${@dict.getType('busi_send_status')}]];
 
 			$(function() {
 				var panehHidden = false;
@@ -86,7 +83,7 @@
 					removeUrl: prefix + "/remove",
 					exportUrl: prefix + "/export",
 					statusUrl: prefix + "/updateStatus",
-					selectSendMaterialDetailUrl: prefix + "/selectSendMaterialDetail/{id}",
+					selectSendMaterialDetailUrl: prefix + "/selectSendMaterial/{id}",
 					sortName: "sendTime",
 					sortOrder: "desc",
 					modalName: "发货信息",
