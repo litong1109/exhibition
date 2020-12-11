@@ -11,6 +11,7 @@ import com.zel.framework.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -106,6 +107,50 @@ public class BusiSendServiceImpl implements IBusiSendService {
     @Override
     public List<Ztree> sendZTree(){
         return sendMapper.sendZTree();
+    }
+
+    /**
+     * 删除发货信息
+     * @param ids
+     */
+    @Override
+    public int remove(Long ids[]) {
+        return sendMapper.updateDel(ids);
+    }
+
+    /**
+     * 发货
+     * @param ids
+     */
+    @Override
+    public int send(Long ids[]) {
+        Long sendBy = ShiroUtils.getSysUser().getUserId();
+        return sendMapper.send(ids,sendBy);
+    }
+
+    /**
+     * 查询发货信息
+     * @param id 发货单号
+     */
+    @Override
+    public BusiSend selectsendInfo(Long id) {
+
+        return sendMapper.selectsendInfo(id);
+    }
+
+    /**
+     * 保存修改发货信息
+     */
+    @Override
+    public int saveEdit(BusiSend busiSend) {
+        sendMapper.deleteSend(busiSend.getSendId());
+        sendMapper.deleteSendMaterialDetial(busiSend.getSendId());
+
+        busiSend.setCreateBy(ShiroUtils.getSysUser().getUserId());
+        int count1 = sendMapper.insertSend(busiSend);
+        busiSend.getSendId();
+        int count2 = sendMapper.insertSendMaterialDetail(busiSend);
+        return count2;
     }
 
 

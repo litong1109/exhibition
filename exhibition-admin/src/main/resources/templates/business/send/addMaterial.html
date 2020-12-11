@@ -139,14 +139,16 @@
             }
 
             function submitHandler(){
+
                 var tableLeft = $('#bootstrap-table').bootstrapTable();
-                var tableRight = $('#bootstrap-table1').bootstrapTable();
+                // var tableRight = $('#bootstrap-table1').bootstrapTable();
                 var selectedContent =  tableLeft.bootstrapTable('getSelections');
                 console.log(JSON.stringify(selectedContent));
                 $.modal.close();
                 var parent = window.parent;
-                parent.$.table.appendTable("bootstrap-table1", selectedContent);
-                parent.$.table.tableUncheckAll("bootstrap-table1");
+                var tableId =  parent.table.options.id;
+                parent.$.table.appendTable(tableId, selectedContent);
+                parent.$.table.tableUncheckAll(tableId);
 
             }
         </script>

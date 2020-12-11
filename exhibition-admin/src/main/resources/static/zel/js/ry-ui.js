@@ -457,7 +457,7 @@ var table = {
                     silent: true
                 });
             },
-            // 刷新表格
+            // 迁移表格
             appendTable: function(tableId,tableList) {
                 var appendList = $.common.isEmpty(tableList) ? null : tableList;
                 $("#" + tableId).bootstrapTable('append',appendList);
@@ -560,7 +560,13 @@ var table = {
                 $.each(data,function (index,event) {
 
                     $(this).removeClass("active");
-
+                    if($.common.isEmpty(data[index].sendQuantity)){
+                        $("#"+ tableId).bootstrapTable('updateCell', {
+                            index: index,       //行索引
+                            field: 'sendQuantity',  //列名
+                            value: 0        //cell值
+                        })
+					}
                 })
                 $("#" + currentId).bootstrapTable('uncheckAll');
             }
@@ -1069,7 +1075,7 @@ var table = {
             },
             // 批量删除信息
             removeAll: function() {
-            	table.set();
+
         		var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
         		if (rows.length == 0) {
         			$.modal.alertWarning("请至少选择一条记录");
@@ -1081,21 +1087,38 @@ var table = {
         			$.operate.submit(url, "post", "json", data);
         		});
             },
-            // 批量移除信息
-            deleteAll: function() {
-                table.set();
-                // var subColumn = $.common.isEmpty(column) ? "index" : column;
-                // var rows = $.table.selectColumns(subColumn);
-                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
 
+            // 发货
+            sendMaterial: function() {
+                table.set();
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
                 if (rows.length == 0) {
                     $.modal.alertWarning("请至少选择一条记录");
                     return;
                 }
-                $.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
-                     $("#" + table.options.id).bootstrapTable('remove', { field: 'materialId', values: rows });
+                $.modal.confirm("确认发货选中的" + rows.length + "条数据吗?", function() {
+                    var url = table.options.sendUrl;
+                    var data = { "ids": rows.join() };
+                    $.operate.submit(url, "post", "json", data);
                 });
             },
+
+
+            // 批量移除信息
+            // deleteAll: function() {
+            //     table.set();
+            //     // var subColumn = $.common.isEmpty(column) ? "index" : column;
+            //     // var rows = $.table.selectColumns(subColumn);
+            //     var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            //
+            //     if (rows.length == 0) {
+            //         $.modal.alertWarning("请至少选择一条记录");
+            //         return;
+            //     }
+            //     $.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
+            //          $("#" + table.options.id).bootstrapTable('remove', { field: 'materialId', values: rows });
+            //     });
+            // },
 
 
 			//确认保存勘展信息
@@ -1122,10 +1145,12 @@ var table = {
             },
             // 添加发货物料  andy
             addMaterial: function(id) {
-                table.set("bootstrap-table1");
+        		var tableId = table.options.id;
+				alert(tableId);
+                table.set(tableId);
                 var url = table.options.addMaterialUrl;
                 console.log(url);
-                var allTableData = $("#bootstrap-table1").bootstrapTable('getData');
+                var allTableData = $("#"+tableId).bootstrapTable('getData');
                 console.log(JSON.stringify(allTableData));
                 var ids = [];
                 $.each(allTableData,function(index,evevt){
@@ -1139,6 +1164,22 @@ var table = {
                 // var allTableData = datagrid.bootstrapTable('getData');
                 // $.each(allTableData,function(i,e){
                  // })
+            },
+
+            // 修改发货物料  andy
+            editAddMaterial: function(id) {
+                table.set("bootstrap-table2");
+                var url = table.options.addMaterialUrl;
+                console.log(url);
+                var allTableData = $("#bootstrap-table2").bootstrapTable('getData');
+                console.log(JSON.stringify(allTableData));
+                var ids = [];
+                $.each(allTableData,function(index,evevt){
+                    //控制台打印获取的物料ID
+                    console.log(JSON.stringify(allTableData[index].materialId));
+                    ids.push(allTableData[index].materialId)
+                });
+                $.modal.open("添加" + table.options.modalName, table.options.addMaterialUrl.replace("{ids}", ids));
             },
 
             // 查询发货物料明细 andy
@@ -1165,7 +1206,8 @@ var table = {
             },
             // 修改信息
             edit: function(id) {
-            	table.set();
+                table.set();
+
             	if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
             		var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
                 	if ($.common.isEmpty(row)) {
@@ -1184,11 +1226,11 @@ var table = {
 			//  勘展
             prospect: function(id) {
                 table.set();
-                // var status = $.table.selectColumns("status");
-                // if (status == 2 ){
-                 //    $.modal.alertWarning("当前展会已勘展");
-                 //    return;
-				// }
+                var status = $.table.selectColumns("status");
+                if (status == 2 ){
+                    $.modal.alertWarning("当前展会已勘展");
+                    return;
+				}
                 if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
                     var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
                     if ($.common.isEmpty(row)) {
@@ -1230,6 +1272,33 @@ var table = {
             		}
             	}
             	$.modal.openFull("修改" + table.options.modalName, url);
+            },
+
+            // 发货修改信息 全屏
+            sendEditFull: function(id) {
+                table.set();
+                var status = $.table.selectColumns("status");
+                if (status != 1 ){
+                    $.modal.alertWarning("当前状态不可修改");
+                    return;
+                }
+                var url = "/404.html";
+                if ($.common.isNotEmpty(id)) {
+                    url = table.options.updateUrl.replace("{id}", id);
+                } else {
+                    if(table.options.type == table_type.bootstrapTreeTable) {
+                        var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
+                        if ($.common.isEmpty(row)) {
+                            $.modal.alertWarning("请至少选择一条记录");
+                            return;
+                        }
+                        url = table.options.updateUrl.replace("{id}", row[table.options.uniqueId]);
+                    } else {
+                        var row = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                        url = table.options.updateUrl.replace("{id}", row);
+                    }
+                }
+                $.modal.openFull("修改" + table.options.modalName, url);
             },
             // 修改访问地址
             editUrl: function(id) {

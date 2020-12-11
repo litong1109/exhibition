@@ -94,4 +94,10 @@ public interface IBusiExhibitionService {
      * @return
      */
     List<BusiExhibition> selectExportExhibitionList(Long[] colums);
+
+    /**
+     * 加载可修改展会信息
+     * @param id
+     */
+    List<BusiExhibition> selectEditExhibitionInfo(Long id);
 }

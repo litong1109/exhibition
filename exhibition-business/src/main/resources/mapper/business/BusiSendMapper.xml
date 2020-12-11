@@ -5,34 +5,38 @@
 <mapper namespace="com.zel.business.mapper.BusiSendMapper">
 
     <resultMap id="SendResultMap" type="com.zel.business.domain.BusiSend">
-        <id column="send_id" property="sendId"/>
-        <result column="send_number" property="sendNumber"/>
-        <result column="exhibition_id" property="exhibitionId"/>
-        <result column="logistics_name" property="logisticsName"/>
-        <result column="logistics_number" property="logisticsNumber"/>
-        <result column="status" property="status"/>
-        <result column="send_by" property="sendBy"/>
-        <result column="send_time" property="sendTime"/>
-        <result column="receive_by" property="receiveBy"/>
-        <result column="receive_address" property="receiveAddress"/>
-        <result column="receive_company" property="receiveCompany"/>
-        <result property="createBy" column="create_by"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateBy" column="update_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="del" column="del"/>
-        <result property="remark" column="remark"/>
-
+        <id     property="sendId"           column="send_id" />
+        <result property="sendNumber"       column="send_number" />
+        <result property="exhibitionId"     column="exhibition_id" />
+        <result property="logisticsName"    column="logistics_name" />
+        <result property="logisticsNumber"  column="logistics_number" />
+        <result property="status"           column="status" />
+        <result property="sendBy"           column="send_by" />
+        <result property="sendTime"         column="send_time" />
+        <result property="receiveBy"        column="receive_by" />
+        <result property="receiveAddress"   column="receive_address" />
+        <result property="deptId"           column="dept_id" />
+        <result property="createBy"         column="create_by"/>
+        <result property="createTime"       column="create_time"/>
+        <result property="updateBy"         column="update_by"/>
+        <result property="updateTime"       column="update_time"/>
+        <result property="del"              column="del"/>
+        <result property="remark"           column="remark"/>
         <result property="busiExhibitions.exhibitionName" column="exhibition_name"/>
         <result property="busiExhibitions.organizer" column="organizer"/>
         <result property="busiExhibitions.address" column="address"/>
+        <result property="deptName" column="deptName"/>
+        <result property="receiveName" column="receiveName"/>
+        <result property="sendName" column="sendName"/>
+        <result property="createName" column="createName"/>
+
     </resultMap>
 
     <resultMap id="UserTreeResultMap" type="com.zel.business.domain.dto.BusiUserTreeOutDto">
-        <result property="deptId" column="dept_id"/>
+        <result property="deptId"   column="dept_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="deptName" column="dept_name"/>
-        <result property="userId" column="user_id"/>
+        <result property="userId"   column="user_id"/>
         <result property="userName" column="user_name"/>
     </resultMap>
 
@@ -51,14 +55,14 @@
              send_time ,
              receive_by ,
              receive_address ,
-             receive_company ,
+             dept_id ,
              create_by ,
              create_time ,
              update_by ,
              update_time ,
-             del ,
              remark
-        FROM busi_send
+        FROM
+            busi_send
     </sql>
 
     <!--
@@ -67,27 +71,41 @@
     -->
     <select id="selectSendList"  resultMap="SendResultMap">
         SELECT
-            bs.send_id ,
-            bs.send_number ,
-            bs.exhibition_id ,
-            bs.logistics_name ,
-            bs.logistics_number ,
-            bs.status ,
-            bs.send_by ,
-            bs.send_time ,
-            bs.receive_by ,
-            bs.receive_address ,
-            bs.receive_company ,
-            bs.create_by ,
-            bs.create_time ,
+            bs.send_id,
+            bs.send_number,
+            bs.exhibition_id,
+            bs.logistics_name,
+            bs.logistics_number,
+            bs. STATUS,
+            bs.send_by,
+            bs.send_time,
+            bs.receive_by,
+            bs.receive_address,
+            bs.dept_id,
+            bs.create_by,
+            bs.create_time,
             bs.remark,
             be.exhibition_name,
             be.address,
-            be.organizer
-        FROM busi_send as bs
-        left join busi_exhibition as be on bs.exhibition_id = be.exhibition_id
-        where
-            1=1
+            be.organizer,
+            sd.dept_name as deptName,
+            sr.user_name as receiveName,
+            ss.user_name as sendName,
+            sc.user_name as createName
+        FROM
+            busi_send AS bs
+        LEFT JOIN
+            busi_exhibition AS be ON bs.exhibition_id = be.exhibition_id
+        LEFT JOIN
+            sys_dept AS sd ON bs.dept_id = sd.dept_id
+        LEFT JOIN
+            sys_user AS sr ON bs.receive_by = sr.user_id
+        LEFT JOIN
+            sys_user AS ss ON bs.send_by = ss.user_id
+        LEFT JOIN
+            sys_user AS sc ON bs.create_by = sc.user_id
+        WHERE
+            bs.del = 1
         <if test="sendNumber != null and sendNumber !=''">
             and  send_number like concat ('%', #{sendNumber} ,'%')
         </if>
@@ -128,8 +146,8 @@
         <if test="receiveAddress != null and receiveAddress !=''">
             and receive_address like concat ('%', #{receiveAddress} ,'%')
         </if>
-        <if test="receiveCompany != null and receiveCompany !=''">
-            and receive_company like concat ('%', #{receiveCompany} ,'%')
+        <if test="deptId != null">
+            and dept_id = #{deptId}
         </if>
         <if test="createBy != null">
             and create_by like concat ('%', #{createBy} ,'%')
@@ -221,10 +239,10 @@
          logistics_number,
         <if test="sendBy != null and sendBy !=''">send_by,</if>
         <if test="sendTime != null ">send_time,</if>
-        <if test="receiveBy != null and receiveBy != '' ">receive_by,</if>
-        <if test="receiveAddress != null and receiveAddress != '' ">receive_address,</if>
-        <if test="receiveCompany != null and receiveCompany != '' ">receive_company,</if>
-        <if test="createBy != null ">create_by,</if>
+         receive_by,
+         receive_address,
+         dept_id,
+         create_by,
         <if test="remark != null and remark != '' ">remark,</if>
         create_time,
         status
@@ -237,10 +255,10 @@
          #{logisticsNumber},
         <if test="sendBy != null and sendBy !=''">#{sendBy},</if>
         <if test="sendTime != null ">#{sendTime},</if>
-        <if test="receiveBy != null and receiveBy != '' ">#{receiveBy},</if>
-        <if test="receiveAddress != null and receiveAddress != '' ">#{receiveAddress},</if>
-        <if test="receiveCompany != null and receiveCompany != '' ">#{receiveCompany},</if>
-        <if test="createBy != null"> #{createBy},</if>
+         #{receiveBy},
+         #{receiveAddress},
+         #{deptId},
+         #{createBy},
         <if test="remark != null and remark != '' ">#{remark},</if>
         now(),
         1
@@ -274,7 +292,7 @@
 
    <!--
    * 查询人员Tree
-    * @param deptId
+   *  @param deptId
     -->
     <select id="selectUserTree" resultType="com.zel.business.domain.dto.BusiUserTreeOutDto">
          SELECT
@@ -312,4 +330,90 @@
         where
             su.status = 0
     </select>
+
+    <!--
+    * 更新状态为已发货
+    -->
+    <update id="updateDel">
+        update
+            busi_send
+        set
+            del= 2
+        where
+            send_id in
+            <foreach collection="ids" item="id" index="index" open="(" separator="," close=")" >
+              #{id}
+            </foreach>
+    </update>
+
+    <!--
+    * 发货
+    -->
+    <update id="send">
+        update
+            busi_send
+        set
+            status = 2,
+            send_by = #{sendBy},
+            send_time = now()
+        where
+            send_id in
+            <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </update>
+
+    <!--
+    * 查询发货信息
+    * @param id 发货单号
+    -->
+    <select id="selectsendInfo" resultMap="SendResultMap">
+        SELECT
+            bs.send_id ,
+            bs.send_number ,
+            bs.exhibition_id ,
+            bs.logistics_name ,
+            bs.logistics_number ,
+            bs.status ,
+            bs.send_by ,
+            bs.send_time ,
+            bs.receive_by ,
+            bs.receive_address ,
+            bs.dept_id ,
+            bs.create_by ,
+            bs.create_time ,
+            bs.remark,
+            be.exhibition_name,
+            be.address,
+            be.organizer,
+            sd.dept_name as deptName,
+            sr.user_name as receiveName
+        FROM
+            busi_send as bs
+        left join
+            busi_exhibition as be on bs.exhibition_id = be.exhibition_id
+        LEFT JOIN
+            sys_dept AS sd ON bs.dept_id = sd.dept_id
+        LEFT JOIN
+            sys_user AS sr ON bs.receive_by = sr.user_id
+        where
+            send_id = #{id}
+    </select>
+    
+    <delete id="deleteSend" parameterType="long">
+        delete
+        from
+            busi_send
+        where
+            send_id = #{sendId}
+    </delete>
+
+    <delete id="deleteSendMaterialDetial" parameterType="long">
+        delete
+        from
+            busi_send_material_detail
+        where
+            send_id = #{sendId}
+    </delete>
+
 </mapper>

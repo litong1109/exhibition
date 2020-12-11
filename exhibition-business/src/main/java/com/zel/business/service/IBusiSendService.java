@@ -7,6 +7,7 @@ import com.zel.business.domain.dto.BusiSendMaterialDto;
 import com.zel.business.domain.dto.BusiUserTreeOutDto;
 import com.zel.common.core.domain.Ztree;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public interface IBusiSendService {
@@ -44,4 +45,27 @@ public interface IBusiSendService {
      * @return
      */
     List<Ztree> sendZTree();
+
+    /**
+     * 删除发货信息
+     * @param ids
+     */
+    int remove(Long ids[]);
+
+    /**
+     * 发货
+     * @param ids
+     */
+    int send(Long ids[]);
+
+    /**
+     * 查询发货信息
+     * @param id 发货单号
+     */
+    BusiSend selectsendInfo(Long id);
+
+    /**
+     * 保存修改发货信息
+     */
+    int saveEdit(BusiSend busiSend);
 }

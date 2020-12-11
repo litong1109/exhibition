@@ -18,6 +18,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="del" column="del"/>
         <result property="remark" column="remark"/>
+        <result property="flag" column="flag"/>
     </resultMap>
 
     <resultMap id="BusiProspectResult" type="com.zel.business.domain.BusiExhibition">
@@ -286,12 +287,12 @@
       WHERE
         exhibition_id NOT IN
            (SELECT
-                bs.exhibition_id
+                exhibition_id
             FROM
-                busi_send as bs
-            WHERE
-                1 = 1)
+                busi_send
+            )
     </select>
+
 
     <select id="selectExportExhibitionList" resultMap="BusiExhibitionResult">
         <include refid="selectExhibitionVo"/>
@@ -299,6 +300,45 @@
               <foreach collection="colums" item="id" index="index" open="(" separator="," close=")">
                   #{id}
               </foreach>
+    </select>
+
+
+    <!--
+    * 加载可修改展会信息
+    * @param id
+    -->
+    <select id="selectEditExhibitionInfo" resultMap="BusiExhibitionResult">
+        SELECT
+            exhibition_id,
+            exhibition_name
+        FROM
+            busi_exhibition
+        WHERE
+            exhibition_id NOT IN (
+                SELECT
+                    exhibition_id
+                FROM
+                     busi_send
+                WHERE
+                        send_id != #{id}
+	          )
+    </select>
+    
+    <select id="selectExhibition" resultMap="BusiExhibitionResult">
+        select
+            exhibition_id,
+            exhibition_name
+        FROM
+            busi_exhibition
+        where
+            exhibition_id in
+            (SELECT
+                    exhibition_id
+                FROM
+                     busi_send
+                WHERE
+                        send_id = #{id}
+            )
     </select>
 
 </mapper>

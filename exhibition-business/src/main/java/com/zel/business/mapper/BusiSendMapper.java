@@ -7,6 +7,7 @@ import com.zel.common.core.domain.Ztree;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -64,4 +65,26 @@ public interface BusiSendMapper {
      */
     List<Ztree> sendZTree();
 
+    /**
+     * 删除发货信息
+     * @param ids
+     */
+    int updateDel(@Param(value = "ids") Long ids[]);
+
+    /**
+     * 发货
+     * @param ids
+     */
+    int send(@Param(value = "ids") Long ids[],
+             @Param(value = "sendBy") Long sendBy);
+
+    /**
+     * 查询发货信息
+     * @param id 发货单号
+     */
+    BusiSend selectsendInfo(@Param(value = "id") Long id);
+
+    void deleteSend(@Param(value = "sendId") Long sendId);
+
+    void deleteSendMaterialDetial(@Param(value = "sendId") Long sendId);
 }

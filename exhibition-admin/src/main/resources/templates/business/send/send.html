@@ -38,14 +38,17 @@
 						<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="business:exhibition:add">
 							<i class="fa fa-plus"></i> 新增
 						</a>
-						 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:exhibition:edit">
+						 <a class="btn btn-primary single disabled" onclick="$.operate.sendEditFull()" shiro:hasPermission="business:exhibition:edit">
 							<i class="fa fa-edit"></i> 修改
 						</a>
 						<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:exhibition:remove">
 							<i class="fa fa-remove"></i> 删除
 						</a>
-						<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:exhibition:export">
+						<a class="btn btn-warning multiple disabled" onclick="$.table.exportExcel()" shiro:hasPermission="business:exhibition:export">
 							<i class="fa fa-download"></i> 导出
+						</a>
+						<a class="btn btn-info" onclick="$.operate.sendMaterial()" shiro:hasPermission="business:send:send">
+							<i class="fa "></i> 发货
 						</a>
 					</div>
 					<div class="col-sm-12 select-table table-striped">
@@ -76,20 +79,24 @@
 
 			function querysendList() {
 				var options = {
-					url: prefix + "/list",
-					prospectUrl: prefix + "/prospect/{id}",
-					createUrl: prefix + "/add",
-					updateUrl: prefix + "/edit/{id}",
-					removeUrl: prefix + "/remove",
-					exportUrl: prefix + "/export",
-					statusUrl: prefix + "/updateStatus",
+                    url: prefix + "/list",
+                    createUrl: prefix + "/add",
+                    removeUrl: prefix + "/remove",
+                    sendUrl: prefix + "/send",
+                    updateUrl: prefix + "/edit/{id}",
+                    // exportUrl: prefix + "/export",
 					selectSendMaterialDetailUrl: prefix + "/selectSendMaterial/{id}",
+                    uniqueId: "sendId",
 					sortName: "sendTime",
 					sortOrder: "desc",
 					modalName: "发货信息",
 					columns: [{
 						checkbox: true
 					},
+                        {
+                            field: 'sendId',
+                            title: '发货ID'
+                        },
 						{
 							field: 'sendNumber',
 							title: '发货单号'
@@ -123,7 +130,7 @@
 							}
 						},
 						{
-							field: 'sendBy',
+							field: 'sendName',
 							title: '发货人'
 						},
 						{
@@ -131,7 +138,7 @@
 							title: '发货时间'
 						},
 						{
-							field: 'receiveBy',
+							field: 'receiveName',
 							title: '收货人'
 						},
 						{
@@ -139,7 +146,7 @@
 							title: '收货地址'
 						},
 						{
-							field: 'receiveCompany',
+							field: 'deptName',
 							title: '收货公司'
 						},
 						{

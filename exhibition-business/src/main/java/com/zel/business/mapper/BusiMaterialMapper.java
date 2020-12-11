@@ -70,4 +70,6 @@ public interface BusiMaterialMapper {
     List<BusiMaterial> selectMaterial(@Param(value = "ids") Long[] ids,
                                       @Param(value = "materialName") String materialName,
                                       @Param(value = "materialCode")String materialCode);
+
+
 }

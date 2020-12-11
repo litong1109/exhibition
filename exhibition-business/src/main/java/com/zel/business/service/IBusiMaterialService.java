@@ -55,10 +55,11 @@ public interface IBusiMaterialService {
      */
     Map<String,Object>  importMaterial(List<BusiMaterial> materialList);
 
- /**
-  * 查询可选发货物料
-  * @param ids
-  * @return
-  */
+   /**
+    * 查询可选发货物料
+    * @param ids
+    */
     List<BusiMaterial> selectMaterial(Long[] ids,String materialName,String materialCode);
+
+
 }

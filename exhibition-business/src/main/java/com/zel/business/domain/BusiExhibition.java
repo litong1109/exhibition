@@ -102,6 +102,17 @@ public class BusiExhibition {
      */
     private List<Map> prospectUrlList;
 
+    /** 是否为发货展会标识 默认不是 */
+    private boolean flag = false;
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
     public List<Map> getProspectUrlList() {
         return prospectUrlList;
     }

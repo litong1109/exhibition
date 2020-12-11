@@ -194,11 +194,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="deleteMaterialById" parameterType="long">
         update busi_material
         set
-           del=2
-        where material_id in
-        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")" >
-            #{id}
-        </foreach>
+            del=2
+        where
+            material_id in
+            <foreach collection="ids" index="index" item="id" open="(" separator="," close=")" >
+                #{id}
+            </foreach>
     </update>
 
 

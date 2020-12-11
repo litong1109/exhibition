@@ -22,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -65,7 +66,6 @@ public class BusiSendController extends BaseController {
 
     /**
      * 新增发货
-     * @param
      */
     @GetMapping(value = "/add")
     public String add(ModelMap mmap){
@@ -105,20 +105,13 @@ public class BusiSendController extends BaseController {
      */
     @GetMapping({"/addMaterial/{ids}","/addMaterial"})
     public String addMaterial(@PathVariable(value = "ids",required = false) Long[] ids, ModelMap map){
-        try {
-            //materialService.selectMaterial(ids)
             map.put("ids",ids);
-        }catch (Exception e){
-            e.getMessage();
-        }
-
          return prefix + "/addMaterial";
     }
 
     /**
-     * 查询可添加物料列表
+     * 加载可添加物料列表
      */
-
     @PostMapping("/addMaterialList")
     @ResponseBody
     public TableDataInfo addMaterialList(@RequestParam(value = "ids[]",required = false) Long[] ids,
@@ -165,8 +158,49 @@ public class BusiSendController extends BaseController {
         return sendService.sendZTree();
     }
 
+    /**
+     * 删除发货信息
+     * @param ids
+     */
+    @PostMapping(value = "/remove")
+    @ResponseBody
+    public AjaxResult remove(Long ids[]){
+
+        return  toAjax(sendService.remove(ids));
+    }
 
 
+    /**
+     * 发货
+     * @param ids
+     */
+    @PostMapping(value = "/send")
+    @ResponseBody
+    public AjaxResult send(Long ids[]){
+        return  toAjax(sendService.send(ids));
+    }
 
+
+    /**
+     * 加载修改发货信息
+     * @param id 发货ID
+     */
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable (value = "id") Long id,ModelMap mmp){
+        mmp.put("sendInfo",sendService.selectsendInfo(id));
+        mmp.put("exhibitionInfo", exhibitionService.selectEditExhibitionInfo(id));
+        return prefix + "/edit";
+    }
+
+    /**
+     * 保存修改发货信息
+     */
+    @Log(title = "保存修改发货信息",businessType = BusinessType.UPDATE)
+    @PostMapping("/saveEdit")
+    @ResponseBody
+    public AjaxResult saveEdit(@Validated BusiSend busiSend){
+
+        return toAjax(sendService.saveEdit(busiSend));
+    }
 
 }

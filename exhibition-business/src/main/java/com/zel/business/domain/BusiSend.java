@@ -1,5 +1,8 @@
 package com.zel.business.domain;
 
+import com.zel.system.domain.SysDept;
+import com.zel.system.domain.SysUser;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +26,7 @@ public class BusiSend {
     /**
      * 展会id
      */
-    private String exhibitionId;
+    private Long exhibitionId;
 
     /**
      * 物流名称
@@ -54,7 +57,7 @@ public class BusiSend {
     /**
      * 收货人
      */
-    private String receiveBy;
+    private Long receiveBy;
 
     /**
      * 收货地址
@@ -62,9 +65,9 @@ public class BusiSend {
     private String receiveAddress;
 
     /**
-     * 收货公司
+     * 收货部门ID
      */
-    private String receiveCompany;
+    private Long  deptId;
 
     /**
      * 创建人
@@ -102,6 +105,50 @@ public class BusiSend {
      */
     private BusiExhibition busiExhibitions;
 
+    /*收货部门*/
+    private String deptName;
+
+    /*收货人*/
+    private String receiveName;
+
+    /*发货人*/
+    private String sendName;
+
+    /*创建人*/
+    private String createName;
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getReceiveName() {
+        return receiveName;
+    }
+
+    public void setReceiveName(String receiveName) {
+        this.receiveName = receiveName;
+    }
+
+    public String getSendName() {
+        return sendName;
+    }
+
+    public void setSendName(String sendName) {
+        this.sendName = sendName;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
     private List<Map> listMap;
 
     private Integer sendQuantity;
@@ -134,11 +181,11 @@ public class BusiSend {
         return sendNumber;
     }
 
-    public String getExhibitionId() {
+    public Long getExhibitionId() {
         return exhibitionId;
     }
 
-    public void setExhibitionId(String exhibitionId) {
+    public void setExhibitionId(Long exhibitionId) {
         this.exhibitionId = exhibitionId;
     }
 
@@ -186,11 +233,11 @@ public class BusiSend {
         this.sendTime = sendTime;
     }
 
-    public String getReceiveBy() {
+    public Long getReceiveBy() {
         return receiveBy;
     }
 
-    public void setReceiveBy(String receiveBy) {
+    public void setReceiveBy(Long receiveBy) {
         this.receiveBy = receiveBy;
     }
 
@@ -202,12 +249,12 @@ public class BusiSend {
         this.receiveAddress = receiveAddress;
     }
 
-    public String getReceiveCompany() {
-        return receiveCompany;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setReceiveCompany(String receiveCompany) {
-        this.receiveCompany = receiveCompany;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public Long getCreateBy() {

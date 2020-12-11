@@ -102,7 +102,7 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     /**
      * 删除勘展图片
      * 根据 urlId
-     * @param urlId
+     * @param
      */
     @Override
     public void deleteProspectUrl(Long prospectId) {
@@ -147,5 +147,23 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
     @Override
     public List<BusiExhibition> selectExportExhibitionList(Long[] colums) {
         return exhibitionMapper.selectExportExhibitionList(colums);
+    }
+
+    /**
+     * 加载可修改展会信息
+     * @param id
+     */
+    @Override
+    public List<BusiExhibition> selectEditExhibitionInfo(Long id) {
+        List<BusiExhibition> sendExhibition = exhibitionMapper.selectEditExhibitionInfo(id);
+        BusiExhibition exhibition = exhibitionMapper.selectExhibition(id);
+
+        for(BusiExhibition  se : sendExhibition){
+            if(se.getExhibitionId() == exhibition.getExhibitionId() ){
+                se.setFlag(true);
+                break;
+            }
+        }
+        return sendExhibition;
     }
 }
