@@ -1,17 +1,22 @@
 package com.zel.business.domain;
 
-import com.zel.system.domain.SysDept;
-import com.zel.system.domain.SysUser;
-
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
- * 发货信息 busi_send
- * @author andy
+ * busi_receive
  */
-public class BusiSend {
+public class BusiReceive {
+
+
+    /**
+     * 收货ID
+     */
+    private Long receiveId;
+
+    /**
+     *收货单号
+     */
+    private String receiveNumber;
 
     /**
      * 发货ID
@@ -47,7 +52,7 @@ public class BusiSend {
     /**
      * 发货人
      */
-    private Long sendBy;
+    private String sendBy;
 
     /**
      * 发货时间
@@ -55,19 +60,9 @@ public class BusiSend {
     private Date sendTime;
 
     /**
-     * 收货人
+     * 收货时间
      */
-    private Long receiveBy;
-
-    /**
-     * 收货地址
-     */
-    private String receiveAddress;
-
-    /**
-     * 收货部门ID
-     */
-    private Long  deptId;
+    private Date receiveTime;
 
     /**
      * 创建人
@@ -105,26 +100,19 @@ public class BusiSend {
      */
     private BusiExhibition busiExhibitions;
 
-    /*收货部门*/
-    private String deptName;
-
-    /*收货人*/
-    private String receiveName;
-
     /*发货人*/
     private String sendName;
 
     /*创建人*/
     private String createName;
 
-    /*开始时间*/
-    private String startTime;
+    public Long getReceiveId() {
+        return receiveId;
+    }
 
-   /* 结束时间*/
-    private String endTime;
-
-   /* 收货单号*/
-    private String receiveNumber;
+    public void setReceiveId(Long receiveId) {
+        this.receiveId = receiveId;
+    }
 
     public String getReceiveNumber() {
         return receiveNumber;
@@ -132,74 +120,6 @@ public class BusiSend {
 
     public void setReceiveNumber(String receiveNumber) {
         this.receiveNumber = receiveNumber;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String getReceiveName() {
-        return receiveName;
-    }
-
-    public void setReceiveName(String receiveName) {
-        this.receiveName = receiveName;
-    }
-
-    public String getSendName() {
-        return sendName;
-    }
-
-    public void setSendName(String sendName) {
-        this.sendName = sendName;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    private List<Map> listMap;
-
-    private Integer sendQuantity;
-
-    public Integer getSendQuantity() {
-        return sendQuantity;
-    }
-
-    public void setSendQuantity(Integer sendQuantity) {
-        this.sendQuantity = sendQuantity;
-    }
-
-    public List<Map> getListMap() {
-        return listMap;
-    }
-
-    public void setListMap(List<Map> listMap) {
-        this.listMap = listMap;
     }
 
     public Long getSendId() {
@@ -214,16 +134,16 @@ public class BusiSend {
         return sendNumber;
     }
 
+    public void setSendNumber(String sendNumber) {
+        this.sendNumber = sendNumber;
+    }
+
     public Long getExhibitionId() {
         return exhibitionId;
     }
 
     public void setExhibitionId(Long exhibitionId) {
         this.exhibitionId = exhibitionId;
-    }
-
-    public void setSendNumber(String sendNumber) {
-        this.sendNumber = sendNumber;
     }
 
     public String getLogisticsName() {
@@ -250,11 +170,11 @@ public class BusiSend {
         this.status = status;
     }
 
-    public Long getSendBy() {
+    public String getSendBy() {
         return sendBy;
     }
 
-    public void setSendBy(Long sendBy) {
+    public void setSendBy(String sendBy) {
         this.sendBy = sendBy;
     }
 
@@ -266,28 +186,12 @@ public class BusiSend {
         this.sendTime = sendTime;
     }
 
-    public Long getReceiveBy() {
-        return receiveBy;
+    public Date getReceiveTime() {
+        return receiveTime;
     }
 
-    public void setReceiveBy(Long receiveBy) {
-        this.receiveBy = receiveBy;
-    }
-
-    public String getReceiveAddress() {
-        return receiveAddress;
-    }
-
-    public void setReceiveAddress(String receiveAddress) {
-        this.receiveAddress = receiveAddress;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setReceiveTime(Date receiveTime) {
+        this.receiveTime = receiveTime;
     }
 
     public Long getCreateBy() {
@@ -344,5 +248,21 @@ public class BusiSend {
 
     public void setBusiExhibitions(BusiExhibition busiExhibitions) {
         this.busiExhibitions = busiExhibitions;
+    }
+
+    public String getSendName() {
+        return sendName;
+    }
+
+    public void setSendName(String sendName) {
+        this.sendName = sendName;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
     }
 }

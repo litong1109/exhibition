@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-	<th:block th:include="include :: header('发货列表')" />
+	<th:block th:include="include :: header('到货通知列表')" />
 	<th:block th:include="include :: layout-latest-css" />
 	<!--<th:block th:include="include :: ztree-css" />-->
 </head>
@@ -16,7 +16,7 @@
 							<div class="select-list">
 								<ul>
 									<li>
-										发货单号：<input type="text" name="sendNumber"/>
+										收货单号：<input type="text" name="receiveNumber"/>
 									</li>
 									<li>
 										展会名称：<input type="text" name="busiExhibitions.exhibitionName"/>
@@ -38,7 +38,7 @@
 						<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="business:exhibition:add">
 							<i class="fa fa-plus"></i> 新增
 						</a>
-						 <a class="btn btn-primary single disabled" onclick="$.operate.sendEditFull()" shiro:hasPermission="business:exhibition:edit">
+					<!--	<a class="btn btn-primary single disabled" onclick="$.operate.sendEditFull()" shiro:hasPermission="business:exhibition:edit">
 							<i class="fa fa-edit"></i> 修改
 						</a>
 						<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:exhibition:remove">
@@ -49,7 +49,7 @@
 						</a>
 						<a class="btn btn-info" onclick="$.operate.sendMaterial()" shiro:hasPermission="business:send:send">
 							<i class="fa "></i> 发货
-						</a>
+						</a>-->
 					</div>
 					<div class="col-sm-12 select-table table-striped">
 						<table id="bootstrap-table"></table>
@@ -62,9 +62,8 @@
 		<th:block th:include="include :: layout-latest-js" />
 		<!--<th:block th:include="include :: ztree-js" />-->
 		<script th:inline="javascript">
-			var editFlag = [[${@permission.hasPermi('business:exhibition:edit')}]];
 			var selectSendMaterialDetailFlag = [[${@permission.hasPermi('business:exhibition:selectSendMaterialDetail')}]];
-			var prefix = ctx + "business/send";
+			var prefix = ctx + "business/receive";
 			var dataStatus = [[${@dict.getType('busi_send_status')}]];
 
 			$(function() {
@@ -80,19 +79,24 @@
 			function querysendList() {
 				var options = {
                     url: prefix + "/list",
-                    createUrl: prefix + "/add",
-                    removeUrl: prefix + "/remove",
-                    sendUrl: prefix + "/send",
-                    updateUrl: prefix + "/edit/{id}",
-                    // exportUrl: prefix + "/export",
-					selectSendMaterialDetailUrl: prefix + "/selectSendMaterial/{id}",
+					createUrl: prefix + "/add",
+                    selectSendMaterialDetailUrl:"send/selectSendMaterial/{id}",
                     uniqueId: "sendId",
 					sortName: "sendTime",
 					sortOrder: "desc",
-					modalName: "发货信息",
+					modalName: "收货信息",
 					columns: [{
 						checkbox: true
 					},
+                        {
+                            field: 'receiveId',
+                            title: '收货ID',
+                            visible: false
+                        },
+                        {
+                            field: 'receiveNumber',
+                            title: '收货单号'
+                        },
                         {
                             field: 'sendId',
                             title: '发货ID',
@@ -139,17 +143,13 @@
 							title: '发货时间'
 						},
 						{
-							field: 'receiveName',
+							field: 'createName',
 							title: '收货人'
 						},
-						{
-							field: 'receiveAddress',
-							title: '收货地址'
-						},
-						{
-							field: 'deptName',
-							title: '收货公司'
-						},
+                        {
+                            field: 'createTime',
+                            title: '收货时间'
+                        },
 						{
 							title: '操作',
 							align: 'center',

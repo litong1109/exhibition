@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zel.business.mapper.BusiNoticeMapper">
+    <resultMap id="BaseNoticeResultMap" type="com.zel.business.domain.dto.BusiNoticeOutDto">
+        <result property="sendId"           column="send_id" />
+        <result property="receiveId"           column="receive_id" />
+        <result property="receiveNumber"       column="receive_number" />
+        <result property="sendNumber"       column="send_number" />
+        <result property="exhibitionId"     column="exhibition_id" />
+        <result property="logisticsName"    column="logistics_name" />
+        <result property="logisticsNumber"  column="logistics_number" />
+        <result property="status"           column="status" />
+        <result property="sendBy"           column="send_by" />
+        <result property="sendTime"         column="send_time" />
+        <result property="receiveBy"        column="receive_by" />
+        <result property="receiveAddress"   column="receive_address" />
+        <result property="deptId"           column="dept_id" />
+        <result property="createBy"         column="create_by"/>
+        <result property="createTime"       column="create_time"/>
+        <result property="updateBy"         column="update_by"/>
+        <result property="updateTime"       column="update_time"/>
+        <result property="del"              column="del"/>
+        <result property="remark"           column="remark"/>
+        <result property="deptName"         column="deptName"/>
+        <result property="receiveName"      column="receiveName"/>
+        <result property="sendName"         column="sendName"/>
+        <result property="createName"       column="createName"/>
+        <result property="busiExhibitions.exhibitionName" column="exhibition_name"/>
+        <result property="busiExhibitions.organizer"      column="organizer"/>
+        <result property="busiExhibitions.address"        column="address"/>
+    </resultMap>
+
+
+    <!--
+    * 加载到货通知列列表
+    -->
+    <select id="selectNoticeList" resultMap="BaseNoticeResultMap">
+        SELECT
+            bs.send_id,
+            bs.send_number,
+            br.receive_id,
+            br.receive_number,
+            br.create_time,
+            br. STATUS,
+            bs.exhibition_id,
+            bs.logistics_name,
+            bs.logistics_number,
+            bs.send_by,
+            bs.send_time,
+            bs.receive_by,
+            bs.receive_address,
+            bs.dept_id,
+            bs.create_by,
+            bs.create_time,
+            bs.remark,
+            be.exhibition_name,
+            be.address,
+            be.organizer,
+            ss.user_name AS sendName,
+            sc.user_name AS createName
+        FROM
+            busi_send AS bs
+        LEFT JOIN busi_exhibition AS be ON bs.exhibition_id = be.exhibition_id
+        LEFT JOIN busi_receive AS br ON br.send_id = bs.send_id
+        LEFT JOIN sys_user AS ss ON bs.send_by = ss.user_id
+        LEFT JOIN sys_user AS sc ON br.create_by = sc.user_id
+
+        WHERE
+            bs.del = 1
+        AND
+            bs. STATUS !=1
+        <if test="logisticsName != null and logisticsName !=''">
+            and  bs.logistics_name like concat ('%', #{logisticsName} ,'%')
+        </if>
+        <if test="logisticsNumber != null and logisticsNumber !=''">
+            and  bs.logistics_number like concat ('%', #{logisticsNumber} ,'%')
+        </if>
+        <if test="busiExhibitions != null and busiExhibitions.exhibitionName != null and busiExhibitions.exhibitionName !=''">
+            and   be.exhibition_name like concat ('%', #{busiExhibitions.exhibitionName} ,'%')
+        </if>
+        <if test="sendNumber != null and sendNumber !=''">
+            and  bs.send_number like concat ('%', #{sendNumber} ,'%')
+        </if>
+        <if test="receiveNumber != null and receiveNumber !=''">
+            and  br.receive_number like concat ('%', #{receiveNumber} ,'%')
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            and DATE_FORMAT(bs.send_time, '%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            and DATE_FORMAT(bs.send_time, '%Y-%m-%d')  <![CDATA[ <= ]]> DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        </if>
+    </select>
+
+</mapper>

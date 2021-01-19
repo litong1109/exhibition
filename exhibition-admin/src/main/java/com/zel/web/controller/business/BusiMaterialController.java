@@ -66,7 +66,7 @@ public class BusiMaterialController extends BaseController {
         } else if (UserConstants.MATERIAL_CODE_NOT_UNIQUE.equals(materialService.checkMaterialCodeUnique(material))) {
             return error("新增物料'" + material.getMaterialCode() + "'失败，物料代码已存在");
         }
-        material.setCreateBy(ShiroUtils.getLoginName());
+        material.setCreateBy(ShiroUtils.getUserId());
         return toAjax(materialService.insertMaterial(material));
     }
 
@@ -126,7 +126,7 @@ public class BusiMaterialController extends BaseController {
         } else if (UserConstants.MATERIAL_CODE_NOT_UNIQUE.equals(materialService.checkMaterialCodeUnique(material))) {
             return error("修改物料'" + material.getMaterialCode() + "'失败，物料编码已存在");
         }
-        material.setUpdateBy(ShiroUtils.getLoginName());
+        material.setUpdateBy(ShiroUtils.getUserId());
         return toAjax(materialService.updateMaterial(material));
     }
 

@@ -117,7 +117,7 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
         StringBuilder successData = new StringBuilder();
         StringBuilder failureData = new StringBuilder();
         for(BusiMaterial material:materialList){
-            material.setCreateBy(ShiroUtils.getSysUser().getLoginName());
+            material.setCreateBy(ShiroUtils.getSysUser().getUserId());
             try {
                 if (StringUtils.isEmpty(material.getMaterialCode())) {
                     throw new BusinessException("物料代码格式不正确！");

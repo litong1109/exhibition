@@ -38,7 +38,7 @@ public class BusiProspect {
     /**
      * 创建人
      */
-    private String createBy;
+    private Long createBy;
 
     /**
      * 创建时间
@@ -48,7 +48,7 @@ public class BusiProspect {
     /**
      * 更新人
      */
-    private String updateBy;
+    private Long updateBy;
 
     /**
      * 更新时间
@@ -87,11 +87,11 @@ public class BusiProspect {
         this.prospectUrl = prospectUrl;
     }
 
-    public String getCreateBy() {
+    public Long getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public void setCreateBy(Long createBy) {
         this.createBy = createBy;
     }
 
@@ -103,11 +103,11 @@ public class BusiProspect {
         this.createTime = createTime;
     }
 
-    public String getUpdateBy() {
+    public Long getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(String updateBy) {
+    public void setUpdateBy(Long updateBy) {
         this.updateBy = updateBy;
     }
 

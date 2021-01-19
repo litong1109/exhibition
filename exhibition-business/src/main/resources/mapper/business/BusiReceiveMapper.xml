@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zel.business.mapper.BusiReceiveMapper">
+    <resultMap id="BaseReceiveResultMap" type="com.zel.business.domain.BusiReceive">
+        <result property="receiveId"        column="receive_id"/>
+        <result property="receiveNumber"        column="receive_number"/>
+        <result property="sendId"           column="send_id" />
+        <result property="sendNumber"       column="send_number" />
+        <result property="exhibitionId"     column="exhibition_id" />
+        <result property="logisticsName"    column="logistics_name" />
+        <result property="logisticsNumber"  column="logistics_number" />
+        <result property="status"           column="status" />
+        <result property="sendBy"           column="send_by" />
+        <result property="sendTime"         column="send_time" />
+        <result property="createBy"         column="create_by"/>
+        <result property="createTime"       column="create_time"/>
+        <result property="updateBy"         column="update_by"/>
+        <result property="updateTime"       column="update_time"/>
+        <result property="del"              column="del"/>
+        <result property="remark"           column="remark"/>
+        <result property="sendName"         column="sendName"/>
+        <result property="createName"       column="createName"/>
+        <result property="busiExhibitions.exhibitionName" column="exhibition_name"/>
+        <result property="busiExhibitions.organizer"      column="organizer"/>
+        <result property="busiExhibitions.address"        column="address"/>
+    </resultMap>
+
+    <select id="selectReceiveList" resultMap="BaseReceiveResultMap">
+        SELECT
+            br.receive_id,
+            br.receive_number,
+            br.send_id,
+            br.receive_time,
+            br.exhibition_id,
+            br.logistics_name,
+            br.logistics_number,
+            br. STATUS,
+            br.create_by,
+            br.create_time,
+            br.remark,
+            bs.send_number,
+            bs.send_by,
+            bs.send_time,
+            be.exhibition_name,
+            be.address,
+            be.organizer,
+            ss.user_name AS sendName,
+            sc.user_name AS createName
+        FROM
+            busi_receive AS br
+        LEFT JOIN busi_send AS bs ON bs.send_id = br.send_id
+        LEFT JOIN busi_exhibition AS be ON bs.exhibition_id = be.exhibition_id
+        LEFT JOIN sys_user AS ss ON bs.send_by = ss.user_id
+        LEFT JOIN sys_user AS sc ON bs.create_by = sc.user_id
+
+        WHERE
+            bs.del = 1
+        <if test="logisticsName != null and logisticsName !=''">
+            and bs.logistics_name like concat ('%', #{logisticsName} ,'%')
+        </if>
+        <if test="logisticsNumber != null and logisticsNumber !=''">
+            and bs.logistics_number like concat ('%', #{logisticsNumber} ,'%')
+        </if>
+        <if test="busiExhibitions != null and busiExhibitions.exhibitionName != null and busiExhibitions.exhibitionName !=''">
+            and be.exhibition_name like concat ('%', #{busiExhibitions.exhibitionName} ,'%')
+        </if>
+        <if test="receiveNumber != null and receiveNumber !=''">
+            and br.receive_number like concat ('%', #{receiveNumber} ,'%')
+        </if>
+    </select>
+    
+    <select id="selectLogisticsInfo" resultType="com.zel.business.domain.BusiSend">
+        SELECT
+            logistics_name as logisticsName,
+            logistics_number as  logisticsNumber
+        FROM
+            busi_send
+        WHERE
+          `status` = 2
+    </select>
+
+    <select id="selectSendInfo"  resultType="com.zel.business.domain.BusiSend">
+          SELECT
+             send_id ,
+             send_number ,
+             exhibition_id ,
+             logistics_name ,
+             logistics_number ,
+             status ,
+             send_by ,
+             send_time ,
+             receive_by ,
+             receive_address ,
+             dept_id ,
+             create_by ,
+             create_time ,
+             update_by ,
+             update_time ,
+             remark
+          FROM
+            busi_send
+          where
+            logistics_number = #{logisticsNumber}
+    </select>
+
+</mapper>

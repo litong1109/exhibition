@@ -70,7 +70,7 @@ public class BusiExhibitionController extends BaseController
         if (UserConstants.EXHIBITION_NAME_NOT_UNIQUE.equals(exhibitionService.checkExhibitionNameUnique(exhibition))) {
             return error("新增展会"+ exhibition.getExhibitionName() +"失败，展会名称已存在");
         }
-        exhibition.setCreateBy(ShiroUtils.getLoginName());
+        exhibition.setCreateBy(ShiroUtils.getUserId());
         exhibition.setStatus(ExhibitionStatus.SAVE.getCode());
         return toAjax(exhibitionService.insertExhibition(exhibition));
     }
@@ -120,7 +120,7 @@ public class BusiExhibitionController extends BaseController
             return error("新增展会"+exhibition.getExhibitionName()+"失败，展会名称已存在");
         }
         /*exhibition.setUpdateBy(ShiroUtils.getLoginName());*/
-        exhibition.setUpdateBy(ShiroUtils.getUserId().toString());
+        exhibition.setUpdateBy(ShiroUtils.getUserId());
         return toAjax(exhibitionService.updateExhibition(exhibition));
     }
 
@@ -176,7 +176,7 @@ public class BusiExhibitionController extends BaseController
             {
                 String prospectUrl = FileUploadUtils.upload(Global.getProspectUrlPath(), file);
                 BusiProspect busiProspect = new BusiProspect(exhibitionId,file.getOriginalFilename(),prospectUrl);
-                busiProspect.setCreateBy(ShiroUtils.getSysUser().getLoginName());
+                busiProspect.setCreateBy(ShiroUtils.getSysUser().getUserId());
                 exhibitionService.insertProspectUrl(busiProspect);
                 prospect = exhibitionService.findProspectUrl(busiProspect.getProspectId(),exhibitionId) ;
             }

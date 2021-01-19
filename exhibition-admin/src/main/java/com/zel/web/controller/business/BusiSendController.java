@@ -91,7 +91,7 @@ public class BusiSendController extends BaseController {
      */
     @PostMapping("/selectSendMaterialDetail")
     @ResponseBody
-    public TableDataInfo selectSendMaterialDetail(@RequestParam(value = "id")long id,
+    public TableDataInfo selectSendMaterialDetail(@RequestParam(value = "id")Long id,
                                                   @RequestParam(value = "materialName",required = false) String materialName,
                                                   @RequestParam(value = "materialCode",required = false) String materialCode){
         startPage();

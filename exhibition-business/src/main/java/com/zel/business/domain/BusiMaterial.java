@@ -48,7 +48,7 @@ public class BusiMaterial {
     /**
      * 创建人
      */
-    private String createBy;
+    private Long createBy;
 
     /**
      * 创建时间
@@ -60,7 +60,7 @@ public class BusiMaterial {
     /**
      * 更新人
      */
-    private String updateBy;
+    private Long updateBy;
 
 //    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss",type = Excel.Type.EXPORT)
     private Date updateTime;
@@ -152,11 +152,11 @@ public class BusiMaterial {
         this.packageQuantity = packageQuantity;
     }
 
-    public String getCreateBy() {
+    public Long getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public void setCreateBy(Long createBy) {
         this.createBy = createBy;
     }
 
@@ -168,11 +168,11 @@ public class BusiMaterial {
         this.createTime = createTime;
     }
 
-    public String getUpdateBy() {
+    public Long getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(String updateBy) {
+    public void setUpdateBy(Long updateBy) {
         this.updateBy = updateBy;
     }
 
