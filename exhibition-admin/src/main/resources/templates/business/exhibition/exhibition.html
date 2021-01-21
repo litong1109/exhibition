@@ -98,7 +98,8 @@
                 },
                     {
                         field: 'exhibitionId',
-                        title: '展会ID'
+                        title: '展会ID',
+                        visible: false
                     },
                     {
                         field: 'exhibitionName',
@@ -136,15 +137,6 @@
                         formatter: function (value, row, index) {
                             return changeDateFormat(value)
                         }
-                    },
-
-                    {
-                        field: 'createBy',
-                        title: '创建人'
-                    },
-                    {
-                        field: 'createTime',
-                        title: '创建时间',
                     },
                     {
                         field: 'remark',

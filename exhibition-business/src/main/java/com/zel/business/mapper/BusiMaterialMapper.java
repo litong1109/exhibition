@@ -52,6 +52,12 @@ public interface BusiMaterialMapper {
     int deleteMaterialById(@Param(value = "ids") Long[] ids);
 
     /**
+     * 导出物料数据
+     * @param ids 物料id
+     */
+    List<BusiMaterial> selectExportMaterialList(@Param(value = "ids") Long[] ids);
+
+    /**
      * 根据物料代码获取物料信息
      * @param materialCode 物料代码
      */
@@ -70,6 +76,7 @@ public interface BusiMaterialMapper {
     List<BusiMaterial> selectMaterial(@Param(value = "ids") Long[] ids,
                                       @Param(value = "materialName") String materialName,
                                       @Param(value = "materialCode")String materialCode);
+
 
 
 }

@@ -69,7 +69,7 @@ public class BusiSendServiceImpl implements IBusiSendService {
     public String createSerialNumber(){
 
         String sendNumber = "";
-        BusiSerialNumberInfo serialNumberInfo = sendMapper.selectserialNumberInfo();
+        BusiSerialNumberInfo serialNumberInfo = sendMapper.selectSerialNumberInfo();
         String pre = serialNumberInfo.getPrefix();
         String ver = serialNumberInfo.getVer().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

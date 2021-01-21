@@ -142,11 +142,11 @@ public class BusiExhibitionServiceImpl implements IBusiExhibitionService {
 
     /**
      * 查询导出展会列表
-     * @param colums
+     * @param ids
      */
     @Override
-    public List<BusiExhibition> selectExportExhibitionList(Long[] colums) {
-        return exhibitionMapper.selectExportExhibitionList(colums);
+    public List<BusiExhibition> selectExportExhibitionList(Long[] ids) {
+        return exhibitionMapper.selectExportExhibitionList(ids);
     }
 
     /**

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zel.business.mapper.BusiMaterialMapper">
     
-    <resultMap  id="BusiMaterialResult"  type="BusiMaterial">
+    <resultMap  id="BusiMaterialResult"  type="com.zel.business.domain.BusiMaterial">
     	<id     property="materialId"       column="material_id"    />
         <result property="materialName"     column="material_name"    />
         <result property="materialCode"     column="material_code"     />
@@ -201,6 +201,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 #{id}
             </foreach>
     </update>
+
+    <select id="selectExportMaterialList" resultMap="BusiMaterialResult">
+        <include refid="selectMaterialVo"/>
+        where
+          material_id in
+            <foreach collection="ids" index="index" item="id"  open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </select>
 
 
     <!--

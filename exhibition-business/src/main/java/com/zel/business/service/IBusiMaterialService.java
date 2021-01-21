@@ -50,6 +50,12 @@ public interface IBusiMaterialService {
     int deleteMaterialById(Long[] ids);
 
     /**
+     * 导出物料数据
+     * @param ids 物料id
+     */
+    List<BusiMaterial> selectExportMaterialList(Long[] ids);
+
+    /**
      * 导入物料数据
      * @param materialList 物料列表
      */
@@ -60,6 +66,7 @@ public interface IBusiMaterialService {
     * @param ids
     */
     List<BusiMaterial> selectMaterial(Long[] ids,String materialName,String materialCode);
+
 
 
 }

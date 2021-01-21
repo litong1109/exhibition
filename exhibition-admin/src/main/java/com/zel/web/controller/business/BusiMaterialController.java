@@ -146,15 +146,14 @@ public class BusiMaterialController extends BaseController {
 
     /**
      * 导出物料数据
-     *
-     * @param material 物料信息
+     * @param ids 物料ID
      */
     @RequiresPermissions("business:material:export")
     @Log(title = "物料管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(BusiMaterial material) {
-        List<BusiMaterial> list = materialService.selectMaterialList(material);
+    public AjaxResult export(Long[] ids) {
+        List<BusiMaterial> list = materialService.selectExportMaterialList(ids);
         ExcelUtil<BusiMaterial> util = new ExcelUtil<BusiMaterial>(BusiMaterial.class);
         return util.exportExcel(list, "物料数据");
     }

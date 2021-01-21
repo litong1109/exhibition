@@ -40,10 +40,11 @@ public class BusiMaterial {
     private Integer type;
 
     @Excel(name = "计量单位", dictType = "busi_material_unit",readConverterExp = "1=件,2=公斤,3=吨")
+//    readConverterExp 导入时对应转换对象
     private Integer unit;
 
     @Excel(name = "标包数量")
-    private BigDecimal packageQuantity;
+    private Long packageQuantity;
 
     /**
      * 创建人
@@ -144,11 +145,11 @@ public class BusiMaterial {
         this.unit = unit;
     }
 
-    public BigDecimal getPackageQuantity() {
+    public Long getPackageQuantity() {
         return packageQuantity;
     }
 
-    public void setPackageQuantity(BigDecimal packageQuantity) {
+    public void setPackageQuantity(Long packageQuantity) {
         this.packageQuantity = packageQuantity;
     }
 

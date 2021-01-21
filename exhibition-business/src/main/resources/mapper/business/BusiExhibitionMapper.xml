@@ -297,7 +297,7 @@
     <select id="selectExportExhibitionList" resultMap="BusiExhibitionResult">
         <include refid="selectExhibitionVo"/>
         where exhibition_id IN
-              <foreach collection="colums" item="id" index="index" open="(" separator="," close=")">
+              <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
                   #{id}
               </foreach>
     </select>

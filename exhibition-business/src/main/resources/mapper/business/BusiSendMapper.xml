@@ -269,7 +269,7 @@
     <!--
     * 查询流水号信息
     -->
-    <select id="selectserialNumberInfo" resultType="com.zel.business.domain.BusiSerialNumberInfo">
+    <select id="selectSerialNumberInfo" resultType="com.zel.business.domain.BusiSerialNumberInfo">
         SELECT
           prefix as prefix,
           ver as ver,

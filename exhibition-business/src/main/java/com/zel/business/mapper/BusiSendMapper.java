@@ -45,7 +45,7 @@ public interface BusiSendMapper {
      * 查询流水号信息
      * @return
      */
-    BusiSerialNumberInfo selectserialNumberInfo();
+    BusiSerialNumberInfo selectSerialNumberInfo();
 
     /**
      * 更新流水号信息

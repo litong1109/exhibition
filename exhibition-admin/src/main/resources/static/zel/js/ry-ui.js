@@ -352,7 +352,7 @@ var table = {
     			table.set();
                 var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
                 $.modal.confirm("确认要导出选中的" + rows.length + "条数据吗?", function() {
-                    var data = { "colums": rows.join() };
+                    var data = { "ids": rows.join() };
                     $.modal.loading("正在导出数据，请稍后...");
                     $.post(table.options.exportUrl, data, function(result) {
                         if (result.code == web_status.SUCCESS) {

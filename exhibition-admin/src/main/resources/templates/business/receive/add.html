@@ -19,19 +19,50 @@
 				<input id="deptId" name="deptId" type="hidden"/>
 				<input id="treeId"   name="treeId"    type="hidden"/>
 				<h4 class="form-header h4">收货单</h4>
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-4 control-label is-required">收货单号：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<input class="form-control" type="text" disabled="disabled" name="sendNumber" id="sendNumber" th:value="${sendNumber}" required>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
 				<div class="row">
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label class="col-sm-4 control-label is-required">物流信息：</label>
-							<div class="col-sm-8">
-								<select id="logistics" name="logistics" class="form-control " >
-									<option value="">所有</option>
-									<option th:each="item:${logisticsInfo}" th:value="${item.logisticsNumber}" th:text="${item.logisticsNumber}"></option>
-								</select>
+					<div class="col-sm-12 search-collapse">
+						<form id="send-form">
+							<input type="hidden" id="sendId" name="sendId">
+							<input type="hidden" id="parentId" name="parentId">
+							<div class="select-list">
+								<ul>
+									<li>
+										物流名称：<input type="text" name="logisticsName"/>
+									</li>
+									<li>
+										物流单号：<input type="text" name="logisticsNumber"/>
+									</li>
+									<li>
+										展会名称：<input type="text" name="busiExhibitions.exhibitionName"/>
+									</li>
+									<li>
+										发货单号：<input type="text" name="sendNumber"/>
+									</li>
+									<li class="select-time">
+										<label>发货时间： </label>
+										<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="startTime"/>
+										<span>-</span>
+										<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="endTime"/>
+									</li>
+
+									<li>
+										<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+										<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+									</li>
+								</ul>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
+
 				<h4 class="form-header h4">收货明细</h4>
 				<div class="row">
 					<div class="col-sm-12">

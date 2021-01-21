@@ -90,10 +90,10 @@ public interface IBusiExhibitionService {
 
     /**
      * 查询导出展会列表
-     * @param colums
+     * @param ids
      * @return
      */
-    List<BusiExhibition> selectExportExhibitionList(Long[] colums);
+    List<BusiExhibition> selectExportExhibitionList(Long[] ids);
 
     /**
      * 加载可修改展会信息

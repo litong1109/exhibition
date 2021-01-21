@@ -95,7 +95,15 @@ public class BusiMaterialServiceImpl implements IBusiMaterialService {
     @Override
     public int deleteMaterialById(Long[] ids) {
        return materialMapper.deleteMaterialById(ids);
+    }
 
+    /**
+     * 导出物料数据
+     * @param ids 物料id
+     */
+    @Override
+    public List<BusiMaterial> selectExportMaterialList(Long[] ids) {
+        return materialMapper.selectExportMaterialList(ids);
     }
 
     /**
